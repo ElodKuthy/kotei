@@ -1,0 +1,32 @@
+{
+  "name": "kotei",
+  "version": "2.0.0",
+  "description": "kotei web application",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ElodKuthy/kotei.git"
+  },
+  "author": "Kúthy Előd",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ElodKuthy/kotei/issues"
+  },
+  "homepage": "https://github.com/ElodKuthy/kotei#readme",
+  "engines": {
+    "node": "5.0.0"
+  },
+  "dependencies": {
+    "body-parser": "1.14.1",
+    "cookie-parser": "1.4.0",
+    "express": "4.13.3",
+    "serve-favicon": "2.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "1.8.1"
+  }
+}
