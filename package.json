@@ -26,6 +26,8 @@
     "cookie-parser": "1.4.0",
     "diacritics": "1.2.3",
     "express": "4.13.3",
+    "express-jwt": "3.3.0",
+    "jsonwebtoken": "5.4.1",
     "mysql": "2.9.0",
     "ramda": "0.18.0",
     "sequelize": "3.13.0",

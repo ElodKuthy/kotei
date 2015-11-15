@@ -3,8 +3,7 @@ const database = require('./database')
 const Password = require('./password')
 const Trainig = require('./training')
 const Subscription = require('./subscription')
-const normalizedName = require('../localization/name').normalizedName
-const normalizedFullName = require('../localization/name').normalizedFullName
+const localization = require('../localization/name')
 
 const User = database.define('user', {
     familyName: {
@@ -15,7 +14,7 @@ const User = database.define('user', {
         },
         set: function(val) {
             this.setDataValue('familyName', val)
-            this.setDataValue('normalizedName', normalizedFullName(this.familyName, this.givenName))
+            this.setDataValue('normalizedName', localization.normalizedFullName(this.familyName, this.givenName))
         }
     },
     givenName: {
@@ -26,7 +25,13 @@ const User = database.define('user', {
         },
         set: function(val) {
             this.setDataValue('givenName', val)
-            this.setDataValue('normalizedName', normalizedFullName(this.familyName, this.givenName))
+            this.setDataValue('normalizedName', localization.normalizedFullName(this.familyName, this.givenName))
+        }
+    },
+    fullName: {
+        type: Sequelize.VIRTUAL,
+        get: function () {
+            return localization.fullName(this.familyName, this.givenName)
         }
     },
     normalizedName: {
@@ -36,7 +41,7 @@ const User = database.define('user', {
             notEmpty: true,
             isAlphanumeric: true,
             shouldBeConsistentWithFamilyAndGivenNames: function (value) {
-                if (normalizedFullName(this.familyName, this.givenName) != value) {
+                if (localization.normalizedFullName(this.familyName, this.givenName) != value) {
                     throw Error('Normalized name should be consistent with family and given names')
                 }
             }
@@ -51,7 +56,7 @@ const User = database.define('user', {
         },
         set: function(val) {
             this.setDataValue('nickname', val)
-            this.setDataValue('normalizedNickname', normalizedName(this.nickname))
+            this.setDataValue('normalizedNickname', localization.normalizedName(this.nickname))
         }
     },
     normalizedNickname: {
@@ -62,7 +67,7 @@ const User = database.define('user', {
             notEmpty: true,
             isAlphanumeric: true,
             shouldBeConsistentWithNickname: function (value) {
-                if (normalizedName(this.nickname) != value) {
+                if (localization.normalizedName(this.nickname) != value) {
                     throw Error('Normalized nickname should be consistent with nickname')
                 }
             }

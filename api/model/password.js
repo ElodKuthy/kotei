@@ -31,7 +31,10 @@ const Password = database.define('password', {
         resetPassword: function () {
             this.setDataValue('hash', null)
             this.setDataValue('token', uuid())
-            return this.save()
+            return this.save().then(() => this.token)
+        },
+        checkPassword: function (password) {
+            return bcrypt.compareSync(password, this.hash)
         }
     }
 })
