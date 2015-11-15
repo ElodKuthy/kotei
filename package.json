@@ -21,9 +21,14 @@
     "node": "5.0.0"
   },
   "dependencies": {
+    "bcrypt": "0.8.5",
     "body-parser": "1.14.1",
     "cookie-parser": "1.4.0",
+    "diacritics": "1.2.3",
     "express": "4.13.3",
+    "mysql": "2.9.0",
+    "ramda": "0.18.0",
+    "sequelize": "3.13.0",
     "serve-favicon": "2.3.0"
   },
   "devDependencies": {
