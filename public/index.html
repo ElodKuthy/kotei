@@ -1,8 +1,13 @@
-<html>
+<html ng-app="kotei">
 <head>
     <title>kotei</title>
+    <base href="/">
 </head>
 <body>
-    <h1>kotei</h1>
+    <md-content class="main">
+        <div ui-view="navbar"></div>
+        <div ui-view="content"></div>
+    </md-content>
+    <script type="text/javascript" src="kotei.js" charset="utf-8"></script>
 </body>
 </html>

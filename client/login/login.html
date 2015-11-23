@@ -1,0 +1,24 @@
+<md-content layout-padding layout="column" layout-align="space-around center">
+    <h1 class="md-headline">Belépés</h1>
+    <form name="loginForm" novalidate>
+        <div class="login-error" ng-if="login.error">
+            {{login.error}}
+        </div>
+        <md-input-container>
+            <label>Név vagy email</label>
+            <input name="credential" ng-model="login.credential" required>
+            <div ng-messages="loginForm.credential.$error" ng-if="loginForm.credential.$touched">
+                <div ng-message="required">Kötelező megadni</div>
+            </div>
+        </md-input-container>
+        <md-input-container>
+            <label>Jelszó</label>
+            <input name="password" ng-model="login.password" type="password" required>
+            <div ng-messages="loginForm.password.$error" ng-if="loginForm.password.$touched">
+                <div ng-message="required">Kötelező megadni</div>
+            </div>
+        </md-input-container>
+        <md-button class="md-primary" ng-click="login.submit()" ng-disabled="loginForm.$invalid">Belépés</md-button>
+        <md-button class="md-primary">Elfelejtett jelszó?</md-button>
+    </form>
+</md-content>
