@@ -2,6 +2,8 @@
     <div class="md-toolbar-tools">
         <md-button class="md-primary" ui-sref="welcome">kotei</md-button>
         <span flex></span>
-        <md-button class="md-primary" ui-sref-active="md-focused" ui-sref="login">Belépés</md-button>
+        <md-button class="md-primary" ui-sref-active="md-focused" ui-sref="profile" ng-if="navbar.isLoggedIn">Profilom</md-button>
+        <md-button class="md-primary" ui-sref-active="md-focused" ui-sref="login" ng-if="!navbar.isLoggedIn">Belépés</md-button>
+        <md-button class="md-primary" ng-click="navbar.logout()" ng-if="navbar.isLoggedIn">Kilépés</md-button>
     </div>
 </md-toolbar>

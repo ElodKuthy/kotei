@@ -9,7 +9,8 @@ angular.module('kotei')
                 url: '/login',
                 views: {
                     'navbar': {
-                        templateUrl: 'navbar.html'
+                        templateUrl: 'navbar.html',
+                        controller: 'NavbarController as navbar'
                     },
                     'content': {
                         templateUrl: 'login.html',
@@ -18,12 +19,12 @@ angular.module('kotei')
                 }
         })
     })
-    .controller('LoginController', function (loginService, $state, $mdToast) {
+    .controller('LoginController', function (loginService, $state, $rootScope) {
         this.submit = () => {
             delete this.error
             loginService.login(this.credential, this.password)
                 .then((result) => {
-                    $state.current.fromState.abstract ? $state.go('welcome') : $state.go($state.current.fromState)
+                    $rootScope.previousState.abstract ? $state.go('welcome') : $state.go($rootScope.previousState)
                 })
                 .catch((error) => {
                     this.error = error
