@@ -1,5 +1,3 @@
-require('./profile.html')
-
 angular.module('kotei')
     .config(($stateProvider) => {
 
@@ -8,11 +6,11 @@ angular.module('kotei')
                 url: '/profile',
                 views: {
                     'navbar': {
-                        templateUrl: 'navbar.html',
+                        templateUrl: 'navbar/navbar.html',
                         controller: 'NavbarController as navbar'
                     },
                     'content': {
-                        templateUrl: 'profile.html',
+                        templateUrl: 'profile/profile.html',
                         controller: 'ProfileController as profile'
                     }
                 },

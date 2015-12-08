@@ -1,15 +1,13 @@
-import 'angular'
-import 'angular-material/angular-material.css'
-import angularMessages from 'angular-messages'
-import angularAnimate from 'angular-animate'
-import angularMaterial from 'angular-material'
-import angularUIRouter from 'angular-ui-router'
-import angularJwt from 'angular-jwt'
+angular.module('templates', [])
 
-require('./entry.scss')
-
-angular.module('kotei', [angularAnimate, angularMessages, angularMaterial, angularUIRouter, angularJwt])
-    .config(($stateProvider, $urlRouterProvider, $locationProvider, $mdThemingProvider, $httpProvider, jwtInterceptorProvider) => {
+angular.module('kotei', [
+        'ngMessages',
+        'ui.router',
+        'angular-jwt',
+        'ui.bootstrap',
+        'templates'
+    ])
+    .config(($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, jwtInterceptorProvider) => {
 
         $urlRouterProvider.otherwise('/')
 
@@ -20,16 +18,11 @@ angular.module('kotei', [angularAnimate, angularMessages, angularMaterial, angul
                 url: '/',
                 views: {
                     'navbar': {
-                        templateUrl: 'navbar.html',
+                        templateUrl: 'navbar/navbar.html',
                         controller: 'NavbarController as navbar'
                     }
               }
         })
-
-        $mdThemingProvider.theme('default')
-            .primaryPalette('blue')
-            .backgroundPalette('blue-grey')
-            .dark()
 
         jwtInterceptorProvider.tokenGetter = () => localStorage.getItem('jwt')
 
@@ -57,11 +50,3 @@ angular.module('kotei', [angularAnimate, angularMessages, angularMaterial, angul
             $rootScope.previousState = fromState;
         })
     })
-
-require('./service/login-service.js')
-require('./service/user-info-service.js')
-require('./service/authorization-service.js')
-
-require('./navbar/navbar.js')
-require('./login/login.js')
-require('./profile/profile.js')

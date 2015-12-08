@@ -1,7 +1,5 @@
-import Promise from 'bluebird'
-
 angular.module('kotei')
-    .service('loginService', ($http) => {
+    .service('loginService', ($http, $q) => {
         return {
             login: (credential, password) => {
                 return $http({
@@ -15,7 +13,7 @@ angular.module('kotei')
                 }).then((result) => {
                     return localStorage.setItem('jwt', result.data.jwt)
                 }, (error) => {
-                    return Promise.reject(error.data.Error)
+                    return $q.reject(error.data.Error)
                 })
             },
             logout: () => {

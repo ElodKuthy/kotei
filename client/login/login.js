@@ -1,6 +1,3 @@
-require('./login.html')
-require('./login.scss')
-
 angular.module('kotei')
     .config(($stateProvider) => {
 
@@ -9,11 +6,11 @@ angular.module('kotei')
                 url: '/login',
                 views: {
                     'navbar': {
-                        templateUrl: 'navbar.html',
+                        templateUrl: 'navbar/navbar.html',
                         controller: 'NavbarController as navbar'
                     },
                     'content': {
-                        templateUrl: 'login.html',
+                        templateUrl: 'login/login.html',
                         controller: 'LoginController as login'
                     }
                 }

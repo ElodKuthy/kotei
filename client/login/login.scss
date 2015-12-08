@@ -1,4 +1,28 @@
-.login-error {
-    color: rgb(244,67,54);
+.login {
     max-width: 300px;
+    // position: relative;
+    // top: 50%;
+    // transform: translateY(-50%);
+    // height: 100%;
+
+    .user-name,
+    .password,
+    .submit,
+    .forgotten-password {
+        padding-top: 20px;
+        padding-bottom: 5px;
+    }
+
+    .submit {
+        label {
+            padding-top: 6px;
+        }
+    }
+
+    .forgotten-password {
+        a {
+            color: #D9D9D9;
+            font-weight: bold;
+        }
+    }
 }

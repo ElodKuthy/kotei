@@ -1,0 +1,29 @@
+{
+  "name": "kotei",
+  "version": "2.0.0",
+  "homepage": "https://github.com/ElodKuthy/kotei",
+  "authors": [
+    "Kúthy Előd <kuthy.elod@gmail.com>"
+  ],
+  "description": "kotei web app",
+  "main": "index.html",
+  "moduleType": [
+    "es6"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "1.4.8",
+    "angular-ui-router": "0.2.15",
+    "angular-jwt": "0.0.9",
+    "angular-messages": "1.4.8",
+    "bootstrap-sass": "3.3.6",
+    "angular-ui-bootstrap-bower": "0.14.3"
+  }
+}

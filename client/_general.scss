@@ -1,0 +1,16 @@
+html, body {
+    background-image: url(/background.jpg);
+    font-family: Gill Sans, sans-serif;
+}
+
+.navbar-brand {
+    // padding: 0;
+
+    img:hover {
+        background-color: $primary-color;
+    }
+}
+
+.nav, .pagination, .carousel, .panel-title a {
+    cursor: pointer;
+}

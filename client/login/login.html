@@ -1,24 +1,29 @@
-<md-content layout-padding layout="column" layout-align="space-around center">
-    <h1 class="md-headline">Belépés</h1>
+<div class="container-fluid center-block clearfix login">
     <form name="loginForm" novalidate>
-        <div class="login-error" ng-if="login.error">
+        <div class="alert alert-danger" ng-if="login.error">
             {{login.error}}
         </div>
-        <md-input-container>
-            <label>Név vagy email</label>
-            <input name="credential" ng-model="login.credential" required>
+        <div class="credential" ng-class="{ 'has-error': (loginForm.credential.$invalid && loginForm.credential.$touched) }">
+            <label for="credential">Név vagy email cím</label>
+            <input id="credential" name="credential" type="text" class="form-control" ng-model="login.credential" required>
             <div ng-messages="loginForm.credential.$error" ng-if="loginForm.credential.$touched">
-                <div ng-message="required">Kötelező megadni</div>
+                <div class="help-block" ng-message="required">Kötelező megadni</div>
             </div>
-        </md-input-container>
-        <md-input-container>
-            <label>Jelszó</label>
-            <input name="password" ng-model="login.password" type="password" required>
+        </div>
+        <div class="password" ng-class="{ 'has-error': (loginForm.password.$invalid && loginForm.password.$touched) }">
+            <label for="password">Jelszó</label>
+            <input id="password" name="password" type="password" class="form-control"ng-model="login.password" required>
             <div ng-messages="loginForm.password.$error" ng-if="loginForm.password.$touched">
-                <div ng-message="required">Kötelező megadni</div>
+                <div class="help-block" ng-message="required">Kötelező megadni</div>
             </div>
-        </md-input-container>
-        <md-button class="md-primary" ng-click="login.submit()" ng-disabled="loginForm.$invalid">Belépés</md-button>
-        <md-button class="md-primary">Elfelejtett jelszó?</md-button>
+        <div class="submit center-block">
+            <button class="btn btn-primary pull-right" ng-click="login.submit()">Belépés</button>
+            <label>
+                <input type="checkbox"> Emlékezz rám
+            </label>
+        </div>
+        <div class="forgotten-password text-center">
+            <a ui-sref="forgot">Elfelejtetted a jelszavad?</a>
+        </div>
     </form>
-</md-content>
+</div>

@@ -1,2 +1,6 @@
 node_modules
+bower_components
+public/kotei.css
 public/kotei.js
+public/templates.js
+public/vendor.js
