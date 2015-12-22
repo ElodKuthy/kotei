@@ -24,6 +24,7 @@
     "angular-jwt": "0.0.9",
     "angular-messages": "1.4.8",
     "bootstrap-sass": "3.3.6",
-    "angular-ui-bootstrap-bower": "0.14.3"
+    "angular-bootstrap": "0.14.3",
+    "fontawesome": "4.5.0",
   }
 }

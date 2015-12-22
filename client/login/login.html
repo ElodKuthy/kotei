@@ -17,13 +17,13 @@
                 <div class="help-block" ng-message="required">Kötelező megadni</div>
             </div>
         <div class="submit center-block">
-            <button class="btn btn-primary pull-right" ng-click="login.submit()">Belépés</button>
+            <button class="btn btn-primary pull-right" ng-click="login.submit()" ng-disabled="!loginForm.$valid">Belépés</button>
             <label>
                 <input type="checkbox"> Emlékezz rám
             </label>
         </div>
         <div class="forgotten-password text-center">
-            <a ui-sref="forgot">Elfelejtetted a jelszavad?</a>
+            <a ui-sref="forgotten-password">Elfelejtetted a jelszavad?</a>
         </div>
     </form>
 </div>
