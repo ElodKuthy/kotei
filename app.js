@@ -13,19 +13,19 @@ const port = process.env.PORT || 3000
 
 app.set('port', port)
 
-app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(bodyParser.json());
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
+app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
     extended: false
-}));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+}))
+app.use(cookieParser())
+app.use(express.static(path.join(__dirname, 'public')))
 
 app.use('/api', api)
 
 app.all('/*', function(req, res, next) {
-    res.sendFile('index.html', { root: __dirname + '/public' });
-});
+    res.sendFile('index.html', { root: __dirname + '/public' })
+})
 
 const server = http.createServer(app)
 
