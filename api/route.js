@@ -15,26 +15,27 @@ router.get('/', (req, res) => { res.json({ 'Result': 'kotei API' }) })
 
 router.use(jwt({ secret: cert, credentialsRequired: false }))
 
-const parseBodyProps = (bodyProps, body) => {
+const parseProps = (props, values) => {
 
-    if (!bodyProps) {
+    if (!props) {
         return []
     }
 
-    if (R.isArrayLike(bodyProps)) {
-        return R.map((name) => req.body[name], bodyProps)
+    if (R.isArrayLike(props)) {
+        return R.map((name) => values[name], props)
     }
 
-    return [body]
+    return [values]
 }
 
 
-const handler = R.curry((fn, urlProps, bodyProps, req, res, next) => {
+const handler = R.curry((fn, props, req, res, next) => {
 
-    const urlArgs = urlProps ? R.map((name) => req.params(name), urlProps) : []
-    const bodyArgs = parseBodyProps(bodyProps, req.body)
+    const urlArgs = parseProps(props.url, req.params)
+    const bodyArgs = parseProps(props.body, req.body)
+    const queryArgs = parseProps(props.query, req.query)
 
-    const args = R.concat(R.concat(urlArgs, bodyArgs), roles.decorate(req.user))
+    const args = R.concat(R.concat(R.concat(urlArgs, bodyArgs), queryArgs), roles.decorate(req.user))
 
     const result = R.apply(fn, args)
 
@@ -47,12 +48,14 @@ const handler = R.curry((fn, urlProps, bodyProps, req, res, next) => {
     })
 })
 
-router.post('/login', handler(securityService.login, null, ['userName', 'password']))
+router.post('/login', handler(securityService.login, { body: ['userName', 'password'] }))
 
-router.post('/password/forgot', handler(securityService.forgot, null, ['email']))
+router.post('/password/forgot', handler(securityService.forgot, { body: ['email']}))
 
-router.post('/password/reset', handler(securityService.reset, null, ['token', 'password']))
+router.post('/password/reset', handler(securityService.reset, { body: ['token', 'password'] }))
 
-router.post('/user', handler(userService.add, null, 'newUser'))
+router.post('/user', handler(userService.add, { body: 'newUser' }))
+
+router.get('/user', handler(userService.find, { query: 'query'}))
 
 module.exports = router

@@ -1,6 +1,5 @@
 const Sequelize = require('sequelize')
 const database = require('./database')
-const Training = require('./training')
 
 const Subscription = database.define('subscription', {
     from: {
@@ -34,5 +33,6 @@ const Subscription = database.define('subscription', {
         }
     }
 })
+
 
 module.exports = Subscription

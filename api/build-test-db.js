@@ -7,6 +7,7 @@ const Location = require('./model/location')
 const Training = require('./model/training')
 const Subscription = require('./model/subscription')
 const Attendee = require('./model/attendee')
+const SubscriptionType = require('./model/subscription-type')
 
 database.sync({ force: true })
     .then(() => {
@@ -66,13 +67,19 @@ database.sync({ force: true })
                 })
             })
             .then(() => {
+                return SubscriptionType.create({
+                    name: 'Kettlebell'
+                })
+            })
+            .then((subscriptionType) => {
                 return Subscription.create({
                     from: '2015-12-01 00:00:00',
                     to: '2015-12-28 23:59:59',
                     amount: 8,
                     price: 12000,
                     client_id: client.value().id,
-                    coach_id: coach.value().id
+                    coach_id: coach.value().id,
+                    subscription_type_id: subscriptionType.id
                 })
             })
     })

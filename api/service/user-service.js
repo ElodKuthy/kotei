@@ -12,6 +12,17 @@ const mailerService = require('./mailer-service')
 
 const Promise = require('bluebird')
 
+const find = (query, auth) => {
+    if (!auth.isCoach && !auth.isAdmin) {
+        return Promise.reject(errors.unauthorized)
+    }
+
+    return User.findAll({
+        attributes: ['id', 'familyName', 'givenName', 'nickname', 'email', 'role'],
+        where: query
+    }).catch((error) => Promise.reject(errors.missingOrInvalidParameters))
+}
+
 const add = (newUser, auth) => {
     if (!auth.isAuth
         || auth.isClient
@@ -60,5 +71,6 @@ const add = (newUser, auth) => {
 }
 
 module.exports = {
-    add: add
+    add: add,
+    find: find
 }
