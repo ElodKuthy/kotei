@@ -96,15 +96,13 @@ const User = database.define('user', {
 User.hasOne(Password, {
     foreignKey: {
         allowNull: false
-    },
-    as: 'Password'
+    }
 })
 
 Password.belongsTo(User, {
     foreignKey: {
         allowNull: false
-    },
-    as: 'User'
+    }
 })
 
 User.hasMany(Trainig, {
