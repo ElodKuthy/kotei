@@ -96,13 +96,15 @@ const User = database.define('user', {
 User.hasOne(Password, {
     foreignKey: {
         allowNull: false
-    }
+    },
+    as: 'Password'
 })
 
 Password.belongsTo(User, {
     foreignKey: {
         allowNull: false
-    }
+    },
+    as: 'User'
 })
 
 User.hasMany(Trainig, {
@@ -110,14 +112,14 @@ User.hasMany(Trainig, {
         name: 'coach_id',
         allowNull: false
     },
-    as: 'trainings'
+    as: 'Trainings'
 })
 
 Trainig.belongsTo(User, {
     foreignKey: {
         allowNull: false
     },
-    as: 'coach'
+    as: 'Coach'
 })
 
 User.hasMany(Subscription, {
@@ -125,14 +127,14 @@ User.hasMany(Subscription, {
         name: 'client_id',
         allowNull: false
     },
-    as: 'subscriptions'
+    as: 'Subscriptions'
 })
 
 Subscription.belongsTo(User, {
     foreignKey: {
         allowNull: false
     },
-    as: 'client'
+    as: 'Client'
 })
 
 User.hasMany(Subscription, {
@@ -140,14 +142,14 @@ User.hasMany(Subscription, {
         name: 'coach_id',
         allowNull: false
     },
-    as: 'soldSubscriptions'
+    as: 'SoldSubscriptions'
 })
 
 Subscription.belongsTo(User, {
     foreignKey: {
         allowNull: false
     },
-    as: 'coach'
+    as: 'Coach'
 })
 
 module.exports = User

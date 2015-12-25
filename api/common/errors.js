@@ -15,7 +15,11 @@ const errors = {
     invalidOrExpiredToken: envelope(texts.invalidOrExpiredToken, 401),
     unauthorized: envelope(texts.unauthorized, 401),
     nameAlreadyUsed: envelope(texts.nameAlreadyUsed, 409),
-    emailAlreadyUsed: envelope(texts.emailAlreadyUsed, 409)
+    emailAlreadyUsed: envelope(texts.emailAlreadyUsed, 409),
+    trainingTimeCollide: envelope(texts.trainingTimeCollide, 409),
+    invalidCoach: envelope(texts.invalidCoach, 409),
+    trainingTooShort: envelope(texts.trainingTooShort, 409),
+    trainingTooLong: envelope(texts.trainingTooLong, 409)
 }
 
 module.exports = errors

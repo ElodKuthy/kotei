@@ -6,7 +6,11 @@ const texts = {
     unauthorized: 'Nincs jogosultsága ehhez a művelethez',
     nameAlreadyUsed: 'Ilyen névvel és becenévvel már van regisztrált felhasználónk',
     emailAlreadyUsed: 'Ezzel az email címmel már regisztrált valaki',
-    successfulRegistration: 'Sikeres regisztráció'
+    successfulRegistration: 'Sikeres regisztráció',
+    trainingTimeCollide: 'A megadott időpont ütközik egy másik edzéssel',
+    invalidCoach: 'Érvénytelen edző',
+    trainingTooShort: 'Az edzésnek legalább öt perc hosszúnak kell lennie',
+    trainingTooLong: 'Az edzésnek ugyanaznap kell befejeződnie, mint amikor kezdődik'
 }
 
 module.exports = texts

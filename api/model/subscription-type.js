@@ -17,15 +17,23 @@ const SubscriptionType = database.define('subscription_type', {
 SubscriptionType.hasMany(Subscription, {
     foreignKey: {
         allowNull: false
-    }
+    },
+    as: 'Subscriptions'
 })
 Subscription.belongsTo(SubscriptionType, {
     foreignKey: {
         allowNull: false
-    }
+    },
+    as: 'Type'
 })
 
-Training.belongsToMany(SubscriptionType, {through: 'allowed_subscriptions'})
-SubscriptionType.belongsToMany(Training, {through: 'allowed_subscriptions'})
+Training.belongsToMany(SubscriptionType, {
+    through: 'allowed_subscriptions',
+    as: 'SubscriptionTypes'
+})
+SubscriptionType.belongsToMany(Training, {
+    through: 'allowed_subscriptions',
+    as: 'Trainings'
+})
 
 module.exports = SubscriptionType

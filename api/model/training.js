@@ -1,3 +1,4 @@
+const moment = require('moment')
 const Sequelize = require('sequelize')
 const database = require('./database')
 

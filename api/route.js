@@ -8,6 +8,7 @@ const securityService = require('./service/security-service')
 const userService = require('./service/user-service')
 const subscriptionService = require('./service/subscription-service')
 const locationService = require('./service/location-service')
+const trainingService = require('./service/training-service')
 
 const cert = fs.readFileSync('certs/jwt-test-public.pem')
 
@@ -52,16 +53,16 @@ const handler = R.curry((fn, props, req, res, next) => {
 
 router.post('/login', handler(securityService.login, { body: ['userName', 'password'] }))
 
-router.post('/password/forgot', handler(securityService.forgot, { body: ['email']}))
-
+router.post('/password/forgot', handler(securityService.forgot, { body: ['email'] }))
 router.post('/password/reset', handler(securityService.reset, { body: ['token', 'password'] }))
 
+router.get('/user', handler(userService.find, { query: 'query' }))
 router.post('/user', handler(userService.add, { body: 'newUser' }))
 
-router.get('/user', handler(userService.find, { query: 'query'}))
+router.get('/subscription/type', handler(subscriptionService.findSubscriptionType, { query: 'query' }))
 
-router.get('/subscription/type', handler(subscriptionService.findSubscriptionType, { query: 'query'}))
+router.post('/training', handler(trainingService.add, { body: 'newTraining' }))
 
-router.get('/location', handler(locationService.find, { query: 'query'}))
+router.get('/location', handler(locationService.find, { query: 'query' }))
 
 module.exports = router

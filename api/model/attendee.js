@@ -11,7 +11,13 @@ const Attendee = database.define('attendee', {
     }
 })
 
-Training.belongsToMany(Subscription, { through: Attendee })
-Subscription.belongsToMany(Training, { through: Attendee })
+Training.belongsToMany(Subscription, {
+    through: Attendee,
+    as: 'Subscriptions'
+})
+Subscription.belongsToMany(Training, {
+    through: Attendee,
+    as: 'Trainings'
+})
 
 module.exports = Attendee

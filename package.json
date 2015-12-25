@@ -32,7 +32,8 @@
     "ramda": "0.18.0",
     "sequelize": "3.13.0",
     "serve-favicon": "2.3.0",
-    "source-map": "0.5.3"
+    "source-map": "0.5.3",
+    "validator": "4.4.0"
   },
   "devDependencies": {
     "babel-core": "6.2.1",

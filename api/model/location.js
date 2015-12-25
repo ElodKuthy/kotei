@@ -15,13 +15,15 @@ const Location = database.define('location', {
 Location.hasMany(Training, {
     foreignKey: {
         allowNull: false
-    }
+    },
+    as: 'Trainings'
 })
 
 Training.belongsTo(Location, {
     foreignKey: {
         allowNull: false
-    }
+    },
+    as: 'Location'
 })
 
 module.exports = Location
