@@ -12,32 +12,32 @@ const mailerService = require('./mailer-service')
 
 const Promise = require('bluebird')
 
-const add = (user, auth) => {
+const add = (newUser, auth) => {
     if (!auth.isAuth
         || auth.isClient
-        || (auth.isCoach && user.role !== roles.client)) {
+        || (auth.isCoach && newUser.role !== roles.client)) {
 
         return Promise.reject(errors.unauthorized)
     }
 
-    if (!user.familyName
-        || !user.givenName
-        || !user.email
-        || !user.role) {
+    if (!newUser.familyName
+        || !newUser.givenName
+        || !newUser.email
+        || !newUser.role) {
 
         return Promise.reject(errors.missingOrInvalidParameters)
     }
 
-    if (!user.nickname) {
-        user.nickname = localization.fullName(user.familyName, user.givenName)
+    if (!newUser.nickname) {
+        newUser.nickname = localization.fullName(newUser.familyName, newUser.givenName)
     }
 
     return User.create({
-            familyName: user.familyName,
-            givenName: user.givenName,
-            nickname: user.nickname,
-            email: user.email,
-            role: user.role,
+            familyName: newUser.familyName,
+            givenName: newUser.givenName,
+            nickname: newUser.nickname,
+            email: newUser.email,
+            role: newUser.role,
             password: {
                 token: uuid()
             }

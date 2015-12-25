@@ -15,10 +15,24 @@ router.get('/', (req, res) => { res.json({ 'Result': 'kotei API' }) })
 
 router.use(jwt({ secret: cert, credentialsRequired: false }))
 
+const parseBodyProps = (bodyProps, body) => {
+
+    if (!bodyProps) {
+        return []
+    }
+
+    if (R.isArrayLike(bodyProps)) {
+        return R.map((name) => req.body[name], bodyProps)
+    }
+
+    return [body]
+}
+
+
 const handler = R.curry((fn, urlProps, bodyProps, req, res, next) => {
 
     const urlArgs = urlProps ? R.map((name) => req.params(name), urlProps) : []
-    const bodyArgs = bodyProps ? R.map((name) => req.body[name], bodyProps) : []
+    const bodyArgs = parseBodyProps(bodyProps, req.body)
 
     const args = R.concat(R.concat(urlArgs, bodyArgs), roles.decorate(req.user))
 
@@ -39,6 +53,6 @@ router.post('/password/forgot', handler(securityService.forgot, null, ['email'])
 
 router.post('/password/reset', handler(securityService.reset, null, ['token', 'password']))
 
-router.post('/user', handler(userService.add, null, ['user']))
+router.post('/user', handler(userService.add, null, 'newUser'))
 
 module.exports = router
