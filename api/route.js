@@ -6,6 +6,8 @@ const jwt = require('express-jwt')
 const roles = require('./common/roles.js')
 const securityService = require('./service/security-service')
 const userService = require('./service/user-service')
+const subscriptionService = require('./service/subscription-service')
+const locationService = require('./service/location-service')
 
 const cert = fs.readFileSync('certs/jwt-test-public.pem')
 
@@ -57,5 +59,9 @@ router.post('/password/reset', handler(securityService.reset, { body: ['token', 
 router.post('/user', handler(userService.add, { body: 'newUser' }))
 
 router.get('/user', handler(userService.find, { query: 'query'}))
+
+router.get('/subscription/type', handler(subscriptionService.findSubscriptionType, { query: 'query'}))
+
+router.get('/location', handler(locationService.find, { query: 'query'}))
 
 module.exports = router
