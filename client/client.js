@@ -6,6 +6,7 @@ angular.module('kotei', [
         'angular-jwt',
         'ui.bootstrap',
         'ui.bootstrap.datetimepicker',
+        'angular-momentjs',
         'templates'
     ])
     .config(($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, jwtInterceptorProvider) => {

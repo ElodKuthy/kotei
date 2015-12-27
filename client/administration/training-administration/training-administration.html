@@ -30,6 +30,18 @@
             <div class="help-block" ng-show="trainingForm.location.$touched && !trainingAdministration.training.location">Nincs ilyen nevű terem</div>
         </div>
         <div>
+            <label for="fromCalendar">Kezdés</label>
+            <ko-calendar id="from" model="trainingAdministration.training.from" format="yyyy. MMM d. HH:mm" minDate="trainingAdministration.minDate" maxDate="trainingAdministration.maxDate"></ko-calendar>
+        </div>
+        <div>
+            <label for="toCalendar">Befejezés</label>
+            <ko-calendar id="to" model="trainingAdministration.training.to" format="yyyy. MMM d. HH:mm" minDate="trainingAdministration.minDate" maxDate="trainingAdministration.maxDate"></ko-calendar>
+        </div>
+        <div>
+            <label for="intervalCalendar">Eddig ismétlődik hetente</label>
+            <ko-calendar id="interval" model="trainingAdministration.training.interval" format="yyyy. MMM d. HH:mm" minDate="trainingAdministration.minDate" maxDate="trainingAdministration.maxDate"></ko-calendar>
+        </div>
+        <div>
             <label>Bérlettípusok</label>
             <div class="checkbox" ng-repeat="subscriptionType in trainingAdministration.subscriptionTypes">
                 <label>
@@ -37,14 +49,6 @@
                     {{ subscriptionType.name }}
                 </label>
             </div>
-        </div>
-        <div>
-            <label for="fromCalendar">Kezdés</label>
-            <ko-calendar id="from" model="trainingAdministration.training.from" format="yyyy. MMM d. HH:mm" minDate="trainingAdministration.minDate" maxDate="trainingAdministration.maxDate"></ko-calendar>
-        </div>
-        <div>
-            <label for="toCalendar">Befejezés</label>
-            <ko-calendar id="to" model="trainingAdministration.training.to" format="yyyy. MMM d. HH:mm" minDate="trainingAdministration.minDate" maxDate="trainingAdministration.maxDate"></ko-calendar>
         </div>
         <button type="submit" class="btn btn-primary pull-right" ng-click="trainingAdministration.submit()" ng-disabled="trainingForm.$pristine || trainingForm.$invalid || !trainingAdministration.training.coach || !trainingAdministration.training.location">Mentés</button>
     </form>

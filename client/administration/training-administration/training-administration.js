@@ -28,7 +28,7 @@ angular.module('kotei')
                 roles: ['admin']
         })
     })
-    .controller('TrainingAdministrationController', function (coaches, locations, subscriptionTypes, modalService, administrationService) {
+    .controller('TrainingAdministrationController', function ($moment, coaches, locations, subscriptionTypes, modalService, administrationService) {
 
         this.title = 'Új edzésalkalom létrehozása'
 
@@ -54,7 +54,8 @@ angular.module('kotei')
                 max: this.training.max,
                 coach_id: this.training.coach.id,
                 location_id: this.training.location.id,
-                subscription_type_ids: subscriptionTypeIds
+                subscription_type_ids: subscriptionTypeIds,
+                interval: this.training.interval && $moment(this.training.interval).isAfter(this.training.to) ? this.training.interval : null
             }
 
             administrationService.addNewTraining(newTraining)

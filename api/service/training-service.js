@@ -1,6 +1,8 @@
 const moment = require('moment')
+const R = require('ramda')
 
 const errors = require('../common/errors')
+const texts = require('../localization/texts')
 
 const roles = require('../common/roles')
 const Training = require('../model/training')
@@ -9,63 +11,108 @@ const SubscriptionType = require('../model/subscription-type')
 
 const Promise = require('bluebird')
 
-const add = (newTraining, auth) => {
+const checkAdmin = (training, auth) => {
     if (!auth.isAdmin) {
         return Promise.reject(errors.unauthorized)
     }
 
-    if (moment(newTraining.from).add({ minutes: 5 }).isAfter(newTraining.to)) {
-        return Promise.reject(errors.trainingTooShort)
-    }
+    return Promise.resolve(training)
+}
 
-    if (!moment(newTraining.from).isSame(newTraining.to, 'day')) {
-        return Promise.reject(errors.trainingTooLong)
-    }
-
-    const coach = User.findAll({
+const checkCoach = (training) => {
+    return User.findAll({
         where: {
             $and: [{
-                id: newTraining.coach_id
+                id: training.coach_id
             }, {
                 role: roles.coach
             }]
         }
+    }).then((coach) => {
+
+        if (coach.length !== 1) {
+            return Promise.reject(errors.invalidCoach)
+        }
+
+        return Promise.resolve(training)
     })
+}
+
+const calculateDates = (training) => {
+
+    if (moment(training.from).add({ minutes: 5 }).isAfter(training.to)) {
+        return Promise.reject(errors.trainingTooShort)
+    }
+
+    if (!moment(training.from).isSame(training.to, 'day')) {
+        return Promise.reject(errors.trainingTooLong)
+    }
+
+    var dates = []
+    var currentFrom = moment(training.from)
+    var currentTo = moment(training.to)
+    var interval = training.interval ? moment(training.interval) : moment(currentTo)
+
+    while (currentTo.isBefore(interval) || currentTo.isSame(interval, 'minute')) {
+        dates.push({from: currentFrom.format(), to: currentTo.format()})
+        currentFrom.add({ days: 7 })
+        currentTo.add({ days: 7 })
+    }
+
+    return Promise.resolve(dates)
+}
+
+const addTraining = (training) => {
 
     const collidingTrainings = Training.findAll({
         where: {
             $and: [{
-                location_id: newTraining.location_id
+                location_id: training.location_id
             }, {
                 $or: [
-                    { from: { $and: [ { $gt: newTraining.from }, { $lte: newTraining.to } ] } },
-                    { to: { $and: [ { $gte: newTraining.from }, { $lt: newTraining.to } ] } }
+                    { from: { $and: [ { $gt: training.from }, { $lt: training.to } ] } },
+                    { to: { $and: [ { $gt: training.from }, { $lt: training.to } ] } },
+                    {
+                        $and: [
+                            { from: { $eq: training.from} },
+                            { to: { $eq: training.to } }
+                        ]
+                    }
                 ]
             }]
         }
     })
 
-    const subscriptionTypes = SubscriptionType.findAll()
-
-    return Promise.all([coach, collidingTrainings, subscriptionTypes]).spread((coach, collidingTrainings, subscriptionTypes) => {
-
-        if(coach.length !== 1) {
-            return Promise.reject(errors.invalidCoach)
-        }
+    return collidingTrainings.then((collidingTrainings) => {
 
         if (collidingTrainings.length) {
             return Promise.reject(errors.trainingTimeCollide)
         }
 
-        return Training.create(newTraining)
-            .then((training) => {
-                return training.addSubscriptionTypes(newTraining.subscription_type_ids)
+        return Training.create(training)
+            .then((createdTraining) => {
+                return createdTraining.addSubscriptionTypes(training.subscription_type_ids)
             })
             .catch((error) => {
                 return Promise.reject(errors.missingOrInvalidParameters)
             })
     })
 
+}
+
+const addTrainings = (training, dates) => {
+    const trainings = R.map((date) => addTraining(R.merge(training, date)), dates)
+
+    return Promise.all(trainings)
+}
+
+const add = (training, auth) => {
+
+    return checkAdmin(training, auth)
+        .then(checkCoach)
+        .then(calculateDates)
+        .then((dates) => addTrainings(training, dates))
+        .then(() => Promise.resolve(texts.successfulTrainingCreation))
 }
 
 module.exports = {

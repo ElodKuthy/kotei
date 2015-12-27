@@ -10,7 +10,8 @@ const texts = {
     trainingTimeCollide: 'A megadott időpont ütközik egy másik edzéssel',
     invalidCoach: 'Érvénytelen edző',
     trainingTooShort: 'Az edzésnek legalább öt perc hosszúnak kell lennie',
-    trainingTooLong: 'Az edzésnek ugyanaznap kell befejeződnie, mint amikor kezdődik'
+    trainingTooLong: 'Az edzésnek ugyanaznap kell befejeződnie, mint amikor kezdődik',
+    successfulTrainingCreation: 'Az edéseket sikeresen létrehoztuk'
 }
 
 module.exports = texts

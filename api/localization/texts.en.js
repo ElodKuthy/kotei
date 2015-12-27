@@ -10,7 +10,8 @@ const texts = {
     trainingTimeCollide: 'The given time period collide with another training',
     invalidCoach: 'Invalid coach',
     trainingTooShort: 'Training should be at least five minutes long',
-    trainingTooLong: 'Training should be start and end on the same day'
+    trainingTooLong: 'Training should be start and end on the same day',
+    successfulTrainingCreation: 'Trainings were created successfully'
 }
 
 module.exports = texts

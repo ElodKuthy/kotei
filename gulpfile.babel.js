@@ -30,6 +30,7 @@ gulp.task('vendor', () => {
     return gulp.src([
             //'./bower_components/jquery/dist/jquery.js',
             //'./bower_components/bootstrap-sass/assets/javascripts/bootstrap.js',
+            './bower_components/moment/moment.js',
             './bower_components/angular/angular.js',
             './bower_components/angular-i18n/angular-locale_hu-hu.js',
             './bower_components/angular-route/angular-route.js',
@@ -37,7 +38,8 @@ gulp.task('vendor', () => {
             './bower_components/angular-ui-router/release/angular-ui-router.js',
             './bower_components/angular-jwt/dist/angular-jwt.js',
             './bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
-            './bower_components/bootstrap-ui-datetime-picker/dist/datetime-picker.js'
+            './bower_components/bootstrap-ui-datetime-picker/dist/datetime-picker.js',
+            './bower_components/angular-momentjs/angular-momentjs.js'
         ])
         .pipe(concat('vendor.js'))
         .pipe(gulp.dest('./public/'))
