@@ -1,0 +1,51 @@
+<div class="training-administation container">
+    <h3>{{trainingAdministration.title}}</h3>
+    <form name="trainingForm" novalidate>
+        <div class="alert alert-danger" ng-if="trainingAdministration.error">
+            {{trainingAdministration.error}}
+        </div>
+        <div ng-class="{ 'has-error': (trainingForm.name.$invalid && trainingForm.name.$touched) }">
+            <label for="name">Edzés neve</label>
+            <input id="name" name="name" type="text" class="form-control" ng-model="trainingAdministration.training.name" required>
+            <div ng-messages="trainingForm.name.$error" ng-if="trainingForm.name.$touched">
+                <div class="help-block" ng-message="required">Kötelező megadni</div>
+            </div>
+        </div>
+        <div ng-class="{ 'has-error': (!trainingAdministration.training.coach && trainingForm.coach.$touched) }">
+            <label for="coach">Edző</label>
+            <input id="coach" name="coach" type="text" ng-model="trainingAdministration.training.coach" uib-typeahead="coach as coach.nickname for coach in trainingAdministration.coaches | filter: { nickname: $viewValue }" typeahead-editable="false" class="form-control">
+            <div class="help-block" ng-show="trainingForm.coach.$touched && !trainingAdministration.training.coach">Nincs ilyen nevű edző</div>
+        </div>
+        <div ng-class="{ 'has-error': (trainingForm.max.$invalid && trainingForm.max.$touched) }">
+            <label for="max">Max létszám</label>
+            <input id="max" name="max" type="number" class="form-control" ng-model="trainingAdministration.training.max" required min="1">
+            <div ng-messages="trainingForm.max.$error" ng-if="trainingForm.max.$touched">
+                <div class="help-block" ng-message="required">Kötelező megadni</div>
+                <div class="help-block" ng-message="min">Csak pozitív szám lehet</div>
+            </div>
+        </div>
+        <div ng-class="{ 'has-error': (!trainingAdministration.training.location && trainingForm.location.$touched) }">
+            <label for="location">Terem</label>
+            <input id="location" name="location" type="text" ng-model="trainingAdministration.training.location" uib-typeahead="location as location.name for location in trainingAdministration.locations | filter: { name: $viewValue }" typeahead-editable="false" class="form-control">
+            <div class="help-block" ng-show="trainingForm.location.$touched && !trainingAdministration.training.location">Nincs ilyen nevű terem</div>
+        </div>
+        <div>
+            <label>Bérlettípusok</label>
+            <div class="checkbox" ng-repeat="subscriptionType in trainingAdministration.subscriptionTypes">
+                <label>
+                    <input type="checkbox" ng-model="trainingAdministration.training.selectedSubscriptionTypes[subscriptionType.id]">
+                    {{ subscriptionType.name }}
+                </label>
+            </div>
+        </div>
+        <div>
+            <label for="fromCalendar">Kezdés</label>
+            <ko-calendar id="from" model="trainingAdministration.training.from" format="yyyy. MMM d. HH:mm" minDate="trainingAdministration.minDate" maxDate="trainingAdministration.maxDate"></ko-calendar>
+        </div>
+        <div>
+            <label for="toCalendar">Befejezés</label>
+            <ko-calendar id="to" model="trainingAdministration.training.to" format="yyyy. MMM d. HH:mm" minDate="trainingAdministration.minDate" maxDate="trainingAdministration.maxDate"></ko-calendar>
+        </div>
+        <button type="submit" class="btn btn-primary pull-right" ng-click="trainingAdministration.submit()" ng-disabled="trainingForm.$pristine || trainingForm.$invalid || !trainingAdministration.training.coach || !trainingAdministration.training.location">Mentés</button>
+    </form>
+</div>

@@ -39,6 +39,6 @@
                 ng-options="role.name for role in userAdministration.roles">
             </select>
         </div>
-        <button type="submit" class="btn btn-primary pull-right" ng-click="userAdministration.submit()" ng-disabled="userAdministration.$pristine || userAdministration.$invalid">Mentés</button>
+        <button type="submit" class="btn btn-primary pull-right" ng-click="userAdministration.submit()" ng-disabled="userForm.$pristine || userForm.$invalid">Mentés</button>
     </form>
 </div>

@@ -1,4 +1,5 @@
 const errors = require('../common/errors')
+const parser = require('../common/parser')
 
 const SubscriptionType = require('../model/Subscription-type')
 
@@ -9,10 +10,9 @@ const findSubscriptionType = (query, auth) => {
         return Promise.reject(errors.unauthorized)
     }
 
-    return SubscriptionType.findAll({
-        attributes: ['id', 'name'],
-        where: query
-    }).catch((error) => Promise.reject(errors.missingOrInvalidParameters))
+    return SubscriptionType.findAll(parser.parseQuery({
+        attributes: ['id', 'name']
+    }, query)).catch((error) => Promise.reject(errors.missingOrInvalidParameters))
 }
 
 module.exports = {

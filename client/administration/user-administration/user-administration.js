@@ -17,7 +17,7 @@ angular.module('kotei')
                 roles: ['coach', 'admin']
         })
     })
-    .controller('UserAdministrationController', function ($q, $state, userInfoService, modalService, userAdministrationService) {
+    .controller('UserAdministrationController', function ($q, $state, userInfoService, modalService, administrationService) {
 
         const userInfo = userInfoService.getUserInfo()
 
@@ -46,7 +46,7 @@ angular.module('kotei')
             this.user.role = this.role.value
 
             checkAdminRole().then(() => {
-                userAdministrationService.addNewUser(this.user)
+                administrationService.addNewUser(this.user)
                     .then((result) => {
                         modalService.info(this.title, result).then($state.go('welcome'))
                     })

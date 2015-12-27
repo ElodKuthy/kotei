@@ -4,6 +4,7 @@ const roles  = require('../common/roles')
 const errors = require('../common/errors')
 const localization = require('../localization/name')
 const texts = require('../localization/texts')
+const parser = require('../common/parser')
 
 const User = require('../model/user')
 const Password = require('../model/password')
@@ -17,10 +18,9 @@ const find = (query, auth) => {
         return Promise.reject(errors.unauthorized)
     }
 
-    return User.findAll({
-        attributes: ['id', 'familyName', 'givenName', 'nickname', 'email', 'role'],
-        where: query
-    }).catch((error) => Promise.reject(errors.missingOrInvalidParameters))
+    return User.findAll(parser.parseQuery({
+        attributes: ['id', 'familyName', 'givenName', 'nickname', 'email', 'role']
+    }, query)).catch((error) => Promise.reject(errors.missingOrInvalidParameters))
 }
 
 const add = (newUser, auth) => {

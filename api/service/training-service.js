@@ -38,8 +38,8 @@ const add = (newTraining, auth) => {
                 location_id: newTraining.location_id
             }, {
                 $or: [
-                    { from: { $and: [ { $gte: newTraining.from }, { $lt: newTraining.to } ] } },
-                    { to: { $and: [ { $gt: newTraining.from }, { $lte: newTraining.to} ] } }
+                    { from: { $and: [ { $gt: newTraining.from }, { $lte: newTraining.to } ] } },
+                    { to: { $and: [ { $gte: newTraining.from }, { $lt: newTraining.to } ] } }
                 ]
             }]
         }

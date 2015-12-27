@@ -5,6 +5,7 @@ angular.module('kotei', [
         'ui.router',
         'angular-jwt',
         'ui.bootstrap',
+        'ui.bootstrap.datetimepicker',
         'templates'
     ])
     .config(($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, jwtInterceptorProvider) => {
