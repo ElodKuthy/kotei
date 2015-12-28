@@ -1,19 +1,14 @@
 const Sequelize = require('sequelize')
 const database = require('./database')
+const SubscriptionType = require('./subscription-type')
 
-const Subscription = database.define('subscription', {
-    from: {
-        type: Sequelize.DATE,
+const SubscriptionVariant = database.define('subscription_variant', {
+    valid: {
+        type: Sequelize.INTEGER,
         allowNull: false,
         validate: {
-            isDate: true
-        }
-    },
-    to: {
-        type: Sequelize.DATE,
-        allowNull: false,
-        validate: {
-            isDate: true
+            isInt: true,
+            min: 1
         }
     },
     amount: {
@@ -34,5 +29,11 @@ const Subscription = database.define('subscription', {
     }
 })
 
+SubscriptionType.hasMany(SubscriptionVariant, {
+    foreignKey: {
+        allowNull: false
+    },
+    as: 'SubscriptionVariants'
+})
 
-module.exports = Subscription
+module.exports = SubscriptionVariant

@@ -20,12 +20,6 @@ SubscriptionType.hasMany(Subscription, {
     },
     as: 'Subscriptions'
 })
-Subscription.belongsTo(SubscriptionType, {
-    foreignKey: {
-        allowNull: false
-    },
-    as: 'Type'
-})
 
 Training.belongsToMany(SubscriptionType, {
     through: 'allowed_subscriptions',

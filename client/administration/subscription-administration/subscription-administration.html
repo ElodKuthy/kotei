@@ -1,0 +1,55 @@
+<div class="subscription-administation container">
+    <h3>{{subscriptionAdministration.title}}</h3>
+    <form name="subscriptionForm" novalidate>
+        <div class="alert alert-danger" ng-if="subscriptionAdministration.error">
+            {{subscriptionAdministration.error}}
+        </div>
+        <div ng-class="{ 'has-error': (subscriptionForm.name.$invalid && subscriptionForm.name.$touched) }">
+            <label for="name">Edzés neve</label>
+            <input id="name" name="name" type="text" class="form-control" ng-model="subscriptionAdministration.subscription.name" required>
+            <div ng-messages="subscriptionForm.name.$error" ng-if="subscriptionForm.name.$touched">
+                <div class="help-block" ng-message="required">Kötelező megadni</div>
+            </div>
+        </div>
+        <div ng-class="{ 'has-error': (!subscriptionAdministration.subscription.coach && subscriptionForm.coach.$touched) }">
+            <label for="coach">Edző</label>
+            <input id="coach" name="coach" type="text" ng-model="subscriptionAdministration.subscription.coach" uib-typeahead="coach as coach.nickname for coach in subscriptionAdministration.coaches | filter: { nickname: $viewValue }" typeahead-editable="false" class="form-control">
+            <div class="help-block" ng-show="subscriptionForm.coach.$touched && !subscriptionAdministration.subscription.coach">Nincs ilyen nevű edző</div>
+        </div>
+        <div ng-class="{ 'has-error': (subscriptionForm.max.$invalid && subscriptionForm.max.$touched) }">
+            <label for="max">Max létszám</label>
+            <input id="max" name="max" type="number" class="form-control" ng-model="subscriptionAdministration.subscription.max" required min="1">
+            <div ng-messages="subscriptionForm.max.$error" ng-if="subscriptionForm.max.$touched">
+                <div class="help-block" ng-message="required">Kötelező megadni</div>
+                <div class="help-block" ng-message="min">Csak pozitív szám lehet</div>
+            </div>
+        </div>
+        <div ng-class="{ 'has-error': (!subscriptionAdministration.subscription.location && subscriptionForm.location.$touched) }">
+            <label for="location">Terem</label>
+            <input id="location" name="location" type="text" ng-model="subscriptionAdministration.subscription.location" uib-typeahead="location as location.name for location in subscriptionAdministration.locations | filter: { name: $viewValue }" typeahead-editable="false" class="form-control">
+            <div class="help-block" ng-show="subscriptionForm.location.$touched && !subscriptionAdministration.subscription.location">Nincs ilyen nevű terem</div>
+        </div>
+        <div>
+            <label for="fromCalendar">Kezdés</label>
+            <ko-calendar id="from" model="subscriptionAdministration.subscription.from" format="yyyy. MMM d. HH:mm" minDate="subscriptionAdministration.minDate" maxDate="subscriptionAdministration.maxDate"></ko-calendar>
+        </div>
+        <div>
+            <label for="toCalendar">Befejezés</label>
+            <ko-calendar id="to" model="subscriptionAdministration.subscription.to" format="yyyy. MMM d. HH:mm" minDate="subscriptionAdministration.minDate" maxDate="subscriptionAdministration.maxDate"></ko-calendar>
+        </div>
+        <div>
+            <label for="intervalCalendar">Eddig ismétlődik hetente</label>
+            <ko-calendar id="interval" model="subscriptionAdministration.subscription.interval" format="yyyy. MMM d. HH:mm" minDate="subscriptionAdministration.minDate" maxDate="subscriptionAdministration.maxDate"></ko-calendar>
+        </div>
+        <div>
+            <label>Bérlettípusok</label>
+            <div class="checkbox" ng-repeat="subscriptionType in subscriptionAdministration.subscriptionTypes">
+                <label>
+                    <input type="checkbox" ng-model="subscriptionAdministration.subscription.selectedSubscriptionTypes[subscriptionType.id]">
+                    {{ subscriptionType.name }}
+                </label>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary pull-right" ng-click="subscriptionAdministration.submit()" ng-disabled="subscriptionForm.$pristine || subscriptionForm.$invalid || !subscriptionAdministration.subscription.coach || !subscriptionAdministration.subscription.location">Mentés</button>
+    </form>
+</div>

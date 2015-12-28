@@ -11,7 +11,10 @@ const texts = {
     invalidCoach: 'Invalid coach',
     trainingTooShort: 'Training should be at least five minutes long',
     trainingTooLong: 'Training should be start and end on the same day',
-    successfulTrainingCreation: 'Trainings were created successfully'
+    successfulTrainingCreation: 'Trainings were created successfully',
+    trainingEnded: 'This training has been already ended',
+    trainingFull: 'This training is full',
+    alreadySignedUp: 'Attendee already signed up'
 }
 
 module.exports = texts

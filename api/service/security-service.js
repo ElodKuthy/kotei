@@ -11,6 +11,7 @@ const cert = fs.readFileSync('certs/jwt-test-private.pem')
 
 const userInfo = (user) => {
     return {
+        id: user.id,
         name: user.fullName,
         nickname: user.nickname,
         email: user.email,

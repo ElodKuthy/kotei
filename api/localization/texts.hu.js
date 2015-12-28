@@ -11,7 +11,10 @@ const texts = {
     invalidCoach: 'Érvénytelen edző',
     trainingTooShort: 'Az edzésnek legalább öt perc hosszúnak kell lennie',
     trainingTooLong: 'Az edzésnek ugyanaznap kell befejeződnie, mint amikor kezdődik',
-    successfulTrainingCreation: 'Az edéseket sikeresen létrehoztuk'
+    successfulTrainingCreation: 'Az edéseket sikeresen létrehoztuk',
+    trainingEnded: 'Ez az óra már véget ért',
+    trainingFull: 'Ez az óra már megtelt',
+    alreadySignedUp: 'A jelentkező már feliratkozott erre az órára'
 }
 
 module.exports = texts

@@ -9,6 +9,7 @@ const userService = require('./service/user-service')
 const subscriptionService = require('./service/subscription-service')
 const locationService = require('./service/location-service')
 const trainingService = require('./service/training-service')
+const attendeeService = require('./service/attendee-service')
 
 const cert = fs.readFileSync('certs/jwt-test-public.pem')
 
@@ -60,8 +61,11 @@ router.get('/user', handler(userService.find, { query: 'query' }))
 router.post('/user', handler(userService.add, { body: 'newUser' }))
 
 router.get('/subscription/type', handler(subscriptionService.findSubscriptionType, { query: 'query' }))
+router.post('/subscription', handler(subscriptionService.add, { body: 'newSubscription' }))
 
 router.post('/training', handler(trainingService.add, { body: 'newTraining' }))
+
+router.post('/attendee', handler(attendeeService.add, { body: ['training_id', 'client_id'] }))
 
 router.get('/location', handler(locationService.find, { query: 'query' }))
 

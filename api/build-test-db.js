@@ -8,6 +8,7 @@ const Training = require('./model/training')
 const Subscription = require('./model/subscription')
 const Attendee = require('./model/attendee')
 const SubscriptionType = require('./model/subscription-type')
+const SubscriptionVariant = require('./model/subscription-variant')
 
 database.sync({ force: true })
     .then(() => {

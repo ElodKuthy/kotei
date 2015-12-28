@@ -19,7 +19,10 @@ const errors = {
     trainingTimeCollide: envelope(texts.trainingTimeCollide, 409),
     invalidCoach: envelope(texts.invalidCoach, 409),
     trainingTooShort: envelope(texts.trainingTooShort, 409),
-    trainingTooLong: envelope(texts.trainingTooLong, 409)
+    trainingTooLong: envelope(texts.trainingTooLong, 409),
+    trainingEnded: envelope(texts.trainingEnded, 409),
+    trainingFull: envelope(texts.trainingFull, 409),
+    alreadySignedUp: envelope(texts.alreadySignedUp, 409)
 }
 
 module.exports = errors
