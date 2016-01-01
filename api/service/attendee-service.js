@@ -95,10 +95,8 @@ const add = (training_id, client_id, auth) => {
                 return Promise.reject(errors.unauthorized)
             }
 
-            if (!auth.isAdmin) {
-                if (moment.isAfter(training.to)) {
-                    return Promise.reject(errors.trainingEnded)
-                }
+            if (!auth.isAdmin && moment().isAfter(training.to)) {
+                return Promise.reject(errors.trainingEnded)
             }
 
             return checkAttendees(training, client)
