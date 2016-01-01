@@ -29,6 +29,7 @@
     "angular-i18n": "1.4.8",
     "bootstrap-ui-datetime-picker": "~2.0.4",
     "moment": "2.10.6",
-    "angular-momentjs": "0.2.2"
+    "angular-momentjs": "0.2.2",
+    "angular-filter": "0.5.8"
   }
 }

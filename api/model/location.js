@@ -2,7 +2,7 @@ const Sequelize = require('sequelize')
 const database = require('./database')
 const Training = require('./training')
 
-const Location = database.define('location', {
+const Location = database.define('Location', {
     name: {
         type: Sequelize.STRING,
         allowNull: false,

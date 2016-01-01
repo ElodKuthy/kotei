@@ -15,55 +15,88 @@ angular.module('kotei')
                     }
                 },
                 resolve: {
+                    clients: (infoService) => {
+                        return infoService.getAllClients()
+                    },
                     coaches: (infoService) => {
                         return infoService.getAllCoaches()
-                    },
-                    locations: (infoService) => {
-                        return infoService.getAllLocations()
                     },
                     subscriptionTypes: (infoService) => {
                         return infoService.getAllSubscriptionTypes()
                     }
                 },
-                roles: ['admin']
+                roles: ['coach', 'admin']
         })
     })
-    .controller('SubscriptionAdministrationController', function ($moment, coaches, locations, subscriptionTypes, modalService, administrationService) {
+    .controller('SubscriptionAdministrationController', function ($moment, userInfoService, clients, coaches, subscriptionTypes, infoService, modalService, administrationService) {
 
-        this.title = 'Új edzésalkalom létrehozása'
+        this.title = 'Bérletvásárlás'
 
+        this.userInfo = userInfoService.getUserInfo()
+        this.isAdmin = this.userInfo.isAdmin
+
+        if (!this.isAdmin) {
+            this.coach = this.userInfo
+        }
+
+        this.clients = clients
         this.coaches = coaches
-        this.locations = locations
         this.subscriptionTypes = subscriptionTypes
+        this.type = this.subscriptionTypes[0]
+
+        this.coachDictionary = {}
+        coaches.forEach((coach) => this.coachDictionary[coach.id] = coach.nickname)
+
+        this.from = $moment().startOf('day').toDate()
+
+        const decorateTrainings = (trainings) => {
+            trainings.forEach((training) => {
+                training.date = $moment(training.from).toDate()
+                training.coach = this.coachDictionary[training.coach_id]
+            })
+            return trainings
+        }
+
+        this.typeChanged = () => {
+            this.variants = null
+            this.trainings = null
+            this.amount = null
+            infoService.getSubscriptionVariants(this.type.id)
+                .then((variants) => this.variants = variants)
+            infoService.getTrainingsByDateAndAllowedType($moment('2016-01-04').startOf('week').format(), $moment('2016-01-04').endOf('week').format(), this.type.id)
+                .then((trainings) => this.trainings = decorateTrainings(trainings))
+        }
+
+        this.typeChanged()
+
+        this.clickTraining = (training) => {
+            training.selected = !training.selected
+        }
+
 
         this.submit = () => {
             delete this.error
 
-            var subscriptionTypeIds = []
+            var defaultTrainingDates = []
 
-            for (var property in this.subscription.selectedSubscriptionTypes) {
-                if (this.subscription.selectedSubscriptionTypes.hasOwnProperty(property)) {
-                    subscriptionTypeIds.push(property)
+            this.trainings.forEach((training) => {
+                if (training.selected) {
+                    defaultTrainingDates.push(training.from)
                 }
+            })
+
+            var subscription = {
+                from: $moment(this.from).startOf('day').format(),
+                to: $moment(this.from).startOf('day').add({ days: this.valid.valid }).format(),
+                amount: this.amount.amount,
+                price: this.amount.price,
+                client_id: this.client.id,
+                coach_id: this.coach.id,
+                subscription_type_id: this.type.id,
+                defaultTrainingDates: defaultTrainingDates
             }
 
-            const newTraining = {
-                name: this.subscription.name,
-                from: this.subscription.from,
-                to: this.subscription.to,
-                max: this.subscription.max,
-                coach_id: this.subscription.coach.id,
-                location_id: this.subscription.location.id,
-                subscription_type_ids: subscriptionTypeIds,
-                interval: this.subscription.interval && $moment(this.subscription.interval).isAfter(this.subscription.to) ? this.subscription.interval : null
-            }
-
-            administrationService.addNewTraining(newTraining)
-                    .then((result) => {
-                        modalService.info(this.title, result)//.then($state.go('welcome'))
-                    })
-                    .catch((error) => {
-                        this.error = error
-                    })
+            console.log(subscription)
+            //return administrationService.addNewSubscription(subscription).then(() => modalService.info(this.title, 'Sikeres bérletvásárlás'))
         }
     })

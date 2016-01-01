@@ -8,6 +8,7 @@ const roles = require('../common/roles')
 const User = require('../model/user')
 const Subscription = require('../model/subscription')
 const SubscriptionType = require('../model/subscription-type')
+const SubscriptionVariant = require('../model/subscription-variant')
 const Training = require('../model/training')
 
 const attendeeService = require('./attendee-service')
@@ -21,6 +22,16 @@ const findSubscriptionType = (query, auth) => {
 
     return SubscriptionType.findAll(parser.parseQuery({
         attributes: ['id', 'name']
+    }, query)).catch((error) => Promise.reject(errors.missingOrInvalidParameters))
+}
+
+const findSubscriptionVariant = (query, auth) => {
+    if (!auth.isCoach && !auth.isAdmin) {
+        return Promise.reject(errors.unauthorized)
+    }
+
+    return SubscriptionVariant.findAll(parser.parseQuery({
+        attributes: ['id', 'valid', 'amount', 'price', 'subscription_type_id']
     }, query)).catch((error) => Promise.reject(errors.missingOrInvalidParameters))
 }
 
@@ -130,5 +141,6 @@ const add = (subscription, auth) => {
 
 module.exports = {
     findSubscriptionType: findSubscriptionType,
+    findSubscriptionVariant: findSubscriptionVariant,
     add: add
 }

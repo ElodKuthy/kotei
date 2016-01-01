@@ -18,7 +18,7 @@ database.sync({ force: true })
             nickname: 'Admin',
             email: 'admin@kotei.hu',
             role: 'admin',
-            password: {
+            Password: {
                 token: uuid()
             }
         }, { include: [ Password ] })
@@ -29,7 +29,7 @@ database.sync({ force: true })
             nickname: 'Albert',
             email: 'albert@tkmuhely.hu',
             role: 'coach',
-            password: {
+            Password: {
                 token: uuid()
             }
         }, { include: [ Password ] })
@@ -40,7 +40,7 @@ database.sync({ force: true })
             email: 'kuthy.elod@gmail.com',
             nickname: 'Előd',
             role: 'client',
-            password: {
+            Password: {
                 token: uuid()
             }
         }, { include: [ Password ] })

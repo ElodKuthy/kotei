@@ -49,7 +49,7 @@ const add = (newUser, auth) => {
             nickname: newUser.nickname,
             email: newUser.email,
             role: newUser.role,
-            password: {
+            Password: {
                 token: uuid()
             }
         }, { include: [ Password ] })

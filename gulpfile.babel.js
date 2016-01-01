@@ -35,6 +35,7 @@ gulp.task('vendor', () => {
             './bower_components/angular-i18n/angular-locale_hu-hu.js',
             './bower_components/angular-route/angular-route.js',
             './bower_components/angular-messages/angular-messages.js',
+            './bower_components/angular-filter/dist/angular-filter.js',
             './bower_components/angular-ui-router/release/angular-ui-router.js',
             './bower_components/angular-jwt/dist/angular-jwt.js',
             './bower_components/angular-bootstrap/ui-bootstrap-tpls.js',

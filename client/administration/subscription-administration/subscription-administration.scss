@@ -9,4 +9,16 @@
     form > div {
         margin-bottom: 20px;
     }
+
+    table {
+        font-size: 14px;
+    }
+
+    td {
+        cursor: pointer;
+    }
+
+    tr.selected {
+        background-color: darkgreen;
+    }
 }

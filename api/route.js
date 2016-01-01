@@ -61,8 +61,10 @@ router.get('/user', handler(userService.find, { query: 'query' }))
 router.post('/user', handler(userService.add, { body: 'newUser' }))
 
 router.get('/subscription/type', handler(subscriptionService.findSubscriptionType, { query: 'query' }))
+router.get('/subscription/variant', handler(subscriptionService.findSubscriptionVariant, { query: 'query' }))
 router.post('/subscription', handler(subscriptionService.add, { body: 'newSubscription' }))
 
+router.get('/training', handler(trainingService.find, { query: 'query' }))
 router.post('/training', handler(trainingService.add, { body: 'newTraining' }))
 
 router.post('/attendee', handler(attendeeService.add, { body: ['training_id', 'client_id'] }))

@@ -3,11 +3,12 @@ const R = require('ramda')
 
 const errors = require('../common/errors')
 const texts = require('../localization/texts')
+const parser = require('../common/parser')
 
 const roles = require('../common/roles')
+const SubscriptionType = require('../model/subscription-type')
 const Training = require('../model/training')
 const User = require('../model/user')
-const SubscriptionType = require('../model/subscription-type')
 
 const Promise = require('bluebird')
 
@@ -115,6 +116,29 @@ const add = (training, auth) => {
         .then(() => Promise.resolve(texts.successfulTrainingCreation))
 }
 
+const find = (query, auth) => {
+    if (!auth.isCoach && !auth.isAdmin) {
+        return Promise.reject(errors.unauthorized)
+    }
+
+    if (query.subscription_type_id) {
+        return SubscriptionType.findOne({
+             where: {
+                 id: query.subscription_type_id
+             }
+        }).then((subscriptionType) => {
+             return subscriptionType.getTrainings(parser.parseQuery({
+                attributes: ['id', 'name', 'from', 'to', 'max', 'coach_id', 'location_id']
+             }, query))
+        }).catch((error) => Promise.reject(errors.missingOrInvalidParameters))
+    }
+
+    return Training.findAll(parser.parseQuery({
+        attributes: ['id', 'name', 'from', 'to', 'max', 'coach_id', 'location_id']
+    }, query)).catch((error) => Promise.reject(errors.missingOrInvalidParameters))
+}
+
 module.exports = {
-    add: add
+    add: add,
+    find: find
 }

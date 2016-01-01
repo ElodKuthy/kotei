@@ -2,7 +2,7 @@ const moment = require('moment')
 const Sequelize = require('sequelize')
 const database = require('./database')
 
-const Training = database.define('training', {
+const Training = database.define('Training', {
     name: {
         type: Sequelize.STRING,
         allowNull: false,

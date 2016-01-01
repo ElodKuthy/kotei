@@ -4,52 +4,66 @@
         <div class="alert alert-danger" ng-if="subscriptionAdministration.error">
             {{subscriptionAdministration.error}}
         </div>
-        <div ng-class="{ 'has-error': (subscriptionForm.name.$invalid && subscriptionForm.name.$touched) }">
-            <label for="name">Edzés neve</label>
-            <input id="name" name="name" type="text" class="form-control" ng-model="subscriptionAdministration.subscription.name" required>
-            <div ng-messages="subscriptionForm.name.$error" ng-if="subscriptionForm.name.$touched">
-                <div class="help-block" ng-message="required">Kötelező megadni</div>
-            </div>
+        <div ng-class="{ 'has-error': (!subscriptionAdministration.client && subscriptionForm.client.$touched) }">
+            <label for="client">Tanítvány</label>
+            <input id="client" name="client" type="text" ng-model="subscriptionAdministration.client" uib-typeahead="client as client.nickname for client in subscriptionAdministration.clients | filter: { nickname: $viewValue }" typeahead-editable="false" class="form-control">
+            <div class="help-block" ng-show="subscriptionForm.client.$touched && !subscriptionAdministration.client">Nincs ilyen nevű tanítvány</div>
         </div>
-        <div ng-class="{ 'has-error': (!subscriptionAdministration.subscription.coach && subscriptionForm.coach.$touched) }">
+        <div ng-if="subscriptionAdministration.isAdmin" ng-class="{ 'has-error': (!subscriptionAdministration.coach && trainingForm.coach.$touched) }">
             <label for="coach">Edző</label>
-            <input id="coach" name="coach" type="text" ng-model="subscriptionAdministration.subscription.coach" uib-typeahead="coach as coach.nickname for coach in subscriptionAdministration.coaches | filter: { nickname: $viewValue }" typeahead-editable="false" class="form-control">
-            <div class="help-block" ng-show="subscriptionForm.coach.$touched && !subscriptionAdministration.subscription.coach">Nincs ilyen nevű edző</div>
+            <input id="coach" name="coach" type="text" ng-model="subscriptionAdministration.coach" uib-typeahead="coach as coach.nickname for coach in subscriptionAdministration.coaches | filter: { nickname: $viewValue }" typeahead-editable="false" class="form-control">
+            <div class="help-block" ng-show="trainingForm.coach.$touched && !subscriptionAdministration.coach">Nincs ilyen nevű edző</div>
         </div>
-        <div ng-class="{ 'has-error': (subscriptionForm.max.$invalid && subscriptionForm.max.$touched) }">
-            <label for="max">Max létszám</label>
-            <input id="max" name="max" type="number" class="form-control" ng-model="subscriptionAdministration.subscription.max" required min="1">
-            <div ng-messages="subscriptionForm.max.$error" ng-if="subscriptionForm.max.$touched">
-                <div class="help-block" ng-message="required">Kötelező megadni</div>
-                <div class="help-block" ng-message="min">Csak pozitív szám lehet</div>
+        <div>
+            <label for="subscriptionType">Bérlettípus</label>
+            <select class="form-control" name="subscriptionType" id="subscriptionType" ng-init="subscriptionAdministration.type = subscriptionAdministration.subscriptionTypes[0]" ng-model="subscriptionAdministration.type" ng-options="type.name for type in subscriptionAdministration.subscriptionTypes" ng-change="subscriptionAdministration.typeChanged()">
+            </select>
+        </div>
+        <div ng-if="subscriptionAdministration.isAdmin">
+            <label for="fromCalendar">Érvényesség kezdete</label>
+            <ko-calendar id="from" model="subscriptionAdministration.from" format="yyyy. MMM dd." minDate="subscriptionAdministration.minDate" maxDate="subscriptionAdministration.maxDate" enable-time="false"></ko-calendar>
+        </div>
+        <div class="row">
+            <div class="col-xs-6">
+                <label>Érvényesség</label>
+                <div class="radio" ng-repeat="variant in subscriptionAdministration.variants | unique: 'valid'">
+                    <label>
+                        <input type="radio" ng-model="subscriptionAdministration.valid" ng-value="variant" ng-change="subscriptionAdministration.validChanged()">
+                        {{ variant.valid >= 7 ? variant.valid / 7 + ' hét' : variant.valid + ' nap' }}
+                    </label>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <label>Heti alkalom</label>
+                <div ng-if="subscriptionAdministration.valid" class="radio" ng-repeat="variant in subscriptionAdministration.variants | filter: { valid : subscriptionAdministration.valid.valid }">
+                    <label>
+                        <input type="radio" ng-model="subscriptionAdministration.amount" ng-value="variant" ng-change="subscriptionAdministration.amountChanged()">
+                        {{ variant.amount / (variant.valid >= 7 ? (variant.valid / 7) : 1) }} alkalom
+                    </label>
+                </div>
             </div>
         </div>
-        <div ng-class="{ 'has-error': (!subscriptionAdministration.subscription.location && subscriptionForm.location.$touched) }">
-            <label for="location">Terem</label>
-            <input id="location" name="location" type="text" ng-model="subscriptionAdministration.subscription.location" uib-typeahead="location as location.name for location in subscriptionAdministration.locations | filter: { name: $viewValue }" typeahead-editable="false" class="form-control">
-            <div class="help-block" ng-show="subscriptionForm.location.$touched && !subscriptionAdministration.subscription.location">Nincs ilyen nevű terem</div>
+        <div>
+            <label>Ár</label>
+            <div>{{ subscriptionAdministration.amount.price | currency : 'Ft': 0 }}</div>
         </div>
         <div>
-            <label for="fromCalendar">Kezdés</label>
-            <ko-calendar id="from" model="subscriptionAdministration.subscription.from" format="yyyy. MMM d. HH:mm" minDate="subscriptionAdministration.minDate" maxDate="subscriptionAdministration.maxDate"></ko-calendar>
+            <label>Alapértelmezett órák</label>
+            <table class="table table-bordered table-responsive">
+                <thead>
+                    <th>Óra</th>
+                    <th>Edző</th>
+                    <th>Időpont</th>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="training in subscriptionAdministration.trainings" ng-class="{ selected : training.selected }" ng-click="subscriptionAdministration.clickTraining(training)">
+                        <td>{{ training.name }}</td>
+                        <td>{{ training.coach }}</td>
+                        <td>{{ training.date | date : 'EEEE HH:mm' }}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <div>
-            <label for="toCalendar">Befejezés</label>
-            <ko-calendar id="to" model="subscriptionAdministration.subscription.to" format="yyyy. MMM d. HH:mm" minDate="subscriptionAdministration.minDate" maxDate="subscriptionAdministration.maxDate"></ko-calendar>
-        </div>
-        <div>
-            <label for="intervalCalendar">Eddig ismétlődik hetente</label>
-            <ko-calendar id="interval" model="subscriptionAdministration.subscription.interval" format="yyyy. MMM d. HH:mm" minDate="subscriptionAdministration.minDate" maxDate="subscriptionAdministration.maxDate"></ko-calendar>
-        </div>
-        <div>
-            <label>Bérlettípusok</label>
-            <div class="checkbox" ng-repeat="subscriptionType in subscriptionAdministration.subscriptionTypes">
-                <label>
-                    <input type="checkbox" ng-model="subscriptionAdministration.subscription.selectedSubscriptionTypes[subscriptionType.id]">
-                    {{ subscriptionType.name }}
-                </label>
-            </div>
-        </div>
-        <button type="submit" class="btn btn-primary pull-right" ng-click="subscriptionAdministration.submit()" ng-disabled="subscriptionForm.$pristine || subscriptionForm.$invalid || !subscriptionAdministration.subscription.coach || !subscriptionAdministration.subscription.location">Mentés</button>
+        <button type="submit" class="btn btn-primary pull-right" ng-click="subscriptionAdministration.submit()" >Mentés</button>
     </form>
 </div>

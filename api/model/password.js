@@ -3,7 +3,7 @@ const database = require('./database')
 const bcrypt = require('bcrypt')
 const uuid = require('node-uuid').v4
 
-const Password = database.define('password', {
+const Password = database.define('Password', {
     hash: {
         type: Sequelize.STRING
     },

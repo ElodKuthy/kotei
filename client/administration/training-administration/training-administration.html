@@ -31,15 +31,15 @@
         </div>
         <div>
             <label for="fromCalendar">Kezdés</label>
-            <ko-calendar id="from" model="trainingAdministration.training.from" format="yyyy. MMM d. HH:mm" minDate="trainingAdministration.minDate" maxDate="trainingAdministration.maxDate"></ko-calendar>
+            <ko-calendar id="from" model="trainingAdministration.training.from" format="yyyy. MMM d. HH:mm" minDate="trainingAdministration.minDate" maxDate="trainingAdministration.maxDate" enable-time="true"></ko-calendar>
         </div>
         <div>
             <label for="toCalendar">Befejezés</label>
-            <ko-calendar id="to" model="trainingAdministration.training.to" format="yyyy. MMM d. HH:mm" minDate="trainingAdministration.minDate" maxDate="trainingAdministration.maxDate"></ko-calendar>
+            <ko-calendar id="to" model="trainingAdministration.training.to" format="yyyy. MMM d. HH:mm" minDate="trainingAdministration.minDate" maxDate="trainingAdministration.maxDate" enable-time="true"></ko-calendar>
         </div>
         <div>
             <label for="intervalCalendar">Eddig ismétlődik hetente</label>
-            <ko-calendar id="interval" model="trainingAdministration.training.interval" format="yyyy. MMM d. HH:mm" minDate="trainingAdministration.minDate" maxDate="trainingAdministration.maxDate"></ko-calendar>
+            <ko-calendar id="interval" model="trainingAdministration.training.interval" format="yyyy. MMM d." minDate="trainingAdministration.minDate" maxDate="trainingAdministration.maxDate" enable-time="false"></ko-calendar>
         </div>
         <div>
             <label>Bérlettípusok</label>

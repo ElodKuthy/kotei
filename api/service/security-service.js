@@ -41,7 +41,7 @@ const login = (credential, userPassword) => {
 
         const user = results[0]
 
-        if (!user.password.checkPassword(userPassword)) {
+        if (!user.Password.checkPassword(userPassword)) {
             return Promise.reject(errors.invalidUserNameOrPassword)
         }
 
@@ -53,7 +53,7 @@ const forgot = (email) => {
 
     const user = User.findOne({ where: { email: email }, include: [ Password ]})
 
-    return user.then((result) => (result ? result.password.resetPassword() : Promise.reject(errors.invalidUserNameOrPassword)))
+    return user.then((result) => (result ? result.Password.resetPassword() : Promise.reject(errors.invalidUserNameOrPassword)))
         .then((token) => mailerService.sendResetPasswordToken(user.value(), token))
         .then(() => 'OK')
         .catch(() => 'OK')

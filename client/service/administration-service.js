@@ -14,6 +14,7 @@ angular.module('kotei')
 
         return {
             addNewUser: (user) => post('/api/user', user),
-            addNewTraining: (training) => post('/api/training', training)
+            addNewTraining: (training) => post('/api/training', training),
+            addNewSubscription: (subscription) => post('/api/subscription', subscription)
         }
     })

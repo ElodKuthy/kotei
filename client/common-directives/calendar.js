@@ -6,11 +6,11 @@ angular.module('kotei')
             bindToController: {
                 id:      '@',
                 date:    '=model',
-                minDate: '@',
-                maxDate: '@',
-                format:  '@'
+                minDate: '=',
+                maxDate: '=',
+                format:  '@',
+                enableTime: '='
             },
-            /* @ngInject */
             controller: function () {
 
                 this.dateOptions = {

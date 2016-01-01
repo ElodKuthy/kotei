@@ -5,7 +5,7 @@ const Trainig = require('./training')
 const Subscription = require('./subscription')
 const localization = require('../localization/name')
 
-const User = database.define('user', {
+const User = database.define('User', {
     familyName: {
         type: Sequelize.STRING,
         allowNull: false,

@@ -3,6 +3,7 @@ angular.module('templates', [])
 angular.module('kotei', [
         'ngMessages',
         'ui.router',
+        'angular.filter',
         'angular-jwt',
         'ui.bootstrap',
         'ui.bootstrap.datetimepicker',

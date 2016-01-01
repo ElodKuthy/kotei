@@ -3,7 +3,7 @@ const database = require('./database')
 const Training = require('./training')
 const Subscription = require('./subscription')
 
-const Attendee = database.define('attendee', {
+const Attendee = database.define('Attendee', {
     checkIn: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
