@@ -9,6 +9,8 @@ const roles = require('../common/roles')
 const SubscriptionType = require('../model/subscription-type')
 const Training = require('../model/training')
 const User = require('../model/user')
+const Location = require('../model/location')
+const Subscription = require('../model/subscription')
 
 const Promise = require('bluebird')
 
@@ -117,7 +119,7 @@ const add = (training, auth) => {
 }
 
 const find = (query, auth) => {
-    if (!auth.isCoach && !auth.isAdmin) {
+    if (!auth.isAuth) {
         return Promise.reject(errors.unauthorized)
     }
 
@@ -134,7 +136,25 @@ const find = (query, auth) => {
     }
 
     return Training.findAll(parser.parseQuery({
-        attributes: ['id', 'name', 'from', 'to', 'max', 'coach_id', 'location_id']
+        attributes: ['id', 'name', 'from', 'to', 'max'],
+        include: [{
+            attributes: ['id', 'familyName', 'givenName', 'nickname'],
+            model: User,
+            as: 'Coach'
+        }, {
+            attributes: ['id', 'name'],
+            model: Location,
+            as: 'Location'
+        }, {
+            attributes: ['id'],
+            model: Subscription,
+            as: 'Subscriptions',
+            include: [{
+                attributes: ['id', 'familyName', 'givenName', 'nickname'],
+                model: User,
+                as: 'Client'
+            }]
+        }]
     }, query)).catch((error) => Promise.reject(errors.missingOrInvalidParameters))
 }
 
