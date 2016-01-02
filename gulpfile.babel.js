@@ -31,6 +31,8 @@ gulp.task('vendor', () => {
             //'./bower_components/jquery/dist/jquery.js',
             //'./bower_components/bootstrap-sass/assets/javascripts/bootstrap.js',
             './bower_components/moment/moment.js',
+            './bower_components/ramda/dist/ramda.js',
+            './bower_components/chartist/dist/chartist.js',
             './bower_components/angular/angular.js',
             './bower_components/angular-i18n/angular-locale_hu-hu.js',
             './bower_components/angular-route/angular-route.js',

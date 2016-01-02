@@ -30,6 +30,8 @@
     "bootstrap-ui-datetime-picker": "~2.0.4",
     "moment": "2.10.6",
     "angular-momentjs": "0.2.2",
-    "angular-filter": "0.5.8"
+    "angular-filter": "0.5.8",
+    "ramda": "0.19.0",
+    "chartist": "0.9.5"
   }
 }

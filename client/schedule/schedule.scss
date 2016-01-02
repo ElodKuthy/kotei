@@ -1,0 +1,22 @@
+.schedule {
+
+    .training-container > div {
+        margin: 10px 0;
+    }
+
+    .coach {
+        text-align: right;
+    }
+
+    .time {
+        text-align: center;
+    }
+
+    .progress-bar {
+        min-width: 4em!important;
+    }
+
+    i {
+        padding-top: 3.5px;
+    }
+}

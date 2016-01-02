@@ -10,6 +10,8 @@ angular.module('kotei', [
         'angular-momentjs',
         'templates'
     ])
+    .constant('R', R)
+    .constant('Chartist', Chartist)
     .config(($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, jwtInterceptorProvider) => {
 
         $urlRouterProvider.otherwise('/')

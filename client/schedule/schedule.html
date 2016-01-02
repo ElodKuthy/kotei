@@ -1,0 +1,30 @@
+<div class="schedule container-fluid">
+    <div class="row" ng-repeat="location in schedule.locations">
+        <div class="col-xs-12">
+            <h3>{{location.name}}</h3>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="hour"></th>
+                            <th class="schedule-column" ng-repeat="day in schedule.days">{{day}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="row in location.trainings">
+                            <td>{{row.hour}}</td>
+                            <td class="schedule-cell" ng-repeat="cell in row.cells">
+                                <div class="training-container" ng-repeat="training in cell">
+                                    <div>{{training.name}}</div>
+                                    <div class="coach"><i class="fa fa-circle fa-lg pull-left" ng-class="{ 'hide': !training.involved, 'text-info': training.attended, 'text-success': training.participated, 'text-danger': training.missed }"></i>{{training.coach}}</div>
+                                    <div ng-if="training.hasMinutes" class="time">{{training.from}} - {{training.to}}</div>
+                                    <div><uib-progressbar class="progress" max="training.max" value="training.current"><i>{{training.current}} / {{training.max}}</i></uib-progressbar></div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
