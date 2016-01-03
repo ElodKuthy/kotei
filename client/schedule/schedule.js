@@ -22,7 +22,7 @@ angular.module('kotei')
                 roles: ['client', 'coach', 'admin']
         })
     })
-    .controller('ScheduleController', function (R, trainings, userInfoService) {
+    .controller('ScheduleController', function (R, $moment, trainings, userInfoService) {
 
         this.userInfo = userInfoService.getUserInfo()
 
@@ -41,10 +41,10 @@ angular.module('kotei')
                 this.locations.push(location)
             }
 
-            var from = moment(training.from)
-            var to = moment(training.to)
+            var from = $moment(training.from)
+            var to = $moment(training.to)
 
-            var hour = from.minutes() > 30 ? moment(from).add({ hour: 1 }).format('HH:00') : from.format('HH:00')
+            var hour = from.minutes() > 30 ? $moment(from).add({ hour: 1 }).format('HH:00') : from.format('HH:00')
             var row = R.find((current) => current.hour === hour, location.trainings)
             if (!row) {
                 row = { hour: hour, cells: [[], [], [], [], []] }
@@ -64,9 +64,9 @@ angular.module('kotei')
                 to: to.format('HH:mm'),
                 hasMinutes: from.minutes() || to.minutes(),
                 involved: involved,
-                attended: involved && moment().isBefore(from),
-                participated: involved && moment().isAfter(from) && userSubscription.Attendee.checkIn,
-                missed: involved && moment().isAfter(from) && !userSubscription.Attendee.checkIn
+                attended: involved && $moment().isBefore(from),
+                participated: involved && $moment().isAfter(from) && userSubscription.Attendee.checkIn,
+                missed: involved && $moment().isAfter(from) && !userSubscription.Attendee.checkIn
             })
         })
     })

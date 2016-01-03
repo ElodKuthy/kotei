@@ -14,7 +14,10 @@ const texts = {
     successfulTrainingCreation: 'Trainings were created successfully',
     trainingEnded: 'This training has been already ended',
     trainingFull: 'This training is full',
-    alreadySignedUp: 'Attendee already signed up'
+    alreadySignedUp: 'Attendee already signed up',
+    tooLateToLeave: 'Too late to leave this training',
+    notAttendee: 'This training has not been attended',
+    noCredit: 'Client has no credit'
 }
 
 module.exports = texts

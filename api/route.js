@@ -39,7 +39,7 @@ const handler = R.curry((fn, props, req, res, next) => {
     const bodyArgs = parseProps(props.body, req.body)
     const queryArgs = parseProps(props.query, req.query)
 
-    const args = R.concat(R.concat(R.concat(urlArgs, bodyArgs), queryArgs), roles.decorate(req.user))
+    const args = R.concat(R.concat(R.concat(urlArgs, queryArgs), bodyArgs), roles.decorate(req.user))
 
     const result = R.apply(fn, args)
 
@@ -67,7 +67,9 @@ router.post('/subscription', handler(subscriptionService.add, { body: 'newSubscr
 router.get('/training', handler(trainingService.find, { query: 'query' }))
 router.post('/training', handler(trainingService.add, { body: 'newTraining' }))
 
-router.post('/attendee', handler(attendeeService.add, { body: ['training_id', 'client_id'] }))
+router.post('/attendee', handler(attendeeService.add, { query: ['training_id', 'client_id'] }))
+router.delete('/attendee', handler(attendeeService.remove, { query: ['training_id', 'client_id'] }))
+router.put('/attendee', handler(attendeeService.update, { query: ['training_id', 'client_id'], body: ['checkIn'] }))
 
 router.get('/location', handler(locationService.find, { query: 'query' }))
 

@@ -14,7 +14,10 @@ const texts = {
     successfulTrainingCreation: 'Az edéseket sikeresen létrehoztuk',
     trainingEnded: 'Ez az óra már véget ért',
     trainingFull: 'Ez az óra már megtelt',
-    alreadySignedUp: 'A jelentkező már feliratkozott erre az órára'
+    alreadySignedUp: 'A jelentkező már feliratkozott erre az órára',
+    tooLateToLeave: 'Erről az óráról már túl késő lejelentkezni',
+    notAttendee: 'Erre az órára nincs feliratkozva',
+    noCredit: 'Nincs szabad alkalma'
 }
 
 module.exports = texts

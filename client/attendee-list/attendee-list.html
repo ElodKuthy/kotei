@@ -1,0 +1,22 @@
+<div class="attendee-list container">
+    <div class="error text-danger" ng-show="attendeeList.error">{{attendeeList.error}}</div>
+    <ul class="list">
+        <li class="list-header">
+            <div>{{attendeeList.training.name}} - {{attendeeList.training.date | date: 'EEEE HH:mm'}} - {{attendeeList.training.location}}</div>
+            <div>Edző: {{attendeeList.training.coach}}</div>
+         </li>
+        <li class="list-item" ng-repeat="attendee in attendeeList.attendees" ng-click="attendeeList.toggleAttendee(attendee)"><i class="fa fa-circle" ng-class="attendee.cssClass"></i>{{$index + 1}}. {{attendee.name}}<i ng-if="attendeeList.canModify" class="fa fa-times pull-right" ng-click="$event.stopPropagation();attendeeList.removeAttendee(attendee)"></i></li>
+        <li ng-if="attendeeList.canAdd" class="list-item">
+            <div class="input-group">
+                <input id="addClient" name="addClient" type="text" ng-model="attendeeList.clientToAdd" uib-typeahead="client as client.displayName for client in attendeeList.clients | filter: { displayName: $viewValue }" typeahead-editable="false" class="form-control" placeholder="Tanítvány hozzáadása" ng-keydown="attendeeList.addClientKeyDown($event)">
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" type="button" ng-click="attendeeList.addClient(attendeeList.clientToAdd)"><i class="fa fa-plus"></i></button>
+                </span>
+            </div>
+            <div class="add-client-error text-danger" ng-show="attendeeList.addClientError">{{attendeeList.addClientError}}</div>
+        </li>
+    </ul>
+    <div ng-if="attendeeList.canJoin" class="btn-container"><button type="button" class="btn btn-primary" ng-click="attendeeList.addClient(attendeeList.userInfo)">Csatlakozom</button></div>
+    <div ng-if="attendeeList.canLeave" class="btn-container"><button type="button" class="btn btn-primary" ng-click="attendeeList.removeAttendee(attendeeList.userInfo)">Kihagyom</button></div>
+    <div ng-if="attendeeList.canModify" class="btn-container"><button type="button" class="btn btn-primary" ng-click="attendeeList.modifyTraining()">Edzés módosítása</button></div>
+</div>

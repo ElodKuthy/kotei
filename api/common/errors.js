@@ -22,7 +22,10 @@ const errors = {
     trainingTooLong: envelope(texts.trainingTooLong, 409),
     trainingEnded: envelope(texts.trainingEnded, 409),
     trainingFull: envelope(texts.trainingFull, 409),
-    alreadySignedUp: envelope(texts.alreadySignedUp, 409)
+    alreadySignedUp: envelope(texts.alreadySignedUp, 409),
+    tooLateToLeave: envelope(texts.tooLateToLeave, 409),
+    notAttendee: envelope(texts.notAttendee, 409),
+    noCredit: envelope(texts.noCredit, 409),
 }
 
 module.exports = errors

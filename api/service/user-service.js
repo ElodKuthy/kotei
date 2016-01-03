@@ -47,7 +47,7 @@ const add = (newUser, auth) => {
             familyName: newUser.familyName,
             givenName: newUser.givenName,
             nickname: newUser.nickname,
-            email: newUser.email,
+            email: newUser.email.toLowerCase(),
             role: newUser.role,
             Password: {
                 token: uuid()
