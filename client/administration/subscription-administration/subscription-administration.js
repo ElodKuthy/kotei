@@ -2,14 +2,14 @@ angular.module('kotei')
     .config(($stateProvider) => {
 
         $stateProvider
-            .state('new-subscription', {
+            .state('administration.new-subscription', {
                 url: '/new-subscription',
                 views: {
-                    'navbar': {
+                    'navbar@': {
                         templateUrl: 'navbar/navbar.html',
                         controller: 'NavbarController as navbar'
                     },
-                    'content': {
+                    'content@': {
                         templateUrl: 'administration/subscription-administration/subscription-administration.html',
                         controller: 'SubscriptionAdministrationController as subscriptionAdministration'
                     }

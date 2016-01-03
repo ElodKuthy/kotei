@@ -28,8 +28,8 @@ gulp.task('sass', () => {
 
 gulp.task('vendor', () => {
     return gulp.src([
-            //'./bower_components/jquery/dist/jquery.js',
-            //'./bower_components/bootstrap-sass/assets/javascripts/bootstrap.js',
+            './bower_components/jquery/dist/jquery.js',
+            './bower_components/bootstrap-sass/assets/javascripts/bootstrap.js',
             './bower_components/moment/moment.js',
             './bower_components/ramda/dist/ramda.js',
             './bower_components/chartist/dist/chartist.js',

@@ -14,7 +14,7 @@
                         <tr ng-repeat="row in location.trainings">
                             <td>{{row.hour}}</td>
                             <td class="schedule-cell" ng-repeat="cell in row.cells">
-                                <div class="training-container" ng-repeat="training in cell">
+                                <div class="training-container" ng-repeat="training in cell" ng-click="schedule.showAttendees(training.id)">
                                     <div>{{training.name}}</div>
                                     <div class="coach"><i class="fa fa-circle fa-lg pull-left" ng-class="{ 'hide': !training.involved, 'text-info': training.attended, 'text-success': training.participated, 'text-danger': training.missed }"></i>{{training.coach}}</div>
                                     <div ng-if="training.hasMinutes" class="time">{{training.from}} - {{training.to}}</div>
@@ -27,4 +27,20 @@
             </div>
         </div>
     </div>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bottom-navbar" aria-expanded="false">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="bottom-navbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a ui-sref="schedule.custom({from: schedule.previous.from, to: schedule.previous.to })">Előző hét</a></li>
+                    <li><a ui-sref="schedule">Aktuális hét</a></li>
+                    <li><a ui-sref="schedule.custom({from: schedule.next.from, to: schedule.next.to })">Következő hét</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 </div>

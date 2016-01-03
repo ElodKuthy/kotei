@@ -4,6 +4,10 @@
         font-size: 14px;
     }
 
+    .training-container {
+        cursor: pointer;
+    }
+
     .training-container > div {
         margin: 10px 0;
     }
@@ -22,5 +26,9 @@
 
     i {
         padding-top: 3.5px;
+    }
+
+    .navbar {
+        bottom: 0;
     }
 }

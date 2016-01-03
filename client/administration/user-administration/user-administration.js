@@ -2,14 +2,14 @@ angular.module('kotei')
     .config(($stateProvider) => {
 
         $stateProvider
-            .state('new-user', {
+            .state('administration.new-user', {
                 url: '/new-user',
                 views: {
-                    'navbar': {
+                    'navbar@': {
                         templateUrl: 'navbar/navbar.html',
                         controller: 'NavbarController as navbar'
                     },
-                    'content': {
+                    'content@': {
                         templateUrl: 'administration/user-administration/user-administration.html',
                         controller: 'UserAdministrationController as userAdministration'
                     }
@@ -48,7 +48,7 @@ angular.module('kotei')
             checkAdminRole().then(() => {
                 administrationService.addNewUser(this.user)
                     .then((result) => {
-                        modalService.info(this.title, result).then($state.go('welcome'))
+                        modalService.info(this.title, result).then($state.go('administration.new-subscription'))
                     })
                     .catch((error) => {
                         this.error = error

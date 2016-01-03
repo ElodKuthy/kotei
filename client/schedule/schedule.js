@@ -3,7 +3,7 @@ angular.module('kotei')
 
         $stateProvider
             .state('schedule', {
-                url: '/schedule/:from/:to',
+                url: '/schedule',
                 views: {
                     'navbar': {
                         templateUrl: 'navbar/navbar.html',
@@ -15,6 +15,38 @@ angular.module('kotei')
                     }
                 },
                 resolve: {
+                    from: ($moment) => {
+                        return $moment().startOf('week')
+                    },
+                    to: ($moment) => {
+                        return $moment().endOf('week')
+                    },
+                    trainings: ($moment, infoService) => {
+                        return infoService.getTrainingsByDate($moment().startOf('week').format('YYYY-MM-DD'), $moment().endOf('week').format('YYYY-MM-DD'))
+                    }
+                },
+                roles: ['client', 'coach', 'admin']
+        })
+
+            .state('schedule.custom', {
+                url: '/:from/:to',
+                views: {
+                    'navbar@': {
+                        templateUrl: 'navbar/navbar.html',
+                        controller: 'NavbarController as navbar'
+                    },
+                    'content@': {
+                        templateUrl: 'schedule/schedule.html',
+                        controller: 'ScheduleController as schedule'
+                    }
+                },
+                resolve: {
+                    from: ($moment, $stateParams) => {
+                        return $moment($stateParams.from)
+                    },
+                    to: ($moment, $stateParams) => {
+                        return $moment($stateParams.to)
+                    },
                     trainings: ($stateParams, infoService) => {
                         return infoService.getTrainingsByDate($stateParams.from, $stateParams.to)
                     }
@@ -22,7 +54,17 @@ angular.module('kotei')
                 roles: ['client', 'coach', 'admin']
         })
     })
-    .controller('ScheduleController', function (R, $moment, trainings, userInfoService) {
+    .controller('ScheduleController', function (R, $state, $moment, from, to, trainings, userInfoService) {
+
+        this.previous = {
+            from: $moment(from).subtract({ week: 1 }).format('YYYY-MM-DD'),
+            to: $moment(to).subtract({ week: 1 }).format('YYYY-MM-DD'),
+        }
+
+        this.next = {
+            from: $moment(from).add({ week: 1 }).format('YYYY-MM-DD'),
+            to: $moment(to).add({ week: 1 }).format('YYYY-MM-DD'),
+        }
 
         this.userInfo = userInfoService.getUserInfo()
 
@@ -69,4 +111,8 @@ angular.module('kotei')
                 missed: involved && $moment().isAfter(from) && !userSubscription.Attendee.checkIn
             })
         })
+
+        this.showAttendees = (trainingId) => {
+            $state.go('attendee-list', { trainingId: trainingId })
+        }
     })

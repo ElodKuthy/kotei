@@ -2,14 +2,14 @@ angular.module('kotei')
     .config(($stateProvider) => {
 
         $stateProvider
-            .state('new-training', {
+            .state('administration.new-training', {
                 url: '/new-training',
                 views: {
-                    'navbar': {
+                    'navbar@': {
                         templateUrl: 'navbar/navbar.html',
                         controller: 'NavbarController as navbar'
                     },
-                    'content': {
+                    'content@': {
                         templateUrl: 'administration/training-administration/training-administration.html',
                         controller: 'TrainingAdministrationController as trainingAdministration'
                     }
@@ -60,7 +60,7 @@ angular.module('kotei')
 
             administrationService.addNewTraining(newTraining)
                     .then((result) => {
-                        modalService.info(this.title, result)//.then($state.go('welcome'))
+                        modalService.info(this.title, 'Sikeresen léterejöttek az új edzés(ek)').then($state.reload())
                     })
                     .catch((error) => {
                         this.error = error

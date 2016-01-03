@@ -1,15 +1,37 @@
 <nav class="navbar navbar-default">
     <div class="container-fluid">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#top-navbar" aria-expanded="false">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
         <div class="navbar-header">
             <a class="navbar-brand" ui-sref="welcome">
                 kotei
             </a>
         </div>
-        <div class="collapse navbar-collapse">
+        <div class="collapse navbar-collapse" id="top-navbar">
             <ul class="nav navbar-nav navbar-right">
-                <li><a ui-sref="profile" ng-if="navbar.isLoggedIn">Profilom</a></li>
-                <li><a ui-sref="login" ng-if="!navbar.isLoggedIn">Belépés</a></li>
-                <li><a ng-click="navbar.logout()" ng-if="navbar.isLoggedIn">Kilépés</a></li>
+                <li ng-if="navbar.userInfo.isAuth && !navbar.userInfo.isClient" uib-dropdown on-toggle="toggled(open)">
+                    <a href uib-dropdown-toggle>
+                        Adminisztráció
+                    </a>
+                    <ul class="uib-dropdown-menu">
+                        <li>
+                            <a ui-sref="administration.new-user">{{ navbar.userInfo.isAdmin ? 'Új felhasználó' : 'Új tanítvány' }}</a>
+                        </li>
+                        <li ng-if="navbar.userInfo.isAdmin">
+                            <a ui-sref="administration.new-training">Új edzés</a>
+                        </li>
+                        <li>
+                            <a ui-sref="administration.new-subscription">Bérletvásárlás</a>
+                        </li>
+                    </ul>
+                </li>
+                <li><a ui-sref="schedule" ng-if="navbar.userInfo.isAuth">Órarend</a></li>
+                <li><a ui-sref="profile" ng-if="navbar.userInfo.isAuth">Profilom</a></li>
+                <li><a ui-sref="login" ng-if="!navbar.userInfo.isAuth">Belépés</a></li>
+                <li><a ng-click="navbar.logout()" ng-if="navbar.userInfo.isAuth">Kilépés</a></li>
             </ul>
         </div>
     </div>
