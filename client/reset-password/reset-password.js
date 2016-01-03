@@ -16,7 +16,13 @@ angular.module('kotei')
                 }
         })
     })
-    .controller('ResetPasswordController', function ($state, passwordService, modalService) {
+    .controller('ResetPasswordController', function ($state, userInfoService, loginService, passwordService, modalService) {
+
+        if (userInfoService.getUserInfo()) {
+            loginService.logout()
+            $state.reload()
+        }
+
         this.token = $state.params.token
         this.submit = () => {
             delete this.error

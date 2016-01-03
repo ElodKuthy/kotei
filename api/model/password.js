@@ -34,6 +34,9 @@ const Password = database.define('Password', {
             return this.save().then(() => this.token)
         },
         checkPassword: function (password) {
+            if (!this.hash) {
+                return false
+            }
             return bcrypt.compareSync(password, this.hash)
         }
     }

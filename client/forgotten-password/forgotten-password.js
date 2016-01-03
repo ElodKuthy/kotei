@@ -16,7 +16,13 @@ angular.module('kotei')
                 }
         })
     })
-    .controller('ForgottenPasswordController', function (passwordService, modalService, $state) {
+    .controller('ForgottenPasswordController', function (userInfoService, loginService, passwordService, modalService, $state) {
+
+        if (userInfoService.getUserInfo()) {
+            loginService.logout()
+            $state.reload()
+        }
+
         this.submit = () => {
             passwordService.forgot(this.email)
                 .finally((result) => {
