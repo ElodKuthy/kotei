@@ -28,7 +28,18 @@ angular.module('kotei')
                 roles: ['coach', 'admin']
         })
     })
-    .controller('SubscriptionAdministrationController', function ($moment, userInfoService, clients, coaches, subscriptionTypes, infoService, modalService, administrationService) {
+    .controller('SubscriptionAdministrationController', function (R, $moment, userInfoService, clients, coaches, subscriptionTypes, infoService, modalService, administrationService) {
+
+        const displayName = (client) => {
+            return client.fullName == client.nickname
+                ? client.fullName
+                : `${client.fullName} "${client.nickname}"`
+        }
+
+        const addDisplayName = (clients) => R.map((client) => {
+            client.displayName = displayName(client)
+            return client
+        }, clients)
 
         this.title = 'Bérletvásárlás'
 
@@ -39,8 +50,8 @@ angular.module('kotei')
             this.coach = this.userInfo
         }
 
-        this.clients = clients
-        this.coaches = coaches
+        this.clients = addDisplayName(clients)
+        this.coaches = addDisplayName(coaches)
         this.subscriptionTypes = subscriptionTypes
         this.type = this.subscriptionTypes[0]
 
@@ -62,7 +73,12 @@ angular.module('kotei')
             this.trainings = null
             this.amount = null
             infoService.getSubscriptionVariants(this.type.id)
-                .then((variants) => this.variants = variants)
+                .then((variants) => {
+                    this.variants = R.map((variant) => {
+                        variant.amountPerWeek = variant.valid >= 7 ? Math.ceil(variant.amount * 7 / variant.valid) : variant.amount
+                        return variant
+                    }, variants)
+                })
             infoService.getTrainingsByDateAndAllowedType($moment('2016-01-04').startOf('week').format(), $moment('2016-01-04').endOf('week').format(), this.type.id)
                 .then((trainings) => this.trainings = decorateTrainings(trainings))
         }
