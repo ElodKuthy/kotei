@@ -64,6 +64,8 @@ gulp.task('watch', ['html', 'sass', 'js'], () => {
     gulp.watch('./client/**/*.js', ['js'])
 })
 
+gulp.task('build', ['vendor', 'fonts', 'html', 'sass', 'js'])
+
 gulp.task('nodemon', ['fonts', 'watch'], () => {
     nodemon({
         script: 'app.js',
@@ -72,4 +74,4 @@ gulp.task('nodemon', ['fonts', 'watch'], () => {
     })
 })
 
-gulp.task('default', ['nodemon'])
+gulp.task('default', ['build'])

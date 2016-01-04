@@ -7,7 +7,7 @@ const errors = require('../common/errors')
 const roles = require('../common/roles')
 const Training = require('../model/training')
 const User = require('../model/user')
-const Attendee = require('../model/Attendee')
+const Attendee = require('../model/attendee')
 const Subscription = require('../model/subscription')
 const SubscriptionType = require('../model/subscription-type')
 
