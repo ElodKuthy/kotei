@@ -10,14 +10,14 @@ angular.module('kotei')
                         controller: 'NavbarController as navbar'
                     },
                     'content@': {
-                        templateUrl: 'administration/user-administration/user-administration.html',
-                        controller: 'UserAdministrationController as userAdministration'
+                        templateUrl: 'administration/user-administration/new-user.html',
+                        controller: 'NewUserController as newUser'
                     }
                 },
                 roles: ['coach', 'admin']
         })
     })
-    .controller('UserAdministrationController', function ($q, $state, userInfoService, modalService, administrationService) {
+    .controller('NewUserController', function ($q, $state, userInfoService, modalService, administrationService) {
 
         const userInfo = userInfoService.getUserInfo()
 

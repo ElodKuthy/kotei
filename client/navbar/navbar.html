@@ -18,7 +18,7 @@
                     </a>
                     <ul class="uib-dropdown-menu">
                         <li>
-                            <a ui-sref="administration.new-user">{{ navbar.userInfo.isAdmin ? 'Új felhasználó' : 'Új tanítvány' }}</a>
+                            <a ui-sref="administration.user-list">{{ navbar.userInfo.isAdmin ? 'Felhasználók' : 'Tanítványok' }}</a>
                         </li>
                         <li ng-if="navbar.userInfo.isAdmin">
                             <a ui-sref="administration.new-training">Új edzés</a>
