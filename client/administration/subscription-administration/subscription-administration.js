@@ -55,31 +55,40 @@ angular.module('kotei')
         this.subscriptionTypes = subscriptionTypes
         this.type = this.subscriptionTypes[0]
 
-        this.coachDictionary = {}
-        coaches.forEach((coach) => this.coachDictionary[coach.id] = coach.nickname)
-
         this.from = $moment().startOf('day').toDate()
 
         const decorateTrainings = (trainings) => {
             trainings.forEach((training) => {
+                training.name = training.TrainingType.name
                 training.date = $moment(training.from).toDate()
-                training.coach = this.coachDictionary[training.coach_id]
+                training.coach = training.Coach.fullName
             })
             return trainings
         }
 
         this.typeChanged = () => {
-            this.variants = null
+            this.templates = null
             this.trainings = null
-            this.amount = null
-            infoService.getSubscriptionVariants(this.type.id)
-                .then((variants) => {
-                    this.variants = R.map((variant) => {
-                        variant.amountPerWeek = variant.valid >= 7 ? Math.ceil(variant.amount * 7 / variant.valid) : variant.amount
-                        return variant
-                    }, variants)
+            this.variant = null
+            this.credits = null
+            infoService.getSubscriptionTemplates(this.type.id)
+                .then((templates) => {
+                    this.templates = R.map((template) => {
+                        template.valid = template.SubscriptionVariant.valid
+                        template.validText =
+                            template.valid >= 7
+                            ? `${template.valid / 7} hét`
+                            : `${template.valid} nap`
+                        template.amount = R.reduce((acc, credit) => acc + credit.amount,  0, template.CreditTemplates)
+                        template.amountPerWeek =
+                            template.valid >= 7
+                            ? Math.ceil(template.amount * 7 / template.valid)
+                            : template.amount
+                        template.CreditTemplates.price = template.SubscriptionVariant.price
+                        return template
+                    }, templates)
                 })
-            infoService.getTrainingsByDateAndAllowedType($moment('2016-01-04').startOf('week').format(), $moment('2016-01-04').endOf('week').format(), this.type.id)
+            infoService.getTrainingsByDateAndType($moment().startOf('week').format(), $moment().endOf('week').format(), this.type.id)
                 .then((trainings) => this.trainings = decorateTrainings(trainings))
         }
 
@@ -103,15 +112,16 @@ angular.module('kotei')
 
             var subscription = {
                 from: $moment(this.from).startOf('day').format(),
-                to: $moment(this.from).startOf('day').add({ days: this.valid.valid }).format(),
-                amount: this.amount.amount,
-                price: this.amount.price,
+                to: $moment(this.from).startOf('day').add({ days: this.variant.valid }).format(),
+                Credits: this.credits,
+                price: this.credits.price,
                 client_id: this.client.id,
                 coach_id: this.coach.id,
                 subscription_type_id: this.type.id,
                 defaultTrainingDates: defaultTrainingDates
             }
 
+            console.log(subscription)
             return administrationService.addNewSubscription(subscription).then(() => modalService.info(this.title, 'Sikeres bérletvásárlás'))
         }
     })

@@ -1,11 +1,3 @@
-const database = require('./model/database')
-const User = require('./model/user')
-const Password = require('./model/password')
-const Location = require('./model/location')
-const Training = require('./model/training')
-const Subscription = require('./model/subscription')
-const Attendee = require('./model/attendee')
-const SubscriptionType = require('./model/subscription-type')
-const SubscriptionVariant = require('./model/subscription-variant')
+const model = require('./model/model')
 
-database.sync()
+model.database.sync({ force: true }).then(() => console.log('Done'))

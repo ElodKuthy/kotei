@@ -1,0 +1,22 @@
+<div class="profile container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Alapadatok</div>
+                <div class="panel-body">
+                    <div>Vezetéknév: {{myProfile.profileInfo.familyName}}</div>
+                    <div>Kerersztnév: {{myProfile.profileInfo.givenName}}</div>
+                    <div ng-if="myProfile.profileInfo.nickname">Becenév: {{myProfile.profileInfo.nickname}}</div>
+                    <div>Email: {{myProfile.profileInfo.email}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Bérletek</div>
+                <div class="panel-body">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

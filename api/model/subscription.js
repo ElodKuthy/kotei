@@ -16,14 +16,6 @@ const Subscription = database.define('Subscription', {
             isDate: true
         }
     },
-    amount: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        validate: {
-            isInt: true,
-            min: 1
-        }
-    },
     price: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -33,6 +25,5 @@ const Subscription = database.define('Subscription', {
         }
     }
 })
-
 
 module.exports = Subscription

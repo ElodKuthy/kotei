@@ -5,62 +5,70 @@ const filterIndexed = R.addIndex(R.filter)
 const errors = require('../common/errors')
 
 const roles = require('../common/roles')
-const Training = require('../model/training')
-const User = require('../model/user')
-const Attendee = require('../model/attendee')
-const Subscription = require('../model/subscription')
-const SubscriptionType = require('../model/subscription-type')
+const model = require('../model/model')
+const Training = model.Training
+const User = model.User
+const Attendee = model.Attendee
+const Subscription = model.Subscription
+const SubscriptionType = model.SubscriptionType
+const Credit = model.Credit
 
 const Promise = require('bluebird')
 
 const findTraining = (training_id, auth) => {
-    return Training.findAll({
-        where: {
-            id: training_id
-        }
-    }).then((trainings) => {
-        if (trainings.length !== 1) {
+    return Training.findById(training_id).then((training) => {
+        if (!training) {
             return Promise.reject(errors.missingOrInvalidParameters)
         }
 
-        return Promise.resolve(trainings[0])
+        return Promise.resolve(training)
     })
 }
 
 const findClient = (client_id, auth) => {
-    return User.findAll({
-        where: {
-            id: client_id
-        }
-    }).then((users) => {
-        if (users.length !== 1) {
+    return User.findById(client_id).then((user) => {
+        if (!user) {
             return Promise.reject(errors.missingOrInvalidParameters)
         }
 
-        return Promise.resolve(users[0])
+        return Promise.resolve(user)
     })
 }
 
-const findSubscriptionToAdd = (date, client_id, coach_id) => {
+const findSubscriptionToAdd = (training, client) => {
     return Subscription.findAll({
         where: {
             $and: [{
-                from: { $lte: date }
+                from: { $lte: training.from }
             }, {
-                to: { $gte: date }
+                to: { $gte: training.from }
             }, {
-                client_id: client_id
+                client_id: client.id
             }]
         },
+        include: [ Credit ],
         order: [
             ['to', 'ASC']
         ]
-    }).then((subscriptions) => {
-        return Promise.all(R.map((subscription) => subscription.countTrainings(), subscriptions))
+    })
+    .then((subscriptions) => {
+        return Promise.all(R.map((subscription) => subscription.countTrainings({ where: { training_type_id: training.training_type_id } }), subscriptions))
             .then((counts) => {
-                return filterIndexed((subscription, index) => subscription.amount > counts[index], subscriptions)
+                return filterIndexed((subscription, index) => {
+                    const amount = R.reduce((acc, credit) => {
+                        if ((!credit.training_type_id
+                            || credit.training_type_id === training.training_type_id)
+                            && (!credit.coach_id
+                            || credit.coach_id === training.coach_id)) {
+                            return acc + credit.amount
+                        }
+                    }, 0, subscription.Credits)
+
+                    return amount > counts[index]
+                }, subscriptions)
             })
-    }).then((subscriptions) => {
+    })
+    .then((subscriptions) => {
         if (subscriptions.length < 1) {
             return Promise.reject(errors.noCredit)
         }
@@ -102,7 +110,7 @@ const add = (training_id, client_id, auth) => {
             }
 
             return checkAttendees(training, client)
-                .then(() => findSubscriptionToAdd(training.from, client_id, training.coach_id))
+                .then(() => findSubscriptionToAdd(training, client))
                 .then((subscription) => {
                     return Attendee.findOne({
                         where: {

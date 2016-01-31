@@ -3,13 +3,6 @@ const Sequelize = require('sequelize')
 const database = require('./database')
 
 const Training = database.define('Training', {
-    name: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        }
-    },
     from: {
         type: Sequelize.DATE,
         allowNull: false,

@@ -26,26 +26,26 @@
         <div class="row">
             <div class="col-xs-6">
                 <label>Érvényesség</label>
-                <div class="radio" ng-repeat="variant in subscriptionAdministration.variants | unique: 'valid'">
+                <div class="radio" ng-repeat="template in subscriptionAdministration.templates | unique: 'valid'">
                     <label>
-                        <input type="radio" ng-model="subscriptionAdministration.valid" ng-value="variant" ng-change="subscriptionAdministration.validChanged()">
-                        {{ variant.valid >= 7 ? variant.valid / 7 + ' hét' : variant.valid + ' nap' }}
+                        <input type="radio" ng-model="subscriptionAdministration.variant" ng-value="template" ng-change="subscriptionAdministration.validChanged()">
+                        {{ template.validText }}
                     </label>
                 </div>
             </div>
             <div class="col-xs-6">
                 <label>Heti alkalom</label>
-                <div ng-if="subscriptionAdministration.valid" class="radio" ng-repeat="variant in subscriptionAdministration.variants | filter: { valid : subscriptionAdministration.valid.valid }">
+                <div ng-if="subscriptionAdministration.variant" class="radio" ng-repeat="template in subscriptionAdministration.templates | filter: { valid : subscriptionAdministration.variant.valid }">
                     <label>
-                        <input type="radio" ng-model="subscriptionAdministration.amount" ng-value="variant" ng-change="subscriptionAdministration.amountChanged()">
-                        {{ variant.amountPerWeek }} alkalom
+                        <input type="radio" ng-model="subscriptionAdministration.credits" ng-value="template.CreditTemplates" ng-change="subscriptionAdministration.amountChanged()">
+                        {{ template.amountPerWeek }} alkalom
                     </label>
                 </div>
             </div>
         </div>
         <div>
             <label>Ár</label>
-            <div>{{ subscriptionAdministration.amount.price | currency : 'Ft': 0 }}</div>
+            <div>{{ subscriptionAdministration.credits.price | currency : 'Ft': 0 }}</div>
         </div>
         <div>
             <label>Alapértelmezett órák</label>

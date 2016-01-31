@@ -1,8 +1,5 @@
 const Sequelize = require('sequelize')
 const database = require('./database')
-const Password = require('./password')
-const Trainig = require('./training')
-const Subscription = require('./subscription')
 const localization = require('../localization/name')
 
 const User = database.define('User', {
@@ -91,63 +88,6 @@ const User = database.define('User', {
         unique: true,
         defaultValue: Sequelize.UUIDV4
     }
-})
-
-User.hasOne(Password, {
-    foreignKey: {
-        allowNull: false
-    }
-})
-
-Password.belongsTo(User, {
-    foreignKey: {
-        allowNull: false
-    }
-})
-
-User.hasMany(Trainig, {
-    foreignKey: {
-        name: 'coach_id',
-        allowNull: false
-    },
-    as: 'Trainings'
-})
-
-Trainig.belongsTo(User, {
-    foreignKey: {
-        allowNull: false
-    },
-    as: 'Coach'
-})
-
-User.hasMany(Subscription, {
-    foreignKey: {
-        name: 'client_id',
-        allowNull: false
-    },
-    as: 'Subscriptions'
-})
-
-Subscription.belongsTo(User, {
-    foreignKey: {
-        allowNull: false
-    },
-    as: 'Client'
-})
-
-User.hasMany(Subscription, {
-    foreignKey: {
-        name: 'coach_id',
-        allowNull: false
-    },
-    as: 'SoldSubscriptions'
-})
-
-Subscription.belongsTo(User, {
-    foreignKey: {
-        allowNull: false
-    },
-    as: 'Coach'
 })
 
 module.exports = User

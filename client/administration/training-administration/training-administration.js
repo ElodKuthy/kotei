@@ -21,31 +21,23 @@ angular.module('kotei')
                     locations: (infoService) => {
                         return infoService.getAllLocations()
                     },
-                    subscriptionTypes: (infoService) => {
-                        return infoService.getAllSubscriptionTypes()
+                    trainingTypes: (infoService) => {
+                        return infoService.getAllTrainingTypes()
                     }
                 },
                 roles: ['admin']
         })
     })
-    .controller('TrainingAdministrationController', function ($moment, coaches, locations, subscriptionTypes, modalService, administrationService) {
+    .controller('TrainingAdministrationController', function ($state, $moment, coaches, locations, trainingTypes, modalService, administrationService) {
 
         this.title = 'Új edzésalkalom létrehozása'
 
         this.coaches = coaches
         this.locations = locations
-        this.subscriptionTypes = subscriptionTypes
+        this.trainingTypes = trainingTypes
 
         this.submit = () => {
             delete this.error
-
-            var subscriptionTypeIds = []
-
-            for (var property in this.training.selectedSubscriptionTypes) {
-                if (this.training.selectedSubscriptionTypes.hasOwnProperty(property)) {
-                    subscriptionTypeIds.push(property)
-                }
-            }
 
             const newTraining = {
                 name: this.training.name,
@@ -54,7 +46,7 @@ angular.module('kotei')
                 max: this.training.max,
                 coach_id: this.training.coach.id,
                 location_id: this.training.location.id,
-                subscription_type_ids: subscriptionTypeIds,
+                training_type_id: this.training.type.id,
                 interval: this.training.interval && $moment(this.training.interval).isAfter(this.training.to) ? this.training.interval : null
             }
 

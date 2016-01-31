@@ -10,13 +10,18 @@ angular.module('kotei')
                         controller: 'NavbarController as navbar'
                     },
                     'content': {
-                        templateUrl: 'profile/profile.html',
-                        controller: 'ProfileController as profile'
+                        templateUrl: 'profile/my-profile.html',
+                        controller: 'MyProfileController as myProfile'
+                    }
+                },
+                resolve: {
+                    profileInfo: (infoService) => {
+                        return infoService.getMyProfile()
                     }
                 },
                 roles: ['client', 'coach', 'admin']
         })
     })
-    .controller('ProfileController', function (userInfoService) {
-        this.userInfo = userInfoService.getUserInfo()
+    .controller('MyProfileController', function (profileInfo) {
+        this.profileInfo = profileInfo
     })

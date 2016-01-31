@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize')
 const database = require('./database')
 
-const Location = database.define('Location', {
+const TrainingType = database.define('TrainingType', {
     name: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -11,4 +11,4 @@ const Location = database.define('Location', {
     }
 })
 
-module.exports = Location
+module.exports = TrainingType

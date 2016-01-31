@@ -5,11 +5,16 @@ const errors = require('../common/errors')
 const parser = require('../common/parser')
 const roles = require('../common/roles')
 
-const User = require('../model/user')
-const Subscription = require('../model/subscription')
-const SubscriptionType = require('../model/subscription-type')
-const SubscriptionVariant = require('../model/subscription-variant')
-const Training = require('../model/training')
+const model = require('../model/model')
+const User = model.User
+const Subscription = model.Subscription
+const SubscriptionType = model.SubscriptionType
+const SubscriptionTemplate = model.SubscriptionTemplate
+const SubscriptionVariant = model.SubscriptionVariant
+const Training = model.Training
+const CreditTemplate = model.CreditTemplate
+const TrainingType = model.TrainingType
+const Credit = model.Credit
 
 const attendeeService = require('./attendee-service')
 
@@ -25,13 +30,24 @@ const findSubscriptionType = (query, auth) => {
     }, query)).catch((error) => Promise.reject(errors.missingOrInvalidParameters))
 }
 
-const findSubscriptionVariant = (query, auth) => {
+const findSubscriptionTemplate = (query, auth) => {
     if (!auth.isCoach && !auth.isAdmin) {
         return Promise.reject(errors.unauthorized)
     }
 
-    return SubscriptionVariant.findAll(parser.parseQuery({
-        attributes: ['id', 'valid', 'amount', 'price', 'subscription_type_id']
+    return SubscriptionTemplate.findAll(parser.parseQuery({
+        attributes: ['id', 'subscription_type_id'],
+        include: [{
+            attributes: ['valid', 'price'],
+            model: SubscriptionVariant
+        }, {
+            attributes: ['id', 'amount'],
+            model: CreditTemplate,
+            include: [{
+                attributes: ['id', 'name'],
+                model: TrainingType
+            }]
+        }]
     }, query)).catch((error) => Promise.reject(errors.missingOrInvalidParameters))
 }
 
@@ -62,41 +78,47 @@ const checkDates = (subscription) => {
 }
 
 const checkSubscriberIsClient = (subscription) => {
-    return (User.findAll({
+    return (User.findById(subscription.client_id, {
         where: {
-            $and: [
-                {
-                    role: roles.client
-                },
-                {
-                    id: subscription.client_id
-                }
-            ]
+            role: roles.client
         }
     })).then((result) => {
-        return result.length === 1
+        return result
             ? Promise.resolve(subscription)
             : Promise.reject(errors.missingOrInvalidParameters)
     })
 }
 
 const checkIssuerIsCoach = (subscription) => {
-    return (User.findAll({
+    return (User.findById(subscription.coach_id, {
         where: {
-            $and: [
-                {
-                    role: roles.coach
-                },
-                {
-                    id: subscription.coach_id
-                }
-            ]
+            role: roles.coach
         }
     })).then((result) => {
-        return result.length === 1
+        return result
             ? Promise.resolve(subscription)
             : Promise.reject(errors.missingOrInvalidParameters)
     })
+}
+
+const decorateNewSubcriptionData = (subscription) => {
+    subscription.Credits = R.map((credit) => {
+        delete credit.id
+        if (credit.TrainingType) {
+            credit.training_type_id = credit.TrainingType.id
+        }
+        if (credit.Coach) {
+            credit.coach_id = credit.Coach.id
+        }
+
+        return credit
+    }, subscription.Credits)
+
+    return subscription
+}
+
+const addSubscription = (subscription) => {
+    return Subscription.create(subscription, { include: [ Credit ] }).then(() => subscription)
 }
 
 const orDates = R.map((date) => { return { from: date } })
@@ -108,7 +130,7 @@ const concat = (a, b) => b ? R.concat(a, b) : a
 const addToDefaultTrainings = (subscription, auth, currentDates) => {
 
     if (!currentDates || !currentDates.length || moment(currentDates[0]).isAfter(subscription.to)) {
-        return
+        return currentDates
     }
 
     const trainings = Training.findAll({
@@ -135,12 +157,13 @@ const add = (subscription, auth) => {
         .then(checkDates)
         .then(checkSubscriberIsClient)
         .then(checkIssuerIsCoach)
-        .then((subscription) => Subscription.create(subscription))
-        .then((createdSubscription) => addToDefaultTrainings(subscription, auth, subscription.defaultTrainingDates))
+        .then(decorateNewSubcriptionData)
+        .then(addSubscription)
+        .then((newSubscription) => addToDefaultTrainings(newSubscription, auth, newSubscription.defaultTrainingDates))
 }
 
 module.exports = {
     findSubscriptionType: findSubscriptionType,
-    findSubscriptionVariant: findSubscriptionVariant,
+    findSubscriptionTemplate: findSubscriptionTemplate,
     add: add
 }

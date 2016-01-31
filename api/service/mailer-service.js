@@ -1,6 +1,12 @@
 const nodemailer = require('nodemailer')
 
-const transporter = nodemailer.createTransport()
+//const transporter = nodemailer.createTransport()
+const transporter = {
+    sendMail: (mailOptions, callback) => {
+        console.log(mailOptions)
+        callback(null, 'OK')
+    }
+}
 
 const from = '360Gym Lomb <no-reply@kotei.hu>'
 
@@ -41,7 +47,7 @@ const sendResetPasswordToken = (user, token) => {
             <html>`
         }
 
-    transporter.sendMail(mailOptions, function(error, info) {
+    return transporter.sendMail(mailOptions, function(error, info) {
         if (error) {
             return Promise.reject(error);
         } else {
@@ -93,7 +99,7 @@ const sendRegistration = (user, token) => {
             <html>`
         }
 
-    transporter.sendMail(mailOptions, function(error, info) {
+    return transporter.sendMail(mailOptions, function(error, info) {
         if (error) {
             return Promise.reject(error);
         } else {

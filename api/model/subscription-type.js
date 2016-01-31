@@ -1,7 +1,5 @@
 const Sequelize = require('sequelize')
 const database = require('./database')
-const Subscription = require('./subscription')
-const Training = require('./training')
 
 const SubscriptionType = database.define('SubscriptionType', {
     name: {
@@ -12,20 +10,6 @@ const SubscriptionType = database.define('SubscriptionType', {
             notEmpty: true
         },
     }
-})
-
-SubscriptionType.hasMany(Subscription, {
-    foreignKey: {
-        allowNull: false
-    }
-})
-
-Training.belongsToMany(SubscriptionType, {
-    through: 'AllowedSubscriptions'
-})
-
-SubscriptionType.belongsToMany(Training, {
-    through: 'AllowedSubscriptions'
 })
 
 module.exports = SubscriptionType

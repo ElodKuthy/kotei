@@ -6,11 +6,12 @@ const texts = require('../localization/texts')
 const parser = require('../common/parser')
 
 const roles = require('../common/roles')
-const SubscriptionType = require('../model/subscription-type')
-const Training = require('../model/training')
-const User = require('../model/user')
-const Location = require('../model/location')
-const Subscription = require('../model/subscription')
+const model = require('../model/model')
+const Training = model.Training
+const User = model.User
+const Location = model.Location
+const Subscription = model.Subscription
+const TrainingType = model.TrainingType
 
 const Promise = require('bluebird')
 
@@ -23,17 +24,13 @@ const checkAdmin = (training, auth) => {
 }
 
 const checkCoach = (training) => {
-    return User.findAll({
+    return User.findById(training.coach_id, {
         where: {
-            $and: [{
-                id: training.coach_id
-            }, {
-                role: roles.coach
-            }]
+            role: roles.coach
         }
     }).then((coach) => {
 
-        if (coach.length !== 1) {
+        if (!coach) {
             return Promise.reject(errors.invalidCoach)
         }
 
@@ -67,7 +64,7 @@ const calculateDates = (training) => {
 
 const addTraining = (training) => {
 
-    const collidingTrainings = Training.findAll({
+    Training.findOne({
         where: {
             $and: [{
                 location_id: training.location_id
@@ -84,18 +81,13 @@ const addTraining = (training) => {
                 ]
             }]
         }
-    })
+    }).then((collidingTraining) => {
 
-    return collidingTrainings.then((collidingTrainings) => {
-
-        if (collidingTrainings.length) {
+        if (collidingTraining) {
             return Promise.reject(errors.trainingTimeCollide)
         }
 
         return Training.create(training)
-            .then((createdTraining) => {
-                return createdTraining.addSubscriptionTypes(training.subscription_type_ids)
-            })
             .catch((error) => {
                 return Promise.reject(errors.missingOrInvalidParameters)
             })
@@ -123,21 +115,12 @@ const find = (query, auth) => {
         return Promise.reject(errors.unauthorized)
     }
 
-    if (query.subscription_type_id) {
-        return SubscriptionType.findOne({
-             where: {
-                 id: query.subscription_type_id
-             }
-        }).then((subscriptionType) => {
-             return subscriptionType.getTrainings(parser.parseQuery({
-                attributes: ['id', 'name', 'from', 'to', 'max', 'coach_id', 'location_id']
-             }, query))
-        }).catch((error) => Promise.reject(errors.missingOrInvalidParameters))
-    }
-
     return Training.findAll(parser.parseQuery({
-        attributes: ['id', 'name', 'from', 'to', 'max'],
+        attributes: ['id', 'from', 'to', 'max'],
         include: [{
+             attributes: ['id', 'name'],
+             model: TrainingType
+        }, {
             attributes: ['id', 'familyName', 'givenName', 'nickname'],
             model: User,
             as: 'Coach'
@@ -158,7 +141,18 @@ const find = (query, auth) => {
     }, query)).catch((error) => Promise.reject(errors.missingOrInvalidParameters))
 }
 
+const findTrainingType = (query, auth) => {
+    if (!auth.isCoach && !auth.isAdmin) {
+        return Promise.reject(errors.unauthorized)
+    }
+
+    return TrainingType.findAll(parser.parseQuery({
+        attributes: ['id', 'name']
+    }, query)).catch((error) => Promise.reject(errors.missingOrInvalidParameters))
+}
+
 module.exports = {
     add: add,
-    find: find
+    find: find,
+    findTrainingType: findTrainingType
 }

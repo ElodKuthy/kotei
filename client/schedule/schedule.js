@@ -98,7 +98,7 @@ angular.module('kotei')
 
             row.cells[from.isoWeekday() - 1].push({
                 id: training.id,
-                name: training.name,
+                name: training.TrainingType.name,
                 current: training.Subscriptions.length,
                 max: training.max,
                 coach: training.Coach.nickname,

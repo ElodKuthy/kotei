@@ -6,8 +6,9 @@ const localization = require('../localization/name')
 const texts = require('../localization/texts')
 const parser = require('../common/parser')
 
-const User = require('../model/user')
-const Password = require('../model/password')
+const model = require('../model/model')
+const User = model.User
+const Password = model.Password
 
 const mailerService = require('./mailer-service')
 
@@ -70,7 +71,21 @@ const add = (newUser, auth) => {
         })
 }
 
+const findMe = (auth) => {
+    if (!auth.isAuth) {
+        return Promise.reject(errors.unauthorized)
+    }
+
+    return User.findById(auth.id, {
+        attributes: {
+            exclude: ['created_at', 'updated_at']
+        }
+    })
+}
+
+
 module.exports = {
     add: add,
-    find: find
+    find: find,
+    findMe: findMe
 }

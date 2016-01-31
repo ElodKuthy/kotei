@@ -1,7 +1,7 @@
 const errors = require('../common/errors')
 const parser = require('../common/parser')
 
-const Location = require('../model/location')
+const Location = require('../model/model').Location
 
 const Promise = require('bluebird')
 
