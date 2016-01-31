@@ -63,6 +63,7 @@ router.post('/user', handler(userService.add, { body: 'newUser' }))
 
 router.get('/subscription/type', handler(subscriptionService.findSubscriptionType, { query: 'query' }))
 router.get('/subscription/template', handler(subscriptionService.findSubscriptionTemplate, { query: 'query' }))
+router.get('/subscription', handler(subscriptionService.find, { query: 'query' }))
 router.post('/subscription', handler(subscriptionService.add, { body: 'newSubscription' }))
 
 router.get('/training', handler(trainingService.find, { query: 'query' }))

@@ -48,6 +48,12 @@ SubscriptionTemplate.hasMany(CreditTemplate, {
     }
 })
 
+Subscription.belongsTo(SubscriptionType, {
+    foreignKey: {
+        allowNull: true
+    }
+})
+
 SubscriptionType.hasMany(Subscription, {
     foreignKey: {
         allowNull: true

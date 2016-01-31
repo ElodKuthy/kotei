@@ -17,11 +17,21 @@ angular.module('kotei')
                 resolve: {
                     profileInfo: (infoService) => {
                         return infoService.getMyProfile()
+                    },
+                    subscriptions: (infoService) => {
+                        return infoService.getMyProfile()
+                            .then((profileInfo) =>
+                                infoService.getSubscriptionsByClient(profileInfo.id))
                     }
                 },
                 roles: ['client', 'coach', 'admin']
         })
     })
-    .controller('MyProfileController', function (profileInfo) {
+    .controller('MyProfileController', function (R, profileInfo, subscriptions) {
         this.profileInfo = profileInfo
+        this.subscriptions = R.map((subscription) => {
+            subscription.from = new Date(subscription.from)
+            subscription.to = new Date(subscription.to)
+            return subscription
+        }, subscriptions)
     })

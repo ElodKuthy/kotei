@@ -88,7 +88,7 @@ angular.module('kotei')
                         return template
                     }, templates)
                 })
-            infoService.getTrainingsByDateAndType($moment().startOf('week').format(), $moment().endOf('week').format(), this.type.id)
+            infoService.getTrainingsByDateAndType($moment(this.from).startOf('week').format(), $moment(this.from).endOf('week').format(), this.type.id)
                 .then((trainings) => this.trainings = decorateTrainings(trainings))
         }
 
@@ -121,7 +121,6 @@ angular.module('kotei')
                 defaultTrainingDates: defaultTrainingDates
             }
 
-            console.log(subscription)
             return administrationService.addNewSubscription(subscription).then(() => modalService.info(this.title, 'Sikeres bérletvásárlás'))
         }
     })

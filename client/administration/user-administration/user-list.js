@@ -32,4 +32,6 @@ angular.module('kotei')
         this.newUserButtonTitle = this.isAdmin ? 'Új felhasználó létrehozása' : 'Új tanítvány regisztrálása'
 
         this.newUser = () => $state.go('administration.new-user')
+
+        this.userProfile = (user) => $state.go('administration.user-profile', { userId: user.id })
     })

@@ -43,11 +43,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="client in userList.coaches" ng-click="userList.userProfile(coaches)">
-                            <td>{{client.familyName}}</td>
-                            <td>{{client.givenName}}</td>
-                            <td>{{client.nickname}}</td>
-                            <td>{{client.email}}</td>
+                        <tr ng-repeat="coach in userList.coaches" ng-click="userList.userProfile(coach)">
+                            <td>{{coach.familyName}}</td>
+                            <td>{{coach.givenName}}</td>
+                            <td>{{coach.nickname}}</td>
+                            <td>{{coach.email}}</td>
                         </tr>
                     </tbody>
                 </table>

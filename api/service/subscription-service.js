@@ -162,8 +162,35 @@ const add = (subscription, auth) => {
         .then((newSubscription) => addToDefaultTrainings(newSubscription, auth, newSubscription.defaultTrainingDates))
 }
 
+const find = (query, auth) => {
+    if (!auth.isAuth) {
+        return Promise.reject(errors.unauthorized)
+    }
+
+    return Subscription.findAll(parser.parseQuery({
+        attributes: ['id', 'from', 'to', 'price'],
+        include: [{
+             attributes: ['id', 'name'],
+             model: SubscriptionType
+        }, {
+            attributes: ['id', 'familyName', 'givenName', 'nickname'],
+            model: User,
+            as: 'Coach'
+        }, {
+            attributes: ['id', 'amount'],
+            model: Credit,
+            as: 'Credits',
+            include: [{
+                attributes: ['id', 'name'],
+                model: TrainingType
+            }]
+        }]
+    }, query)).catch((error) => Promise.reject(errors.missingOrInvalidParameters))
+}
+
 module.exports = {
     findSubscriptionType: findSubscriptionType,
     findSubscriptionTemplate: findSubscriptionTemplate,
-    add: add
+    add: add,
+    find: find
 }

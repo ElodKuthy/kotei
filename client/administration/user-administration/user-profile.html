@@ -1,27 +1,27 @@
-<div class="profile container">
+<div class="user-profile container">
     <div class="row">
         <div class="col-md-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">Alapadatok</div>
                 <div class="panel-body">
-                    <div>Vezetéknév: {{myProfile.profileInfo.familyName}}</div>
-                    <div>Kerersztnév: {{myProfile.profileInfo.givenName}}</div>
-                    <div ng-if="myProfile.profileInfo.nickname">Becenév: {{myProfile.profileInfo.nickname}}</div>
-                    <div>Email: {{myProfile.profileInfo.email}}</div>
+                    <div>Vezetéknév: {{userProfile.user.familyName}}</div>
+                    <div>Kerersztnév: {{userProfile.user.givenName}}</div>
+                    <div ng-if="userProfile.user.nickname">Becenév: {{userProfile.user.nickname}}</div>
+                    <div>Email: {{userProfile.user.email}}</div>
                 </div>
             </div>
         </div>
-        <div class="col-md-6" ng-if="myProfile.subscriptions.length">
+        <div class="col-md-6" ng-if="userProfile.subscriptions.length">
             <div class="panel panel-primary">
                 <div class="panel-heading">Bérletek</div>
                 <div class="panel-body">
                     <ul class="list-group">
-                        <li class="list-group-item" ng-repeat="subscription in myProfile.subscriptions">
+                        <li class="list-group-item" ng-repeat="subscription in userProfile.subscriptions">
                             <div>Típus: {{subscription.SubscriptionType.name}}</div>
                             <div>Érvényesség kezdete: {{subscription.from | date : 'yyyy. MMMM d.'}}</div>
                             <div>Érvényesség vége: {{subscription.to | date : 'yyyy. MMMM d.'}}</div>
                             <div>Edző: {{subscription.Coach.fullName}}</div>
-                            <div>Ára: {{subscription.price | currency}}</div>
+                            <div>Ára: {{subscription.price | currency : 'Ft': 0 }}</div>
                             <div>Alkalmak:</div>
                             <ul>
                                 <li ng-repeat="credit in subscription.Credits">{{credit.TrainingType.name}}: {{credit.amount}}</li>
