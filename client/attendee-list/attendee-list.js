@@ -48,7 +48,7 @@ angular.module('kotei')
 
         this.training = {
             id: training.id,
-            name: training.name,
+            name: training.TrainingType.name,
             date: $moment(training.from).toDate(),
             coach: training.Coach.nickname,
             location: training.Location.name,
@@ -61,7 +61,7 @@ angular.module('kotei')
                 id: subscription.Client.id,
                 name: displayName(subscription.Client),
                 checkIn: subscription.Attendee.checkIn,
-                cssClass: subscription.Attendee.checkIn ? 'text-success' : moment().isBefore(training.to) ? 'hide' : 'text-dangers'
+                cssClass: subscription.Attendee.checkIn ? 'text-success' : moment().isBefore(training.to) ? 'hide' : 'text-danger'
 
             }
         }, training.Subscriptions)
@@ -78,7 +78,7 @@ angular.module('kotei')
 
         this.toggleAttendee = (attendee) => {
 
-            if (!this.userInfo.isClient && moment().isAfter(training.from) && moment().isBefore(moment(training.to).endOf('day'))) {
+            if (this.userInfo.isAdmin || (this.userInfo.isCoach && moment().isAfter(training.from) && moment().isBefore(moment(training.to).endOf('day')))) {
                 administrationService.updateAttendee(training.id, attendee.id, !attendee.checkIn)
                     .then(() => $state.reload())
                     .catch((error) => this.error = error)
