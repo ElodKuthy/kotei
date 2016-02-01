@@ -74,7 +74,7 @@ angular.module('kotei')
 
         trainings.forEach((training) => {
 
-            var location = R.find((current) => current.name = training.Location.name, this.locations)
+            var location = R.find((current) => current.name === training.Location.name, this.locations)
             if (!location) {
                 location = {
                     name: training.Location.name,
