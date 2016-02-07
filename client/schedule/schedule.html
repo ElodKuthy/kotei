@@ -7,7 +7,7 @@
                     <thead>
                         <tr>
                             <th class="hour"></th>
-                            <th class="schedule-column" ng-repeat="day in schedule.days">{{day}}</th>
+                            <th class="schedule-column" ng-if="day" ng-repeat="day in location.days">{{day}}</th>
                         </tr>
                     </thead>
                     <tbody>

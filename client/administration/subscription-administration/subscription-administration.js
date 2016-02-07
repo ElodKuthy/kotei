@@ -88,7 +88,7 @@ angular.module('kotei')
                         return template
                     }, templates)
                 })
-            infoService.getTrainingsByDateAndType($moment(this.from).startOf('week').format(), $moment(this.from).endOf('week').format(), this.type.id)
+            infoService.getTrainingsByDateAndType($moment(this.from).startOf('isoweek').format(), $moment(this.from).endOf('isoweek').format(), this.type.id)
                 .then((trainings) => this.trainings = decorateTrainings(trainings))
         }
 

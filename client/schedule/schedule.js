@@ -16,13 +16,13 @@ angular.module('kotei')
                 },
                 resolve: {
                     from: ($moment) => {
-                        return $moment().startOf('week')
+                        return $moment().startOf('isoweek')
                     },
                     to: ($moment) => {
-                        return $moment().endOf('week')
+                        return $moment().endOf('isoweek')
                     },
                     trainings: ($moment, infoService) => {
-                        return infoService.getTrainingsByDate($moment().startOf('week').format('YYYY-MM-DD'), $moment().endOf('week').format('YYYY-MM-DD'))
+                        return infoService.getTrainingsByDate($moment().startOf('isoweek').format('YYYY-MM-DD'), $moment().endOf('isoweek').format('YYYY-MM-DD'))
                     }
                 },
                 roles: ['client', 'coach', 'admin']
@@ -68,7 +68,7 @@ angular.module('kotei')
 
         this.userInfo = userInfoService.getUserInfo()
 
-        this.days = ['Hétfő', 'Kedd', 'Szerda', 'Csütörtök', 'Péntek']
+        const days = ['Hétfő', 'Kedd', 'Szerda', 'Csütörtök', 'Péntek', 'Szombat', 'Vasárnap']
 
         this.locations = []
 
@@ -78,6 +78,7 @@ angular.module('kotei')
             if (!location) {
                 location = {
                     name: training.Location.name,
+                    days: [null, null, null, null, null, null, null],
                     trainings: []
                 }
                 this.locations.push(location)
@@ -89,14 +90,16 @@ angular.module('kotei')
             var hour = from.minutes() > 30 ? $moment(from).add({ hour: 1 }).format('HH:00') : from.format('HH:00')
             var row = R.find((current) => current.hour === hour, location.trainings)
             if (!row) {
-                row = { hour: hour, cells: [[], [], [], [], []] }
+                row = { hour: hour, cells: [[], [], [], [], [], [], []] }
                 location.trainings.push(row)
             }
 
             var userSubscription = R.find((current) => current.Client.id === this.userInfo.id, training.Subscriptions)
             var involved = !!userSubscription
+            var dayIndex = from.isoWeekday() - 1
 
-            row.cells[from.isoWeekday() - 1].push({
+            location.days[dayIndex] = days[dayIndex]
+            row.cells[dayIndex].push({
                 id: training.id,
                 name: training.TrainingType.name,
                 current: training.Subscriptions.length,
@@ -110,6 +113,20 @@ angular.module('kotei')
                 participated: involved && $moment().isAfter(from) && userSubscription.Attendee.checkIn,
                 missed: involved && $moment().isAfter(from) && !userSubscription.Attendee.checkIn
             })
+        })
+
+        this.locations.forEach((location) => {
+            var offset = 0
+            location.days.forEach((day, index) => {
+                if (!day) {
+                    location.trainings.forEach((row) => {
+                        row.cells.splice(index - offset, 1)
+                    })
+                    offset++
+                }
+            })
+            location.days = R.filter((day) => !!day, location.days)
+            location.trainings.sort((a, b) => a.hour >= b. hour)
         })
 
         this.showAttendees = (trainingId) => {
