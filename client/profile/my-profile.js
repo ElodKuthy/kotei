@@ -27,11 +27,11 @@ angular.module('kotei')
                 roles: ['client', 'coach', 'admin']
         })
     })
-    .controller('MyProfileController', function (R, profileInfo, subscriptions) {
+    .controller('MyProfileController', function (R, $moment, profileInfo, subscriptions) {
         this.profileInfo = profileInfo
         this.subscriptions = R.map((subscription) => {
-            subscription.from = new Date(subscription.from)
-            subscription.to = new Date(subscription.to)
+            subscription.from = $moment(subscription.from).toDate()
+            subscription.to = $moment(subscription.to).toDate()
             return subscription
         }, subscriptions)
     })

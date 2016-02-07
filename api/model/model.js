@@ -101,6 +101,14 @@ CreditTemplate.belongsTo(TrainingType, {
     }
 })
 
+CreditTemplate.belongsTo(User, {
+    foreignKey: {
+        name: 'coach_id',
+        allowNull: true
+    },
+    as: 'Coach'
+})
+
 Training.belongsTo(TrainingType, {
     foreignKey: {
         allowNull: false

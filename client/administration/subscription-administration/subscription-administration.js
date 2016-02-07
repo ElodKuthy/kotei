@@ -28,7 +28,7 @@ angular.module('kotei')
                 roles: ['coach', 'admin']
         })
     })
-    .controller('SubscriptionAdministrationController', function (R, $moment, userInfoService, clients, coaches, subscriptionTypes, infoService, modalService, administrationService) {
+    .controller('SubscriptionAdministrationController', function (R, $scope, $moment, userInfoService, clients, coaches, subscriptionTypes, infoService, modalService, administrationService) {
 
         const displayName = (client) => {
             return client.fullName == client.nickname
@@ -71,6 +71,13 @@ angular.module('kotei')
             this.trainings = null
             this.variant = null
             this.credits = null
+
+            if (!this.coach) {
+                return
+            }
+
+            var coach;
+
             infoService.getSubscriptionTemplates(this.type.id)
                 .then((templates) => {
                     this.templates = R.map((template) => {
@@ -87,17 +94,27 @@ angular.module('kotei')
                         template.CreditTemplates.price = template.SubscriptionVariant.price
                         return template
                     }, templates)
+                    this.templates = R.filter((template) => {
+                        coach = R.reduce((acc, value) => acc ? acc : value.Coach, null, template.CreditTemplates)
+                        return !coach || coach.id === this.coach.id
+                    }, this.templates)
                 })
             infoService.getTrainingsByDateAndType($moment(this.from).startOf('isoweek').format(), $moment(this.from).endOf('isoweek').format(), this.type.id)
-                .then((trainings) => this.trainings = decorateTrainings(trainings))
+                .then((trainings) => {
+                    this.trainings = decorateTrainings(trainings)
+                    if (coach) {
+                        this.trainings = R.filter((training) => training.Coach.id === this.coach.id, this.trainings)
+                    }
+                })
         }
 
-        this.typeChanged()
+        $scope.$watch(() => this.coach, this.typeChanged)
+
+        $scope.$watch(() => this.from, this.typeChanged)
 
         this.clickTraining = (training) => {
             training.selected = !training.selected
         }
-
 
         this.submit = () => {
             delete this.error
