@@ -4,6 +4,8 @@ import nodemon from 'gulp-nodemon'
 import concat from 'gulp-concat'
 import babel from 'gulp-babel'
 import templateCache from 'gulp-angular-templatecache'
+import uglify from 'gulp-uglify'
+import cssnano from 'gulp-cssnano'
 
 gulp.task('fonts', () => {
     return gulp.src([
@@ -23,6 +25,7 @@ gulp.task('sass', () => {
     return gulp.src('./client/**/*.scss')
         .pipe(sass().on('error', sass.logError))
         .pipe(concat('kotei.css'))
+        .pipe(cssnano())
         .pipe(gulp.dest('./public/'))
 })
 
@@ -45,6 +48,7 @@ gulp.task('vendor', () => {
             './bower_components/angular-momentjs/angular-momentjs.js'
         ])
         .pipe(concat('vendor.js'))
+        .pipe(uglify())
         .pipe(gulp.dest('./public/'))
 })
 
