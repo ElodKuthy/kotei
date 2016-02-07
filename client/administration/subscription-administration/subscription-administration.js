@@ -86,11 +86,27 @@ angular.module('kotei')
                             template.valid >= 7
                             ? `${template.valid / 7} hét`
                             : `${template.valid} nap`
-                        template.amount = R.reduce((acc, credit) => acc + credit.amount,  0, template.CreditTemplates)
-                        template.amountPerWeek =
-                            template.valid >= 7
-                            ? Math.ceil(template.amount * 7 / template.valid)
-                            : template.amount
+
+                        if (template.CreditTemplates.length > 1) {
+                            template.CreditTemplates.sort((a, b) => a.TrainingType.name >= b.TrainingType.name)
+                            template.amountPerWeek = template.CreditTemplates.reduce((acc, creditTemplate) => {
+                                if (acc) {
+                                    acc = acc + ' + '
+                                }
+
+                                return acc +
+                                    (template.valid >= 7
+                                    ? Math.ceil(creditTemplate.amount * 7 / template.valid)
+                                    : creditTemplate.amount) + ' ' +
+                                    creditTemplate.TrainingType.name
+                            }, '')
+                        } else {
+                            template.amount = template.CreditTemplates[0].amount
+                            template.amountPerWeek =
+                                (template.valid >= 7
+                                ? Math.ceil(template.amount * 7 / template.valid)
+                                : template.amount) + ' alkalom'
+                        }
                         template.CreditTemplates.price = template.SubscriptionVariant.price
                         return template
                     }, templates)
@@ -98,14 +114,26 @@ angular.module('kotei')
                         coach = R.reduce((acc, value) => acc ? acc : value.Coach, null, template.CreditTemplates)
                         return !coach || coach.id === this.coach.id
                     }, this.templates)
+
+                    const trainingTypeIds = this.templates.reduce((acc, template) => {
+                        template.CreditTemplates.forEach((creditTemplate) => {
+                            if (!acc.some((item) => item === creditTemplate.TrainingType.id)) {
+                                acc.push(creditTemplate.TrainingType.id)
+                            }
+                        })
+
+                        return acc
+                    }, []).sort((a, b) => a >= b)
+
+                    infoService.getTrainingsByDateAndType($moment(this.from).startOf('isoweek').format(), $moment(this.from).endOf('isoweek').format(), trainingTypeIds)
+                        .then((trainings) => {
+                            this.trainings = decorateTrainings(trainings)
+                            if (coach) {
+                                this.trainings = R.filter((training) => training.Coach.id === this.coach.id, this.trainings)
+                            }
+                        })
                 })
-            infoService.getTrainingsByDateAndType($moment(this.from).startOf('isoweek').format(), $moment(this.from).endOf('isoweek').format(), this.type.id)
-                .then((trainings) => {
-                    this.trainings = decorateTrainings(trainings)
-                    if (coach) {
-                        this.trainings = R.filter((training) => training.Coach.id === this.coach.id, this.trainings)
-                    }
-                })
+
         }
 
         $scope.$watch(() => this.coach, this.typeChanged)

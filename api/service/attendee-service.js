@@ -60,8 +60,10 @@ const findSubscriptionToAdd = (training, client) => {
                             || credit.training_type_id === training.training_type_id)
                             && (!credit.coach_id
                             || credit.coach_id === training.coach_id)) {
-                            return acc + credit.amount
+                            acc += credit.amount
                         }
+
+                        return acc
                     }, 0, subscription.Credits)
 
                     return amount > counts[index]

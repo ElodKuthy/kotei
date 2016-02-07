@@ -38,7 +38,7 @@
                 <div ng-if="subscriptionAdministration.variant" class="radio" ng-repeat="template in subscriptionAdministration.templates | filter: { valid : subscriptionAdministration.variant.valid } | orderBy: 'amountPerWeek' ">
                     <label>
                         <input type="radio" ng-model="subscriptionAdministration.credits" ng-value="template.CreditTemplates" ng-change="subscriptionAdministration.amountChanged()">
-                        {{ template.amountPerWeek }} alkalom
+                        {{ template.amountPerWeek }}
                     </label>
                 </div>
             </div>
