@@ -23,12 +23,15 @@ angular.module('kotei')
                     },
                     subscriptionTypes: (infoService) => {
                         return infoService.getAllSubscriptionTypes()
+                    },
+                    allTrainingTypes: (infoService) => {
+                        return infoService.getAllTrainingTypes()
                     }
                 },
                 roles: ['coach', 'admin']
         })
     })
-    .controller('SubscriptionAdministrationController', function (R, $scope, $moment, userInfoService, clients, coaches, subscriptionTypes, infoService, modalService, administrationService) {
+    .controller('SubscriptionAdministrationController', function (R, $scope, $moment, userInfoService, clients, coaches, subscriptionTypes, allTrainingTypes, infoService, modalService, administrationService) {
 
         const displayName = (client) => {
             return client.fullName == client.nickname
@@ -115,17 +118,23 @@ angular.module('kotei')
                         return !coach || coach.id === this.coach.id
                     }, this.templates)
 
-                    const trainingTypeIds = this.templates.reduce((acc, template) => {
-                        template.CreditTemplates.forEach((creditTemplate) => {
-                            if (!acc.some((item) => item === creditTemplate.TrainingType.id)) {
-                                acc.push(creditTemplate.TrainingType.id)
-                            }
-                        })
+                    const trainingTypeIds =
+                        this.templates.some((template) => template.CreditTemplates.some((creditTemplate) => !creditTemplate.TrainingType))
+                        ? allTrainingTypes.map((trainingType) => trainingType.id)
+                        : this.templates.reduce((acc, template) => {
+                            template.CreditTemplates.forEach((creditTemplate) => {
+                                if (!acc.some((item) => item === creditTemplate.TrainingType.id)) {
+                                    acc.push(creditTemplate.TrainingType.id)
+                                }
+                            })
+                            return acc
+                        }, []).sort((a, b) => a >= b)
 
-                        return acc
-                    }, []).sort((a, b) => a >= b)
+                    const oneDay = !this.templates.some((template) => template.SubscriptionVariant.valid > 1)
+                    const from = oneDay ? $moment(this.from).startOf('day').format() : $moment(this.from).startOf('isoweek').format()
+                    const to = oneDay ?$moment(this.from).endOf('day').format() : $moment(this.from).endOf('isoweek').format()
 
-                    infoService.getTrainingsByDateAndType($moment(this.from).startOf('isoweek').format(), $moment(this.from).endOf('isoweek').format(), trainingTypeIds)
+                    infoService.getTrainingsByDateAndType(from, to, trainingTypeIds)
                         .then((trainings) => {
                             this.trainings = decorateTrainings(trainings)
                             if (coach) {
