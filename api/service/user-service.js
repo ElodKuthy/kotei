@@ -83,9 +83,28 @@ const findMe = (auth) => {
     })
 }
 
+const resendRegistration = (user, auth) => {
+    if (!auth.isAdmin && !auth.isCoach) {
+        return Promise.reject(errors.unauthorized)
+    }
+
+    return User.findById(user.id, {
+        attributes: {
+            exclude: ['created_at', 'updated_at']
+        },
+        include: [ Password ]
+    })
+    .then((user) => {
+        user.Password.resetPassword()
+        return user
+    })
+    .then((user) => mailerService.sendRegistration(user, user.Password.token))
+
+}
 
 module.exports = {
     add: add,
     find: find,
-    findMe: findMe
+    findMe: findMe,
+    resendRegistration: resendRegistration
 }

@@ -25,11 +25,16 @@ angular.module('kotei')
                 roles: ['coach', 'admin']
         })
     })
-    .controller('UserProfileController', function ($moment, R, user, subscriptions) {
+    .controller('UserProfileController', function ($moment, R, user, subscriptions, administrationService, modalService) {
         this.user = user
         this.subscriptions = R.map((subscription) => {
             subscription.from = $moment(subscription.from).toDate()
             subscription.to = $moment(subscription.to).toDate()
             return subscription
         }, subscriptions)
+
+        this.resendRegistration = () => {
+            return administrationService.resendRegistration(user.id)
+                .then(() => modalService.info('Regisztrációs email', 'A regisztrációs emailt újra elküldtük'))
+        }
     })

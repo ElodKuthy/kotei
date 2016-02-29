@@ -60,6 +60,8 @@ router.post('/password/reset', handler(securityService.reset, { body: ['token', 
 router.get('/user', handler(userService.find, { query: 'query' }))
 router.get('/user/me', handler(userService.findMe, {}))
 router.post('/user', handler(userService.add, { body: 'newUser' }))
+router.post('/user/resend', handler(userService.resendRegistration, { body: 'user' }))
+
 
 router.get('/subscription/type', handler(subscriptionService.findSubscriptionType, { query: 'query' }))
 router.get('/subscription/template', handler(subscriptionService.findSubscriptionTemplate, { query: 'query' }))
