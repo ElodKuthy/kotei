@@ -37,4 +37,11 @@ angular.module('kotei')
             return administrationService.resendRegistration(user.id)
                 .then(() => modalService.info('Regisztrációs email', 'A regisztrációs emailt újra elküldtük'))
         }
+
+        this.submitUser = () => {
+            delete this.error
+            return administrationService.updateUser(user)
+                .then(() => modalService.info('Felhasználó adatainakmódosítása', 'A felhasználó adatait sikeresen módosítottad'),
+                    (error) => this.userError = error)
+        }
     })

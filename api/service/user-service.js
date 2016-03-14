@@ -99,12 +99,40 @@ const resendRegistration = (user, auth) => {
         return user
     })
     .then((user) => mailerService.sendRegistration(user, user.Password.token))
+}
 
+const update = (updatedUser, auth) => {
+    if (!auth.isAdmin && !auth.isCoach) {
+        return Promise.reject(errors.unauthorized)
+    }
+
+    return User.findById(updatedUser.id)
+        .then((user) => {
+            user.familyName = updatedUser.familyName
+            user.givenName = updatedUser.givenName
+            user.nickname = updatedUser.nickname
+            user.email = updatedUser.email
+            return user.save()
+        })
+        .catch((error) => {
+            if (error.name === 'SequelizeUniqueConstraintError') {
+                if (error.fields.normalizedNickname) {
+                    return Promise.reject(errors.nameAlreadyUsed)
+                }
+
+                if (error.fields.email) {
+                    return Promise.reject(errors.emailAlreadyUsed)
+                }
+            }
+
+            return Promise.reject(error)
+        })
 }
 
 module.exports = {
     add: add,
     find: find,
     findMe: findMe,
-    resendRegistration: resendRegistration
+    resendRegistration: resendRegistration,
+    update: update
 }
