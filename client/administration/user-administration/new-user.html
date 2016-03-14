@@ -39,6 +39,18 @@
                 ng-options="role.name for role in newUser.roles">
             </select>
         </div>
+        <div ng-class="{ 'has-error': (userForm.address.$invalid && userForm.address.$touched) }">
+            <label for="address">Számlázási cím</label>
+            <input id="address" name="address" type="text" class="form-control" ng-model="newUser.user.address">
+            <div ng-messages="userForm.address.$error" ng-if="userForm.address.$touched">
+            </div>
+        </div>
+        <div ng-class="{ 'has-error': (userForm.phone.$invalid && userForm.phone.$touched) }">
+            <label for="phone">Telefonszám</label>
+            <input id="phone" name="phone" type="text" class="form-control" ng-model="newUser.user.phone">
+            <div ng-messages="userForm.phone.$error" ng-if="userForm.phone.$touched">
+            </div>
+        </div>
         <button type="submit" class="btn btn-primary pull-right" ng-click="newUser.submit()" ng-disabled="userForm.$pristine || userForm.$invalid">Mentés</button>
     </form>
 </div>

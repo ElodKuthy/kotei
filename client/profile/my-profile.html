@@ -8,6 +8,8 @@
                     <div>Kerersztnév: {{myProfile.profileInfo.givenName}}</div>
                     <div ng-if="myProfile.profileInfo.nickname">Becenév: {{myProfile.profileInfo.nickname}}</div>
                     <div>Email: {{myProfile.profileInfo.email}}</div>
+                    <div ng-if="myProfile.profileInfo.address">Számlázási cím: {{myProfile.profileInfo.address}}</div>
+                    <div ng-if="myProfile.profileInfo.phone">Telefonszám: {{myProfile.profileInfo.phone}}</div>
                 </div>
             </div>
         </div>

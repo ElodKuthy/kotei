@@ -87,6 +87,14 @@ const User = database.define('User', {
         allowNull: false,
         unique: true,
         defaultValue: Sequelize.UUIDV4
+    },
+    address: {
+        type: Sequelize.STRING,
+        allowNull: true
+    },
+    phone: {
+        type: Sequelize.STRING,
+        allowNull: true
     }
 })
 

@@ -36,6 +36,18 @@
                                 <div class="help-block" ng-message="email">Helytelen email cím formátum</div>
                             </div>
                         </div>
+                        <div ng-class="{ 'has-error': (userForm.address.$invalid && userForm.address.$touched) }">
+                            <label for="address">Számlázási cím</label>
+                            <input id="address" name="address" type="text" class="form-control" ng-model="userProfile.user.address">
+                            <div ng-messages="userForm.address.$error" ng-if="userForm.address.$touched">
+                            </div>
+                        </div>
+                        <div ng-class="{ 'has-error': (userForm.phone.$invalid && userForm.phone.$touched) }">
+                            <label for="phone">Telefonszám</label>
+                            <input id="phone" name="phone" type="text" class="form-control" ng-model="userProfile.user.phone">
+                            <div ng-messages="userForm.phone.$error" ng-if="userForm.phone.$touched">
+                            </div>
+                        </div>
                         <button type="button" class="btn btn-primary pull-left" ng-click="userProfile.resendRegistration()">Regisztrációs email újraküldése</button>
                         <button type="submit" class="btn btn-primary pull-right" ng-click="userProfile.submitUser()" ng-disabled="userForm.$pristine || userForm.$invalid">Mentés</button>
                     </form>

@@ -20,7 +20,7 @@ const find = (query, auth) => {
     }
 
     return User.findAll(parser.parseQuery({
-        attributes: ['id', 'familyName', 'givenName', 'nickname', 'email', 'role']
+        attributes: ['id', 'familyName', 'givenName', 'nickname', 'email', 'role', 'address', 'phone']
     }, query)).catch((error) => Promise.reject(errors.missingOrInvalidParameters))
 }
 
@@ -50,6 +50,8 @@ const add = (newUser, auth) => {
             nickname: newUser.nickname,
             email: newUser.email.toLowerCase(),
             role: newUser.role,
+            address: newUser.address,
+            phone: newUser.phone,
             Password: {
                 token: uuid()
             }
@@ -112,6 +114,8 @@ const update = (updatedUser, auth) => {
             user.givenName = updatedUser.givenName
             user.nickname = updatedUser.nickname
             user.email = updatedUser.email
+            user.address = updatedUser.address
+            user.phone = updatedUser.phone
             return user.save()
         })
         .catch((error) => {
