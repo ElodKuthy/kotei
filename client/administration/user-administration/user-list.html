@@ -1,6 +1,14 @@
 <div class="user-list container-fluid">
     <div class="row">
         <div class="col-xs-12">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 form-inline">
+            <div class="form-group">
+                <label for="search">Keresés</label>
+                <input id="search" name="search" type="text" class="form-control" ng-model="userList.search"></input>
+            </div>
             <button type="button" class="btn btn-primary" ng-click="userList.newUser()">{{userList.newUserButtonTitle}}</button>
         </div>
     </div>
@@ -18,7 +26,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="client in userList.clients" ng-click="userList.userProfile(client)">
+                        <tr ng-repeat="client in userList.clients | filter: userList.search" ng-click="userList.userProfile(client)">
                             <td>{{client.familyName}}</td>
                             <td>{{client.givenName}}</td>
                             <td>{{client.nickname}}</td>
@@ -43,7 +51,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="coach in userList.coaches" ng-click="userList.userProfile(coach)">
+                        <tr ng-repeat="coach in userList.coaches | filter: userList.search" ng-click="userList.userProfile(coach)">
                             <td>{{coach.familyName}}</td>
                             <td>{{coach.givenName}}</td>
                             <td>{{coach.nickname}}</td>
