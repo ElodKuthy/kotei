@@ -8,6 +8,9 @@
                         <div class="alert alert-danger" ng-if="userProfile.userError">
                             {{userProfile.userError}}
                         </div>
+                        <div class="info">
+                            Regisztráció időpontja: {{ userProfile.registration | date : 'fullDate' }}
+                        </div>
                         <div ng-class="{ 'has-error': (userForm.familyName.$invalid && userForm.familyName.$touched) }">
                             <label for="familyName">Vezetéknév</label>
                             <input id="familyName" name="familyName" type="text" class="form-control" ng-model="userProfile.user.familyName" required>
@@ -47,6 +50,15 @@
                             <input id="phone" name="phone" type="text" class="form-control" ng-model="userProfile.user.phone">
                             <div ng-messages="userForm.phone.$error" ng-if="userForm.phone.$touched">
                             </div>
+                        </div>
+                        <div>
+                            <label for="state">Státusz</label>
+                            <select class="form-control" name="state" id="state" ng-model="userProfile.user.active" ng-options="state.value as state.name for state in userProfile.states">
+                            </select>
+                        </div>
+                        <div>
+                            <label for="coach">Edző</label>
+                            <input id="coach" name="coach" type="text" ng-model="userProfile.coach" uib-typeahead="coach as coach.displayName for coach in userProfile.coaches | filter: { displayName: $viewValue }" typeahead-editable="false" class="form-control" autocomplete="off">
                         </div>
                         <button type="button" class="btn btn-primary pull-left" ng-click="userProfile.resendRegistration()">Regisztrációs email újraküldése</button>
                         <button type="submit" class="btn btn-primary pull-right" ng-click="userProfile.submitUser()" ng-disabled="userForm.$pristine || userForm.$invalid">Mentés</button>

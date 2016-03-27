@@ -156,6 +156,21 @@ User.hasMany(Subscription, {
     as: 'SoldSubscriptions'
 })
 
+User.belongsTo(User, {
+    foreignKey: {
+        name: 'coach_id',
+        allowNull: true
+    },
+    as: 'Coach'
+})
+
+User.hasMany(User, {
+    foreignKey: {
+        name: 'coach_id',
+        allowNull: true
+    },
+    as: 'Clients'
+})
 
 module.exports = {
     database: database,

@@ -95,6 +95,10 @@ const User = database.define('User', {
     phone: {
         type: Sequelize.STRING,
         allowNull: true
+    },
+    active: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true
     }
 })
 

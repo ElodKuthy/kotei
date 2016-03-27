@@ -20,7 +20,19 @@ const find = (query, auth) => {
     }
 
     return User.findAll(parser.parseQuery({
-        attributes: ['id', 'familyName', 'givenName', 'nickname', 'email', 'role', 'address', 'phone']
+        attributes: [
+            'id',
+            'familyName',
+            'givenName',
+            'nickname',
+            'email',
+            'role',
+            'address',
+            'phone',
+            'active',
+            'coach_id',
+            'created_at'
+        ]
     }, query)).catch((error) => Promise.reject(errors.missingOrInvalidParameters))
 }
 
@@ -52,6 +64,8 @@ const add = (newUser, auth) => {
             role: newUser.role,
             address: newUser.address,
             phone: newUser.phone,
+            active: newUser.active,
+            coach_id: newUser.coach_id,
             Password: {
                 token: uuid()
             }
@@ -79,9 +93,19 @@ const findMe = (auth) => {
     }
 
     return User.findById(auth.id, {
-        attributes: {
-            exclude: ['created_at', 'updated_at']
-        }
+        attributes: [
+            'id',
+            'familyName',
+            'givenName',
+            'nickname',
+            'email',
+            'role',
+            'address',
+            'phone',
+            'active',
+            'coach_id',
+            'created_at'
+        ]
     })
 }
 
@@ -91,9 +115,6 @@ const resendRegistration = (user, auth) => {
     }
 
     return User.findById(user.id, {
-        attributes: {
-            exclude: ['created_at', 'updated_at']
-        },
         include: [ Password ]
     })
     .then((user) => {
@@ -115,7 +136,9 @@ const update = (updatedUser, auth) => {
             user.nickname = updatedUser.nickname
             user.email = updatedUser.email
             user.address = updatedUser.address
-            user.phone = updatedUser.phone
+            user.phone = updatedUser.phone,
+            user.active = updatedUser.active,
+            user.coach_id = updatedUser.coach_id
             return user.save()
         })
         .catch((error) => {

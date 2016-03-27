@@ -33,6 +33,11 @@ angular.module('kotei')
 
         this.role = this.roles[0]
 
+        this.user = {
+            active: true,
+            coach_id: userInfo.id
+        }
+
         const checkAdminRole = () => {
             if (this.user.role === 'admin') {
                 return modalService.decision('Új admin létrehozása', 'Biztos, hogy egy új adminisztrátort akarsz létrehozni?')

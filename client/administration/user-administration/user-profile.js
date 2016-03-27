@@ -18,6 +18,9 @@ angular.module('kotei')
                     user: ($stateParams, infoService) => {
                         return infoService.getUser($stateParams.userId)
                     },
+                    coaches: (infoService) => {
+                        return infoService.getAllCoaches()
+                    },
                     subscriptions: ($stateParams, infoService) => {
                         return infoService.getSubscriptionsByClient($stateParams.userId)
                     }
@@ -25,7 +28,19 @@ angular.module('kotei')
                 roles: ['coach', 'admin']
         })
     })
-    .controller('UserProfileController', function ($moment, R, user, subscriptions, administrationService, modalService) {
+    .controller('UserProfileController', function ($moment, R, user, coaches, subscriptions, administrationService, modalService) {
+
+        const displayName = (client) => {
+            return client.fullName == client.nickname
+                ? client.fullName
+                : `${client.fullName} "${client.nickname}"`
+        }
+
+        const addDisplayName = (clients) => R.map((client) => {
+            client.displayName = displayName(client)
+            return client
+        }, clients)
+
         this.user = user
         this.subscriptions = R.map((subscription) => {
             subscription.from = $moment(subscription.from).toDate()
@@ -33,14 +48,25 @@ angular.module('kotei')
             return subscription
         }, subscriptions)
 
+        this.states = [
+            { name: 'aktív', value: true },
+            { name: 'passzív', value: false }
+        ]
+
+        this.registration = $moment(this.user.created_at).toDate()
+
+        this.coaches = addDisplayName(coaches)
+        this.coach = R.find((coach) => coach.id === this.user.coach_id, this.coaches)
+
         this.resendRegistration = () => {
-            return administrationService.resendRegistration(user.id)
+            return administrationService.resendRegistration(this.user.id)
                 .then(() => modalService.info('Regisztrációs email', 'A regisztrációs emailt újra elküldtük'))
         }
 
         this.submitUser = () => {
             delete this.error
-            return administrationService.updateUser(user)
+            this.user.coach_id = this.coach ? this.coach.id : null
+            return administrationService.updateUser(this.user)
                 .then(() => modalService.info('Felhasználó adatainakmódosítása', 'A felhasználó adatait sikeresen módosítottad'),
                     (error) => this.userError = error)
         }
