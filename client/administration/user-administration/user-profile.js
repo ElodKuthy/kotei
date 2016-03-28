@@ -28,18 +28,7 @@ angular.module('kotei')
                 roles: ['coach', 'admin']
         })
     })
-    .controller('UserProfileController', function ($moment, R, user, coaches, subscriptions, administrationService, modalService) {
-
-        const displayName = (client) => {
-            return client.fullName == client.nickname
-                ? client.fullName
-                : `${client.fullName} "${client.nickname}"`
-        }
-
-        const addDisplayName = (clients) => R.map((client) => {
-            client.displayName = displayName(client)
-            return client
-        }, clients)
+    .controller('UserProfileController', function ($moment, R, user, coaches, subscriptions, administrationService, modalService, nameService) {
 
         this.user = user
         this.subscriptions = R.map((subscription) => {
@@ -55,7 +44,7 @@ angular.module('kotei')
 
         this.registration = $moment(this.user.created_at).toDate()
 
-        this.coaches = addDisplayName(coaches)
+        this.coaches = nameService.addDisplayName(coaches)
         this.coach = R.find((coach) => coach.id === this.user.coach_id, this.coaches)
 
         this.resendRegistration = () => {

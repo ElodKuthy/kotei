@@ -51,6 +51,10 @@
             <div ng-messages="userForm.phone.$error" ng-if="userForm.phone.$touched">
             </div>
         </div>
+        <div ng-if="newUser.isAdmin">
+            <label for="coach">Edző</label>
+            <input id="coach" name="coach" type="text" ng-model="newUser.coach" uib-typeahead="coach as coach.displayName for coach in newUser.coaches | filter: { displayName: $viewValue }" typeahead-editable="false" class="form-control" autocomplete="off">
+        </div>
         <button type="submit" class="btn btn-primary pull-right" ng-click="newUser.submit()" ng-disabled="userForm.$pristine || userForm.$invalid">Mentés</button>
     </form>
 </div>

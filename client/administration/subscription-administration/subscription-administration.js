@@ -31,18 +31,7 @@ angular.module('kotei')
                 roles: ['coach', 'admin']
         })
     })
-    .controller('SubscriptionAdministrationController', function (R, $scope, $moment, userInfoService, clients, coaches, subscriptionTypes, allTrainingTypes, infoService, modalService, administrationService) {
-
-        const displayName = (client) => {
-            return client.fullName == client.nickname
-                ? client.fullName
-                : `${client.fullName} "${client.nickname}"`
-        }
-
-        const addDisplayName = (clients) => R.map((client) => {
-            client.displayName = displayName(client)
-            return client
-        }, clients)
+    .controller('SubscriptionAdministrationController', function (R, $scope, $moment, userInfoService, clients, coaches, subscriptionTypes, allTrainingTypes, infoService, modalService, administrationService, nameService) {
 
         this.title = 'Bérletvásárlás'
 
@@ -53,8 +42,8 @@ angular.module('kotei')
             this.coach = this.userInfo
         }
 
-        this.clients = addDisplayName(clients)
-        this.coaches = addDisplayName(coaches)
+        this.clients = nameService.addDisplayName(clients)
+        this.coaches = nameService.addDisplayName(coaches)
         this.subscriptionTypes = subscriptionTypes
         this.type = this.subscriptionTypes[0]
 

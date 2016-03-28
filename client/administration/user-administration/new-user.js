@@ -14,10 +14,15 @@ angular.module('kotei')
                         controller: 'NewUserController as newUser'
                     }
                 },
+                resolve: {
+                    coaches: (infoService) => {
+                        return infoService.getAllCoaches()
+                    }
+                },
                 roles: ['coach', 'admin']
         })
     })
-    .controller('NewUserController', function ($q, $state, userInfoService, modalService, administrationService) {
+    .controller('NewUserController', function ($q, $state, coaches, userInfoService, modalService, administrationService, nameService) {
 
         const userInfo = userInfoService.getUserInfo()
 
@@ -34,9 +39,10 @@ angular.module('kotei')
         this.role = this.roles[0]
 
         this.user = {
-            active: true,
-            coach_id: userInfo.id
+            active: true
         }
+
+        this.coaches = nameService.addDisplayName(coaches)
 
         const checkAdminRole = () => {
             if (this.user.role === 'admin') {
@@ -49,6 +55,7 @@ angular.module('kotei')
         this.submit = () => {
             delete this.error
             this.user.role = this.role.value
+            this.user.coach_id = this.coach ? this.coach.id : userInfo.id
 
             checkAdminRole().then(() => {
                 administrationService.addNewUser(this.user)
