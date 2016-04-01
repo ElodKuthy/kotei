@@ -1,10 +1,13 @@
 <nav class="navbar navbar-default">
     <div class="container-fluid">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#top-navbar" aria-expanded="false">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
+        <div class="visible-xs pull-right small-navbar">
+            <ul class="list-inline">
+                <li ng-if="navbar.userInfo.isAuth"><a ui-sref="schedule"><i class="fa fa-calendar fa-2x"></i></a></li>
+                <li ng-if="navbar.userInfo.isAuth"><a ui-sref="profile"><i class="fa fa-user fa-2x"></i></a></li>
+                <li ng-if="!navbar.userInfo.isAuth"><a ui-sref="login"><i class="fa fa-sign-in fa-2x"></i></a></li>
+                <li ng-if="navbar.userInfo.isAuth"><a ng-click="navbar.logout()"><i class="fa fa-sign-out fa-2x"></i></a></li>
+            </ul>
+        </div>
         <div class="navbar-header">
             <a class="navbar-brand" ui-sref="welcome">
                 kotei
@@ -28,10 +31,10 @@
                         </li>
                     </ul>
                 </li>
-                <li><a ui-sref="schedule" ng-if="navbar.userInfo.isAuth">Órarend</a></li>
-                <li><a ui-sref="profile" ng-if="navbar.userInfo.isAuth">Profilom</a></li>
-                <li><a ui-sref="login" ng-if="!navbar.userInfo.isAuth">Belépés</a></li>
-                <li><a ng-click="navbar.logout()" ng-if="navbar.userInfo.isAuth">Kilépés</a></li>
+                <li ng-if="navbar.userInfo.isAuth"><a ui-sref="schedule">Órarend</a></li>
+                <li ng-if="navbar.userInfo.isAuth"><a ui-sref="profile">Profilom</a></li>
+                <li ng-if="!navbar.userInfo.isAuth"><a ui-sref="login">Belépés</a></li>
+                <li ng-if="navbar.userInfo.isAuth"><a ng-click="navbar.logout()">Kilépés</a></li>
             </ul>
         </div>
     </div>
