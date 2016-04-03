@@ -9,10 +9,10 @@
             <input id="client" name="client" type="text" ng-model="subscriptionAdministration.client" uib-typeahead="client as client.displayName for client in subscriptionAdministration.clients | filter: { displayName: $viewValue }" typeahead-editable="false" class="form-control" autocomplete="off">
             <div class="help-block" ng-show="subscriptionForm.client.$touched && !subscriptionAdministration.client">Nincs ilyen nevű tanítvány</div>
         </div>
-        <div ng-if="subscriptionAdministration.isAdmin" ng-class="{ 'has-error': (!subscriptionAdministration.coach && trainingForm.coach.$touched) }">
+        <div ng-if="subscriptionAdministration.isAdmin" ng-class="{ 'has-error': (!subscriptionAdministration.coach && subscriptionForm.coach.$touched) }">
             <label for="coach">Edző</label>
             <input id="coach" name="coach" type="text" ng-model="subscriptionAdministration.coach" uib-typeahead="coach as coach.displayName for coach in subscriptionAdministration.coaches | filter: { displayName: $viewValue }" typeahead-editable="false" class="form-control" autocomplete="off">
-            <div class="help-block" ng-show="trainingForm.coach.$touched && !subscriptionAdministration.coach">Nincs ilyen nevű edző</div>
+            <div class="help-block" ng-show="subscriptionForm.coach.$touched && !subscriptionAdministration.coach">Nincs ilyen nevű edző</div>
         </div>
         <div>
             <label for="subscriptionType">Bérlettípus</label>

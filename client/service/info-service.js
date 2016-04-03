@@ -34,6 +34,7 @@ angular.module('kotei')
             getTrainingById: (id) => get(`/api/training?where={"id":${id}}`).then((results) => results[0]),
             getTrainingsByDate: (from, to) => get(`/api/training?where={"$and":[{"from":{"$gte":"${from}"}},{"to":{"$lte":"${to}"}}]}&order=\`from\`%20ASC`),
             getTrainingsByDateAndType: (from, to, trainingTypeIds) => get(`/api/training?where={"$and":[{"from":{"$gte":"${from}"}},{"to":{"$lte":"${to}"}},{"\$or":[${concatTrainingTypeIds(trainingTypeIds)}]}]}&order=\`from\`%20ASC`),
-            getSubscriptionsByClient: (clientId) => get(`/api/subscription?where={"client_id":${clientId}}&order=\`from\`%20ASC`)
+            getSubscriptionsByClient: (clientId) => get(`/api/subscription?where={"client_id":${clientId}}&order=\`from\`%20ASC`),
+            getSubscription: (subscriptionId) => get(`/api/subscription?where={"id":${subscriptionId}}`)
         }
     })

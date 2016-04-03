@@ -28,14 +28,16 @@ angular.module('kotei')
                 roles: ['coach', 'admin']
         })
     })
-    .controller('UserProfileController', function ($moment, R, user, coaches, subscriptions, administrationService, modalService, nameService) {
+    .controller('UserProfileController', function ($moment, R, user, coaches, subscriptions, administrationService, modalService, nameService, userInfoService) {
 
         this.user = user
-        this.subscriptions = R.map((subscription) => {
+        this.subscriptions = R.reverse(R.map((subscription) => {
             subscription.from = $moment(subscription.from).toDate()
             subscription.to = $moment(subscription.to).toDate()
             return subscription
-        }, subscriptions)
+        }, subscriptions))
+        
+        this.isAdmin = userInfoService.getUserInfo().isAdmin
 
         this.states = [
             { name: 'aktív', value: true },

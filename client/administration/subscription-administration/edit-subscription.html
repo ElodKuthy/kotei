@@ -1,0 +1,36 @@
+<div class="edit-subscription container">
+    <h3>{{editSubscription.title}}</h3>
+    <form name="subscriptionForm" novalidate>
+        <div class="alert alert-danger" ng-if="editSubscription.error">
+            {{editSubscription.error}}
+        </div>
+        <div>
+            <label for="subscriptionType">Bérlettípus</label>
+            <select class="form-control" name="subscriptionType" id="subscriptionType" ng-model="editSubscription.subscription.SubscriptionType" ng-options="type.name for type in editSubscription.subscriptionTypes">
+            </select>
+        </div>
+        <div>
+            <label for="fromCalendar">Érvényesség kezdete</label>
+            <ko-calendar id="from" model="editSubscription.subscription.from" format="yyyy. MMM dd." minDate="editSubscription.minDate" maxDate="editSubscription.maxDate" enable-time="false"></ko-calendar>
+        </div>
+        <div>
+            <label for="toCalendar">Érvényesség vége</label>
+            <ko-calendar id="to" model="editSubscription.subscription.to" format="yyyy. MMM dd." minDate="editSubscription.minDate" maxDate="editSubscription.maxDate" enable-time="false"></ko-calendar>
+        </div>
+        <div ng-class="{ 'has-error': (!editSubscription.subscription.Coach && subscriptionForm.coach.$touched) }">
+            <label for="coach">Edző</label>
+            <input id="coach" name="coach" type="text" ng-model="editSubscription.subscription.Coach" uib-typeahead="coach as coach.displayName for coach in editSubscription.coaches | filter: { displayName: $viewValue }" typeahead-editable="false" class="form-control" autocomplete="off">
+            <div class="help-block" ng-show="subscriptionForm.coach.$touched && !editSubscription.subscription.Coach">Nincs ilyen nevű edző</div>
+        </div>
+        <div ng-class="{ 'has-error': (subscriptionForm.price.$invalid && subscriptionForm.price.$touched) }">
+            <label for="price">Ár</label>
+            <input id="price" name="price" type="number" class="form-control" ng-model="editSubscription.subscription.price" required min="0">
+            <div ng-messages="subscriptionForm.price.$error" ng-if="subscriptionForm.price.$touched">
+                <div class="help-block" ng-message="required">Kötelező megadni</div>
+                <div class="help-block" ng-message="min">Csak nem negatív szám lehet</div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary pull-left" ng-click="editSubscription.delete()">Törlés</button>
+        <button type="submit" class="btn btn-primary pull-right" ng-click="editSubscription.submit()">Mentés</button>
+    </form>
+</div>

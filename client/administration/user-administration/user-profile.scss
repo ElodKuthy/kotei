@@ -5,4 +5,17 @@
     button {
         margin-top: 10px;
     }
+    .subscription-panel {
+        max-height: 646px;
+        overflow: scroll;
+    }
+    .subscription-details {
+        div {
+            margin-bottom: 10px;
+        }
+    }
+    .reg-date {
+        white-space: nowrap; 
+    }
+    
 }

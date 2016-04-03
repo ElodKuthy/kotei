@@ -17,7 +17,8 @@ const texts = {
     alreadySignedUp: 'A jelentkező már feliratkozott erre az órára',
     tooLateToLeave: 'Erről az óráról már túl késő lejelentkezni',
     notAttendee: 'Erre az órára nincs feliratkozva',
-    noCredit: 'Nincs szabad alkalma'
+    noCredit: 'Nincs szabad alkalma',
+    invalidId: 'Érvénytelen azonosító'
 }
 
 module.exports = texts

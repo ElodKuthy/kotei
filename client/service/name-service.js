@@ -13,6 +13,7 @@ angular.module('kotei')
         }, users)
 
         return {
+            displayName: displayName,
             addDisplayName: addDisplayName
         }
     })

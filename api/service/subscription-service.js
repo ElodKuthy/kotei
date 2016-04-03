@@ -15,6 +15,7 @@ const Training = model.Training
 const CreditTemplate = model.CreditTemplate
 const TrainingType = model.TrainingType
 const Credit = model.Credit
+const Attendee = model.Attendee
 
 const attendeeService = require('./attendee-service')
 
@@ -166,6 +167,31 @@ const add = (subscription, auth) => {
         .then((newSubscription) => addToDefaultTrainings(newSubscription, auth, newSubscription.defaultTrainingDates))
 }
 
+const update = (updatedSubscription, auth) => {
+
+    if (!auth.isAdmin) {
+        return Promise.reject(errors.unauthorized)
+    }
+
+    return Subscription.findById(updatedSubscription.id)
+        .then((subscription) => {
+            if (!subscription) {
+                return Promise.reject(errors.invalidId)
+            }
+            subscription.subscription_type_id = updatedSubscription.subscription_type_id
+            subscription.from = updatedSubscription.from
+            subscription.to = updatedSubscription.to
+            subscription.coach_id = updatedSubscription.coach_id
+            subscription.price = updatedSubscription.price
+            return subscription
+        })
+        .then(checkDates)
+        .then(checkSubscriberIsClient)
+        .then(checkIssuerIsCoach)
+        .then((subscription) => subscription.save())
+}
+
+
 const find = (query, auth) => {
     if (!auth.isAuth) {
         return Promise.reject(errors.unauthorized)
@@ -192,9 +218,32 @@ const find = (query, auth) => {
     }, query)).catch((error) => Promise.reject(errors.missingOrInvalidParameters))
 }
 
+const remove = (args, auth) => {
+    if (!auth.isAdmin) {
+        return Promise.reject(errors.unauthorized)
+    }
+    
+    return Subscription.findById(args.subscriptionId)
+        .then((subscription) => {
+            if (!subscription) {
+                return Promise.reject(errors.invalidId)
+            }
+            
+            return Attendee.findAll({
+                where: {
+                    subscription_id: args.subscriptionId
+                }
+            })
+            .then((attendees) => attendees.forEach((attendee) => attendee.destroy()))
+            .then(() => subscription.destroy())
+        })
+}
+
 module.exports = {
     findSubscriptionType: findSubscriptionType,
     findSubscriptionTemplate: findSubscriptionTemplate,
     add: add,
-    find: find
+    find: find,
+    update: update,
+    remove: remove
 }

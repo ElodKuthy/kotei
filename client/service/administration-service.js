@@ -40,6 +40,8 @@ angular.module('kotei')
             updateUser: (user) => put('/api/user', user),
             addNewTraining: (training) => post('/api/training', training),
             addNewSubscription: (subscription) => post('/api/subscription', subscription),
+            updateSubscription: (subscription) => put('/api/subscription', subscription),
+            deleteSubscription: (subscriptionId) => del(`/api/subscription/${subscriptionId}`),
             addAttendee: (training_id, client_id) => post(`/api/attendee?training_id=${training_id}&client_id=${client_id}`),
             removeAttendee: (training_id, client_id) => del(`/api/attendee?training_id=${training_id}&client_id=${client_id}`),
             updateAttendee: (training_id, client_id, checkIn) => put(`/api/attendee?training_id=${training_id}&client_id=${client_id}`, { checkIn: checkIn }),

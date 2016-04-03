@@ -9,7 +9,7 @@
                             {{userProfile.userError}}
                         </div>
                         <div class="info">
-                            Regisztráció időpontja: {{ userProfile.registration | date : 'fullDate' }}
+                            Regisztráció időpontja: <span class="reg-date">{{ userProfile.registration | date : 'fullDate' }}</span>
                         </div>
                         <div ng-class="{ 'has-error': (userForm.familyName.$invalid && userForm.familyName.$touched) }">
                             <label for="familyName">Vezetéknév</label>
@@ -69,18 +69,19 @@
         <div class="col-md-6" ng-if="userProfile.subscriptions.length">
             <div class="panel panel-primary">
                 <div class="panel-heading">Bérletek</div>
-                <div class="panel-body">
+                <div class="panel-body subscription-panel" smooth-scroll>
                     <ul class="list-group">
-                        <li class="list-group-item" ng-repeat="subscription in userProfile.subscriptions">
+                        <li class="list-group-item subscription-details clearfix" ng-repeat="subscription in userProfile.subscriptions">
                             <div>Típus: {{subscription.SubscriptionType.name}}</div>
                             <div>Érvényesség kezdete: {{subscription.from | date : 'yyyy. MMMM d.'}}</div>
                             <div>Érvényesség vége: {{subscription.to | date : 'yyyy. MMMM d.'}}</div>
                             <div>Edző: {{subscription.Coach.fullName}}</div>
                             <div>Ára: {{subscription.price | currency : 'Ft': 0 }}</div>
-                            <div>Alkalmak:</div>
-                            <ul>
+                            <div>Alkalmak:<span ng-if="subscription.Credits.length === 1"> {{subscription.Credits[0].amount}}</span></div>
+                            <ul ng-if="subscription.Credits.length > 1">
                                 <li ng-repeat="credit in subscription.Credits">{{credit.TrainingType.name}}: {{credit.amount}}</li>
                             </ul>
+                            <button ng-if="userProfile.isAdmin" type="button" class="btn btn-primary pull-right" ui-sref="administration.edit-subscription({ subscriptionId: subscription.id })">Módosítás</button>
                         </li>
                     </ul>
                 </div>
