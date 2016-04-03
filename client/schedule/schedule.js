@@ -19,10 +19,10 @@ angular.module('kotei')
                         return $moment().startOf('isoweek')
                     },
                     to: ($moment) => {
-                        return $moment().endOf('isoweek')
+                        return $moment().startOf('isoweek').add({ week: 1 })
                     },
                     trainings: ($moment, infoService) => {
-                        return infoService.getTrainingsByDate($moment().startOf('isoweek').format('YYYY-MM-DD'), $moment().endOf('isoweek').format('YYYY-MM-DD'))
+                        return infoService.getTrainingsByDate($moment().startOf('isoweek').format('YYYY-MM-DD'), $moment().startOf('isoweek').add({ week: 1 }).format('YYYY-MM-DD'))
                     }
                 },
                 roles: ['client', 'coach', 'admin']
