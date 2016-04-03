@@ -6,7 +6,6 @@
             </ul>
             <ul class="list-inline pull-right">
                 <li ng-if="navbar.userInfo.isAuth && !navbar.userInfo.isClient"><a ui-sref="administration"><i class="fa fa-pencil fa-2x"></i></a></li>
-                <li ng-if="navbar.userInfo.isAuth && !navbar.userInfo.isClient"><a ui-sref="stats"><i class="fa fa-bar-chart fa-2x"></i></a></li>
                 <li ng-if="navbar.userInfo.isAuth"><a ui-sref="schedule"><i class="fa fa-calendar fa-2x"></i></a></li>
                 <li ng-if="navbar.userInfo.isAuth"><a ui-sref="profile"><i class="fa fa-user fa-2x"></i></a></li>
                 <li ng-if="!navbar.userInfo.isAuth"><a ui-sref="login"><i class="fa fa-sign-in fa-2x"></i></a></li>
