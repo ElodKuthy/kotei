@@ -1,12 +1,15 @@
 const nodemailer = require('nodemailer')
+const config = require('../common/config')
 
-//const transporter = nodemailer.createTransport()
-const transporter = {
+const dummyTransporter = 
+{
     sendMail: (mailOptions, callback) => {
         console.log(mailOptions)
         callback(null, 'OK')
     }
 }
+
+const transporter = (config.mode === 'debug') ? dummyTransporter : nodemailer.createTransport()
 
 const from = '360Gym Lomb <no-reply@kotei.hu>'
 

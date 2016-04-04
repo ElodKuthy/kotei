@@ -7,8 +7,9 @@ const Password = model.Password
 const mailerService = require('./mailer-service')
 const localization = require('../localization/name')
 const errors = require('../common/errors')
+const config = require('../common/config')
 
-const cert = fs.readFileSync('certs/jwt-test-private.pem')
+const cert = fs.readFileSync(config.certs.private)
 
 const userInfo = (user) => {
     return {

@@ -3,7 +3,8 @@ const R = require('ramda')
 const fs = require('fs')
 const jwt = require('express-jwt')
 
-const roles = require('./common/roles.js')
+const roles = require('./common/roles')
+const config = require('./common/config')
 const securityService = require('./service/security-service')
 const userService = require('./service/user-service')
 const subscriptionService = require('./service/subscription-service')
@@ -11,7 +12,7 @@ const locationService = require('./service/location-service')
 const trainingService = require('./service/training-service')
 const attendeeService = require('./service/attendee-service')
 
-const cert = fs.readFileSync('certs/jwt-test-public.pem')
+const cert = fs.readFileSync(config.certs.public)
 
 const router = express()
 
