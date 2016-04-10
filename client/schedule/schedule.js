@@ -68,9 +68,12 @@ angular.module('kotei')
 
         this.userInfo = userInfoService.getUserInfo()
 
-        const days = ['Hétfő', 'Kedd', 'Szerda', 'Csütörtök', 'Péntek', 'Szombat', 'Vasárnap']
+        this.from = from
+        this.to = to
 
-        this.locations = []
+        const days = R.map((offset) => $moment(from).add({ days: offset }).valueOf(), [0, 1, 2, 3, 4, 5, 6])
+
+        this.locations = []        
 
         trainings.forEach((training) => {
 

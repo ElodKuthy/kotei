@@ -7,7 +7,7 @@
                     <thead>
                         <tr>
                             <th class="hour"></th>
-                            <th class="schedule-column" ng-if="day" ng-repeat="day in location.days">{{day}}</th>
+                            <th class="schedule-column" ng-if="day" ng-repeat="day in location.days">{{ day | date : 'EEEE (MMM\u00A0d.)' }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -29,12 +29,19 @@
     </div>
     <nav class="navbar navbar-default">
         <div class="container-fluid">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bottom-navbar" aria-expanded="false">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
+            <div class="visible-xs small-navbar">
+                <ul class="list-inline pull-right">
+                    <li><a ui-sref="schedule.custom({from: schedule.previous.from, to: schedule.previous.to })"><i class="fa fa-arrow-left fa-2x"></i></a></li>
+                    <li><a ui-sref="schedule"><i class="fa fa-calendar fa-2x"></i></a></li>
+                    <li><a ui-sref="schedule.custom({from: schedule.next.from, to: schedule.next.to })"><i class="fa fa-arrow-right fa-2x"></i></a></li>
+                </ul>
+            </div>            
             <div class="collapse navbar-collapse" id="bottom-navbar">
+                <div class="navbar-header">
+                    <div class="navbar-brand">
+                        {{ schedule.from.valueOf() | date : 'MMMM d.' }} - {{ schedule.to.valueOf() | date : 'MMMM d.' }} 
+                    </div>
+                </div>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a ui-sref="schedule.custom({from: schedule.previous.from, to: schedule.previous.to })">Előző hét</a></li>
                     <li><a ui-sref="schedule">Aktuális hét</a></li>

@@ -2,6 +2,7 @@
 
     table {
         font-size: 14px;
+        background-color: #3F4147;
     }
 
     .training-container {
@@ -30,5 +31,18 @@
 
     .navbar {
         bottom: 0;
+    }
+    
+    .table > thead > tr > th {
+        vertical-align: middle;
+    }
+    
+    .small-navbar {
+        margin-right: -10px;
+    }
+    
+    .list-inline > li {
+        padding-top: 0px;
+        padding-left: 10px;
     }
 }
