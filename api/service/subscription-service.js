@@ -65,10 +65,6 @@ const checkAuth = (subscription, auth) => {
         if (subscription.coach_id != auth.id) {
             return Promise.reject(errors.unauthorized)
         }
-
-        if (!moment().isSame(subscription.from, 'day')) {
-            return Promise.reject(errors.unauthorized)
-        }
     }
 
     return Promise.resolve(subscription)

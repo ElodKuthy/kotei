@@ -19,7 +19,7 @@
             <select class="form-control" name="subscriptionType" id="subscriptionType" ng-init="subscriptionAdministration.type = subscriptionAdministration.subscriptionTypes[0]" ng-model="subscriptionAdministration.type" ng-options="type.name for type in subscriptionAdministration.subscriptionTypes" ng-change="subscriptionAdministration.typeChanged()">
             </select>
         </div>
-        <div ng-if="subscriptionAdministration.isAdmin">
+        <div>
             <label for="fromCalendar">Érvényesség kezdete</label>
             <ko-calendar id="from" model="subscriptionAdministration.from" format="yyyy. MMM dd." minDate="subscriptionAdministration.minDate" maxDate="subscriptionAdministration.maxDate" enable-time="false"></ko-calendar>
         </div>

@@ -164,6 +164,6 @@ angular.module('kotei')
                 defaultTrainingDates: defaultTrainingDates
             }
 
-            return administrationService.addNewSubscription(subscription).then(() => modalService.info(this.title, 'Sikeres bérletvásárlás'))
+            return administrationService.addNewSubscription(subscription).then(() => modalService.info(this.title, 'Sikeres bérletvásárlás')).catch((error => this.error = error))
         }
     })
