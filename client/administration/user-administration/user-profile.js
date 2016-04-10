@@ -34,10 +34,10 @@ angular.module('kotei')
         this.subscriptions = R.reverse(R.map((subscription) => {
             subscription.from = $moment(subscription.from).toDate()
             subscription.to = $moment(subscription.to).toDate()
-            subscription.Trainings = R.map((training) => {
+            subscription.Trainings = R.sort((a, b) => $moment(a.from).valueOf() - $moment(b.from).valueOf(), R.map((training) => {
                 training.cssClass = training.Attendee.checkIn ? 'text-success' : $moment().isAfter(training.to) ? 'text-danger' : ''
                 return training
-            }, subscription.Trainings)
+            }, subscription.Trainings))
             return subscription
         }, subscriptions))
         
