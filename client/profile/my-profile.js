@@ -32,6 +32,10 @@ angular.module('kotei')
         this.subscriptions = R.map((subscription) => {
             subscription.from = $moment(subscription.from).toDate()
             subscription.to = $moment(subscription.to).toDate()
+            subscription.Trainings = R.map((training) => {
+                training.cssClass = training.Attendee.checkIn ? 'text-success' : $moment().isAfter(training.to) ? 'text-danger' : ''
+                return training
+            }, subscription.Trainings)
             return subscription
         }, subscriptions)
     })
