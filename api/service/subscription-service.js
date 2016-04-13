@@ -122,32 +122,43 @@ const addSubscription = (subscription) => {
     return Subscription.create(subscription, { include: [ Credit ] }).then(() => subscription)
 }
 
-const orDates = R.map((date) => { return { from: date } })
+const orDatesAndLocation = R.map((training) => { 
+    return { 
+        $and: [
+            { from: training.from },
+            { location_id: training.Location.id }
+        ] 
+    } 
+})
 
-const addOneWeek = R.map((date) => moment(date).add({ week: 1 }).format())
+const addOneWeek = R.map((training) => {
+    training.from = moment(training.from).add({ week: 1 }).format()
+    training.to = moment(training.to).add({ week: 1 }).format()
+    return training
+})
 
 const concat = (a, b) => b ? R.concat(a, b) : a
 
-const addToDefaultTrainings = (subscription, auth, currentDates) => {
-
-    if (!currentDates || !currentDates.length || moment(currentDates[0]).isAfter(subscription.to)) {
-        return currentDates
+const addToDefaultTrainings = (subscription, auth, defaultTrainings) => {
+    
+    if (!defaultTrainings || !defaultTrainings.length || moment(defaultTrainings[0].from).isAfter(subscription.to)) {
+        return Promise.resolve([])
     }
 
     const trainings = Training.findAll({
         where: {
-            $or: orDates(currentDates)
+            $or: orDatesAndLocation(defaultTrainings)
         }
     })
 
     return trainings
-        .then((trainings) => {
+        .then(trainings => {
             return Promise.all(R.map((training) => attendeeService.add(training.id, subscription.client_id, auth), trainings))
         })
         .catch(() => Promise.resolve())
         .then(() => {
-            return addToDefaultTrainings(subscription, auth, addOneWeek(currentDates))
-        }).then((additionalTrainings) => {
+            return addToDefaultTrainings(subscription, auth, addOneWeek(defaultTrainings))
+        }).then(additionalTrainings => {
            return Promise.resolve(concat(trainings.value(), additionalTrainings))
         })
 }
@@ -160,7 +171,7 @@ const add = (subscription, auth) => {
         .then(checkIssuerIsCoach)
         .then(decorateNewSubcriptionData)
         .then(addSubscription)
-        .then((newSubscription) => addToDefaultTrainings(newSubscription, auth, newSubscription.defaultTrainingDates))
+        .then((newSubscription) => addToDefaultTrainings(newSubscription, auth, newSubscription.defaultTrainings))
 }
 
 const update = (updatedSubscription, auth) => {
@@ -203,6 +214,10 @@ const find = (query, auth) => {
             model: User,
             as: 'Coach'
         }, {
+            attributes: ['id', 'familyName', 'givenName', 'nickname'],
+            model: User,
+            as: 'Client'
+        }, {            
             attributes: ['id', 'amount'],
             model: Credit,
             as: 'Credits',

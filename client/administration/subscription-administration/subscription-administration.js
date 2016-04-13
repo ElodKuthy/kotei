@@ -145,11 +145,11 @@ angular.module('kotei')
         this.submit = () => {
             delete this.error
 
-            var defaultTrainingDates = []
+            var defaultTrainings = []
 
             this.trainings.forEach((training) => {
                 if (training.selected) {
-                    defaultTrainingDates.push(training.from)
+                    defaultTrainings.push(training)
                 }
             })
 
@@ -161,7 +161,7 @@ angular.module('kotei')
                 client_id: this.client.id,
                 coach_id: this.coach.id,
                 subscription_type_id: this.type.id,
-                defaultTrainingDates: defaultTrainingDates
+                defaultTrainings: defaultTrainings
             }
 
             return administrationService.addNewSubscription(subscription).then(() => modalService.info(this.title, 'Sikeres bérletvásárlás')).catch((error => this.error = error))

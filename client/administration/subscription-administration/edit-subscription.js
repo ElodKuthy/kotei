@@ -70,13 +70,7 @@ angular.module('kotei')
             administrationService.deleteSubscription(this.subscription.id)
                 .then(() => modalService.info(this.title, 'A bérlet törlésre került'))
                 .then(() => {
-                    if ($rootScope.previousState.abstract
-                        || $rootScope.previousState.name === 'forgotten-password'
-                        || $rootScope.previousState.name === 'reset-password') {
-                        $state.go('welcome')
-                    } else {
-                        $state.go($rootScope.previousState)
-                    }
+                    $state.go('administration.user-profile', { userId: this.subscription.Client.id })
                 })
                 .catch((error) => this.error = error)
         }
