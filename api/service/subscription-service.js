@@ -139,7 +139,16 @@ const addOneWeek = R.map((training) => {
 
 const concat = (a, b) => b ? R.concat(a, b) : a
 
-const addToDefaultTrainings = (subscription, auth, defaultTrainings) => {
+const addToDefaultTraining = (clientId, trainings, index, auth) => {
+    if (trainings.length <= index) {
+        return Promise.resolve([])
+    }
+    
+    return attendeeService.add(trainings[index].id, clientId, auth)
+        .then(() => addToDefaultTraining(clientId, trainings, index + 1, auth))
+}
+
+const addToDefaultTrainings = (subscription, defaultTrainings, auth) => {
     
     if (!defaultTrainings || !defaultTrainings.length || moment(defaultTrainings[0].from).isAfter(subscription.to)) {
         return Promise.resolve([])
@@ -152,12 +161,10 @@ const addToDefaultTrainings = (subscription, auth, defaultTrainings) => {
     })
 
     return trainings
-        .then(trainings => {
-            return Promise.all(R.map((training) => attendeeService.add(training.id, subscription.client_id, auth), trainings))
-        })
+        .then(trainings => addToDefaultTraining(subscription.client_id, trainings, 0, auth))
         .catch(() => Promise.resolve())
         .then(() => {
-            return addToDefaultTrainings(subscription, auth, addOneWeek(defaultTrainings))
+            return addToDefaultTrainings(subscription, addOneWeek(defaultTrainings), auth)
         }).then(additionalTrainings => {
            return Promise.resolve(concat(trainings.value(), additionalTrainings))
         })
@@ -171,7 +178,7 @@ const add = (subscription, auth) => {
         .then(checkIssuerIsCoach)
         .then(decorateNewSubcriptionData)
         .then(addSubscription)
-        .then((newSubscription) => addToDefaultTrainings(newSubscription, auth, newSubscription.defaultTrainings))
+        .then((newSubscription) => addToDefaultTrainings(newSubscription, newSubscription.defaultTrainings, auth))
 }
 
 const update = (updatedSubscription, auth) => {
