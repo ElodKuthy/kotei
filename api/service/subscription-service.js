@@ -145,6 +145,7 @@ const addToDefaultTraining = (clientId, trainings, index, auth) => {
     }
     
     return attendeeService.add(trainings[index].id, clientId, auth)
+        .catch(() => Promise.resolve())
         .then(() => addToDefaultTraining(clientId, trainings, index + 1, auth))
 }
 
