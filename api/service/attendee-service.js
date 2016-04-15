@@ -103,11 +103,15 @@ const add = (training_id, client_id, auth) => {
     return Promise.all([findTraining(training_id), findClient(client_id)])
         .spread((training, client) => {
 
-            if (client.id !== auth.id && auth.isClient) {
+            if (auth.isClient && client.id !== auth.id) {
+                return Promise.reject(errors.unauthorized)
+            }
+            
+            if (auth.isCoach && training.coach_id !== auth.id) {
                 return Promise.reject(errors.unauthorized)
             }
 
-            if (!auth.isAdmin && moment().isAfter(training.to)) {
+            if (auth.isClient && moment().isAfter(training.to)) {
                 return Promise.reject(errors.trainingEnded)
             }
 
@@ -149,11 +153,15 @@ const remove = (training_id, client_id, auth) => {
     return Promise.all([findTraining(training_id), findClient(client_id)])
         .spread((training, client) => {
 
-            if (client.id !== auth.id && auth.isClient) {
+            if (auth.isClient && client.id !== auth.id) {
                 return Promise.reject(errors.unauthorized)
             }
 
-            if (!auth.isAdmin && moment().diff(training.from, 'hours') > -3) {
+            if (auth.isCoach && training.coach_id !== auth.id) {
+                return Promise.reject(errors.unauthorized)
+            }
+
+            if (auth.isClient && moment().diff(training.from, 'hours') > -3) {
                 return Promise.reject(errors.tooLateToLeave)
             }
 

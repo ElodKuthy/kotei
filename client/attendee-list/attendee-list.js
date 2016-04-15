@@ -68,9 +68,9 @@ angular.module('kotei')
 
         this.clients = generateAddClientsList(this.attendees, clients)
 
-        this.canAdd = (this.training.count < this.training.max) && (this.userInfo.isAdmin || (this.userInfo.isCoach && this.userInfo.id === this.training.id && moment().isBefore(training.to)))
+        this.canAdd = (this.training.count < this.training.max) && (this.userInfo.isAdmin || (this.userInfo.isCoach && this.userInfo.id === this.training.id))
 
-        this.canModify = this.userInfo.isAdmin || (this.userInfo.isCoach && this.userInfo.id === this.training.id && moment().diff(training.from, 'hours') <= -3)
+        this.canModify = this.userInfo.isAdmin || (this.userInfo.isCoach && this.userInfo.id === this.training.id)
 
         this.canJoin = this.userInfo.isClient && moment().isBefore(training.to) && (this.training.count < this.training.max) && !isAttendee(this.attendees, this.userInfo)
 
