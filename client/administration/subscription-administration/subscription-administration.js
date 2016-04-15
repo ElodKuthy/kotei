@@ -120,8 +120,9 @@ angular.module('kotei')
                         }, []).sort((a, b) => a >= b)
 
                     const oneDay = !this.templates.some((template) => template.SubscriptionVariant.valid > 1)
-                    const from = oneDay ? $moment(this.from).startOf('day').format() : $moment(this.from).startOf('isoweek').format()
-                    const to = oneDay ?$moment(this.from).endOf('day').format() : $moment(this.from).endOf('isoweek').format()
+                    const format = oneDay ? 'day' : 'isoweek'
+                    const from = $moment(this.from).startOf(format).format()
+                    const to = $moment(this.from).endOf(format).format()
 
                     infoService.getTrainingsByDateAndType(from, to, trainingTypeIds)
                         .then((trainings) => {
