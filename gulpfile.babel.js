@@ -6,6 +6,19 @@ import babel from 'gulp-babel'
 import templateCache from 'gulp-angular-templatecache'
 import uglify from 'gulp-uglify'
 import cssnano from 'gulp-cssnano'
+import git from 'gulp-git'
+import bump from 'gulp-bump'
+import filter from 'gulp-filter'
+import tag_version from 'gulp-tag-version'
+
+const incrementVersion = (importance) => {
+    return gulp.src(['./package.json', './bower.json'])
+        .pipe(bump({type: importance}))
+        .pipe(gulp.dest('./'))
+        .pipe(git.commit('Change the version number'))
+        .pipe(filter('package.json'))
+        .pipe(tag_version())
+}
 
 gulp.task('fonts', () => {
     return gulp.src([
@@ -78,5 +91,9 @@ gulp.task('nodemon', ['fonts', 'watch'], () => {
         env: { 'NODE_ENV': 'development' }
     })
 })
+
+gulp.task('patch', () => incrementVersion('patch'))
+gulp.task('minor', () => incrementVersion('minor'))
+gulp.task('major', () => incrementVersion('major'))
 
 gulp.task('default', ['build'])
