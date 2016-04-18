@@ -52,7 +52,8 @@ const findSubscriptionToAdd = (training, client) => {
         ]
     })
     .then((subscriptions) => {
-        return Promise.all(R.map((subscription) => subscription.countTrainings({ where: { training_type_id: training.training_type_id } }), subscriptions))
+        // TODO: Refactoring to handle correctly training restricted credits as well, this works only for not restrited credits 
+        return Promise.all(R.map((subscription) => subscription.countTrainings(), subscriptions))
             .then((counts) => {
                 return filterIndexed((subscription, index) => {
                     const amount = R.reduce((acc, credit) => {
