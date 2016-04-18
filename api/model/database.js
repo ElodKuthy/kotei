@@ -6,6 +6,7 @@ const database = new Sequelize(config.database.name, config.database.user, confi
         paranoid: true,
         underscored: true
     },
+    host: config.database.host,
     timezone: 'Europe/Budapest'
 })
 

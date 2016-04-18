@@ -1,5 +1,6 @@
 const config = {
     database: {
+        host: process.env.KOTEI_DB_HOST || 'localhost',
         name: process.env.KOTEI_DB_NAME || 'kotei',
         user: process.env.KOTEI_DB_USER || 'root',
         password: process.env.KOTEI_DB_PASSWORD
