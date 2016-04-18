@@ -34,10 +34,28 @@ angular.module('kotei')
         this.subscriptions = R.reverse(R.map((subscription) => {
             subscription.from = $moment(subscription.from).toDate()
             subscription.to = $moment(subscription.to).toDate()
+            subscription.amount = R.reduce((acc, credit) => acc + credit.amount, 0, subscription.Credits)
+            subscription.assigned = 0
+            subscription.attendeed = 0
+            subscription.missed = 0
             subscription.Trainings = R.sort((a, b) => $moment(a.from).valueOf() - $moment(b.from).valueOf(), R.map((training) => {
-                training.cssClass = training.Attendee.checkIn ? 'text-success' : $moment().isAfter(training.to) ? 'text-danger' : ''
+                if (training.Attendee.checkIn) {
+                    training.cssClass = 'text-success'
+                    subscription.attendeed++
+                } else if ($moment().isAfter(training.to)) {
+                    training.cssClass = 'text-danger'
+                    subscription.missed++
+                } else {
+                    subscription.assigned++
+                }
                 return training
             }, subscription.Trainings))
+            var diff = subscription.amount - subscription.assigned - subscription.attendeed - subscription.missed
+            if ($moment().isAfter(subscription.to, 'day')) {
+                subscription.lost = diff
+            } else {
+                subscription.free = diff
+            }
             return subscription
         }, subscriptions))
         

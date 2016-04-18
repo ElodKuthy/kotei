@@ -77,11 +77,12 @@
                             <div>Érvényesség vége: {{subscription.to | date : 'yyyy. MMMM d.'}}</div>
                             <div>Edző: {{subscription.Coach.fullName}}</div>
                             <div>Ára: {{subscription.price | currency : 'Ft': 0 }}</div>
-                            <div>Alkalmak:<span ng-if="subscription.Credits.length === 1"> {{subscription.Credits[0].amount}}</span></div>
-                            <ul class="list-group" ng-if="subscription.Credits.length > 1">
-                                <li class="list-group-item" ng-repeat="credit in subscription.Credits">{{credit.TrainingType.name}}: {{credit.amount}}</li>
-                            </ul>
-                            <div>Feliratkozások:</div>
+                            <div>Összes alkalom: {{subscription.amount}}</div>
+                            <div ng-if="subscription.free">Szabad alkalmak: {{subscription.free}}</div>
+                            <div ng-if="subscription.lost">Elveszett alkalmak: {{subscription.lost}}</div>
+                            <div ng-if="subscription.missed">Kihagyott alkalmak: {{subscription.missed}}</div>
+                            <div ng-if="subscription.attendeed">Részvételek: {{subscription.attendeed}}</div>
+                            <div ng-if="subscription.assigned">Feliratkozások: {{subscription.assigned}}</div>
                             <ul class="list-group">
                                 <li class="list-group-item clearfix" ng-repeat="training in subscription.Trainings"><a ui-sref="attendee-list({ trainingId: training.id })"><i class="fa fa-circle" ng-class="training.cssClass"></i>{{ training.from | date }}: {{ training.TrainingType.name }}</a></li>
                             </ul>
