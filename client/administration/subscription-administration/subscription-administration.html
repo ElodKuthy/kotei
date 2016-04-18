@@ -64,6 +64,6 @@
                 </tbody>
             </table>
         </div>
-        <button type="submit" class="btn btn-primary pull-right" ng-click="subscriptionAdministration.submit()" >Mentés</button>
+        <button type="submit" class="btn btn-primary pull-right" ng-click="subscriptionAdministration.submit()" ng-disabled="subscriptionForm.$pristine || subscriptionForm.$invalid || subscriptionAdministration.invalid()">Mentés</button>
     </form>
 </div>

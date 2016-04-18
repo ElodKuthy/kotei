@@ -81,6 +81,13 @@ angular.module('kotei')
 
                         if (template.CreditTemplates.length > 1) {
                             template.CreditTemplates.sort((a, b) => a.TrainingType.name >= b.TrainingType.name)
+                            template.CreditTemplates = R.map((creditTemplate) => {
+                               creditTemplate.amountPerWeek = 
+                                    template.valid >= 7
+                                    ? Math.ceil(creditTemplate.amount * 7 / template.valid)
+                                    : creditTemplate.amount
+                                return creditTemplate
+                            }, template.CreditTemplates)
                             template.amountPerWeek = template.CreditTemplates.reduce((acc, creditTemplate) => {
                                 if (acc) {
                                     acc = acc + ' + '
@@ -94,10 +101,12 @@ angular.module('kotei')
                             }, '')
                         } else {
                             template.amount = template.CreditTemplates[0].amount
-                            template.amountPerWeek =
-                                (template.valid >= 7
+                            template.CreditTemplates[0].amountPerWeek = 
+                                 (template.valid >= 7
                                 ? Math.ceil(template.amount * 7 / template.valid)
-                                : template.amount) + ' alkalom'
+                                : template.amount)
+                            template.amountPerWeek = template.CreditTemplates[0].amountPerWeek + ' alkalom'
+
                         }
                         template.CreditTemplates.price = template.SubscriptionVariant.price
                         return template
@@ -127,7 +136,7 @@ angular.module('kotei')
                     infoService.getTrainingsByDateAndType(from, to, trainingTypeIds)
                         .then((trainings) => {
                             this.trainings = decorateTrainings(trainings)
-                            if (coach) {
+                            if (this.coach) {
                                 this.trainings = R.filter((training) => training.Coach.id === this.coach.id, this.trainings)
                             }
                         })
@@ -142,7 +151,10 @@ angular.module('kotei')
         this.clickTraining = (training) => {
             training.selected = !training.selected
         }
-
+        
+        this.invalid = () => !this.client || !this.coach || !this.variant || !this.credits
+            || (R.filter(training => training.selected, this.trainings).length < R.reduce((acc, credit) => acc + credit.amountPerWeek, 0, this.credits))
+        
         this.submit = () => {
             delete this.error
 
