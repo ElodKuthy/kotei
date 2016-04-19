@@ -78,11 +78,11 @@ angular.module('kotei')
 
         this.toggleAttendee = (attendee) => {
 
-            if (this.userInfo.isAdmin || (this.userInfo.isCoach && moment().isAfter(training.from) && moment().isBefore(moment(training.to).endOf('day')))) {
+            //if (this.userInfo.isAdmin || (this.userInfo.isCoach && moment().isAfter(training.from) && moment().isBefore(moment(training.to).endOf('day')))) {
                 administrationService.updateAttendee(training.id, attendee.id, !attendee.checkIn)
                     .then(() => $state.reload())
                     .catch((error) => this.error = error)
-            }
+            //}
         }
 
         this.removeAttendee = (attendee) => {

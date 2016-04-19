@@ -189,9 +189,9 @@ const update = (training_id, client_id, checkIn, auth) => {
                 return Promise.reject(errors.tooEarlyToCheckIn)
             }
 
-            if (!auth.isAdmin && moment().isAfter(moment(training.to).endOf('day'))) {
-                return Promise.reject(errors.trainingEnded)
-            }
+            // if (!auth.isAdmin && moment().isAfter(moment(training.to).endOf('day'))) {
+            //     return Promise.reject(errors.trainingEnded)
+            // }
 
             return findSubscription(training, client.id)
                 .then((subscription) => {
