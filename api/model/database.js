@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize')
 const config = require('../common/config')
+const logger = require('../common/logger')
 
 const database = new Sequelize(config.database.name, config.database.user, config.database.password, {
     define: {
@@ -7,7 +8,8 @@ const database = new Sequelize(config.database.name, config.database.user, confi
         underscored: true
     },
     host: config.database.host,
-    timezone: 'Europe/Budapest'
+    timezone: 'Europe/Budapest',
+    logging: logger.verbose
 })
 
 module.exports = database

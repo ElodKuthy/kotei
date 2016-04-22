@@ -2,7 +2,9 @@ const express = require('express')
 const R = require('ramda')
 const fs = require('fs')
 const jwt = require('express-jwt')
+const morgan = require('morgan')
 
+const logger = require('./common/logger')
 const roles = require('./common/roles')
 const config = require('./common/config')
 const securityService = require('./service/security-service')
@@ -19,6 +21,12 @@ const router = express()
 router.get('/', (req, res) => { res.json({ 'Result': 'kotei API' }) })
 
 router.use(jwt({ secret: cert, credentialsRequired: false }))
+
+morgan.token('userId', (req) => req.user ? req.user.id : '')
+morgan.token('userName', (req) => req.user ? req.user.name : '')
+morgan.token('urlDecoded', (req) => req.url ? decodeURI(req.url) : '')
+
+router.use(morgan(':userName (:userId) :remote-addr :method :urlDecoded HTTP/:http-version :status :res[content-length] - :response-time ms ":user-agent"', { 'stream': logger.stream }))
 
 const parseProps = (props, values) => {
 

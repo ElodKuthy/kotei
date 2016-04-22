@@ -29,13 +29,16 @@
     "express": "4.13.3",
     "express-jwt": "3.3.0",
     "jsonwebtoken": "5.4.1",
+    "morgan": "1.7.0",
     "mysql": "2.9.0",
     "nodemailer": "1.11.0",
     "ramda": "0.18.0",
     "sequelize": "3.20.0",
     "serve-favicon": "2.3.0",
     "source-map": "0.5.3",
-    "validator": "4.4.0"
+    "validator": "4.4.0",
+    "winston": "2.2.0",
+    "winston-daily-rotate-file": "1.0.1"
   },
   "devDependencies": {
     "babel-core": "6.2.1",
