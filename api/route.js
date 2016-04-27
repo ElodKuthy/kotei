@@ -4,6 +4,7 @@ const fs = require('fs')
 const jwt = require('express-jwt')
 const morgan = require('morgan')
 
+const version = require('../package.json').version
 const logger = require('./common/logger')
 const roles = require('./common/roles')
 const config = require('./common/config')
@@ -18,7 +19,7 @@ const cert = fs.readFileSync(config.certs.public)
 
 const router = express()
 
-router.get('/', (req, res) => { res.json({ 'Result': 'kotei API' }) })
+router.get('/', (req, res) => { res.json({ Result: 'kotei API', Version: version }) })
 
 router.use(jwt({ secret: cert, credentialsRequired: false }))
 
