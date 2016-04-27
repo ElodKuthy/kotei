@@ -58,7 +58,8 @@ angular.module('kotei')
                 to: $moment(this.subscription.to).format('YYYY-MM-DD'),
                 coach_id: this.subscription.Coach.id,
                 subscription_type_id: this.subscription.SubscriptionType.id,
-                price: this.subscription.price 
+                price: this.subscription.price,
+                Credits: this.subscription.Credits
             }
 
             administrationService.updateSubscription(subscription)

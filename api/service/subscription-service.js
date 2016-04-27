@@ -21,6 +21,8 @@ const attendeeService = require('./attendee-service')
 
 const Promise = require('bluebird')
 
+const mapIndexed = R.addIndex(R.map)
+
 const findSubscriptionType = (query, auth) => {
     if (!auth.isCoach && !auth.isAdmin) {
         return Promise.reject(errors.unauthorized)
@@ -198,11 +200,21 @@ const update = (updatedSubscription, auth) => {
             subscription.to = updatedSubscription.to
             subscription.coach_id = updatedSubscription.coach_id
             subscription.price = updatedSubscription.price
+            subscription.Credits = updatedSubscription.Credits
             return subscription
         })
         .then(checkDates)
         .then(checkSubscriberIsClient)
         .then(checkIssuerIsCoach)
+        .then(subscription => {
+            return Promise.all(R.map(credit => Credit.findById(credit.id), subscription.Credits))
+                .then(credits => mapIndexed((credit, index) => {
+                    credit.amount = subscription.Credits[index].amount
+                    return credit
+                }, credits))
+                .then(credits => Promise.all(R.map(credit => credit ? credit.save() : Promise.resolve(), credits)))
+                .then(() => subscription)
+        })
         .then((subscription) => subscription.save())
 }
 

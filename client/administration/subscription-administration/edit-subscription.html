@@ -30,7 +30,17 @@
                 <div class="help-block" ng-message="min">Csak nem negatív szám lehet</div>
             </div>
         </div>
+        <div ng-repeat="credit in editSubscription.subscription.Credits">
+            <div ng-class="{ 'has-error': (subscriptionForm['credit_' + $index].$invalid && subscriptionForm['credit_' + $index].$touched) }">
+                <label for="{{'credit_' + $index}}">Alkalmak</label>
+                <input id="{{'credit_' + $index}}" name="{{'credit_' + $index}}" type="number" class="form-control" ng-model="credit.amount" required min="1">
+                <div ng-messages="subscriptionForm['credit_' + $index].$error" ng-if="subscriptionForm['credit_' + $index].$touched">
+                    <div class="help-block" ng-message="required">Kötelező megadni</div>
+                    <div class="help-block" ng-message="min">Csak pozitív szám lehet</div>
+                </div>
+            </div>
+        </div>
         <button type="submit" class="btn btn-primary pull-left" ng-click="editSubscription.delete()">Törlés</button>
-        <button type="submit" class="btn btn-primary pull-right" ng-click="editSubscription.submit()">Mentés</button>
+        <button type="submit" class="btn btn-primary pull-right" ng-click="editSubscription.submit()" ng-disabled="subscriptionForm.$pristine || subscriptionForm.$invalid">Mentés</button>
     </form>
 </div>
