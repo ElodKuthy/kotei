@@ -257,14 +257,20 @@ const find = (query, auth) => {
 }
 
 const remove = (args, auth) => {
-    if (!auth.isAdmin) {
+    if (!auth.isAdmin && !auth.isCoach) {
         return Promise.reject(errors.unauthorized)
     }
     
-    return Subscription.findById(args.subscriptionId)
+    return Subscription.findById(args.subscriptionId, {
+            include: [Credit]
+        })
         .then((subscription) => {
             if (!subscription) {
                 return Promise.reject(errors.invalidId)
+            }
+            
+            if (auth.isCoach && auth.id !== subscription.coach_id) {
+                return Promise.reject(errors.unauthorized)
             }
             
             return Attendee.findAll({
@@ -272,7 +278,8 @@ const remove = (args, auth) => {
                     subscription_id: args.subscriptionId
                 }
             })
-            .then((attendees) => attendees.forEach((attendee) => attendee.destroy()))
+            .then(attendees => Promise.all(R.map(attendee => attendee.destroy(), attendees)))
+            .then(() => Promise.all(R.map(credit => credit.destroy(), subscription.Credits)))
             .then(() => subscription.destroy())
         })
 }

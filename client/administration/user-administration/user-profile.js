@@ -28,7 +28,11 @@ angular.module('kotei')
                 roles: ['coach', 'admin']
         })
     })
-    .controller('UserProfileController', function ($moment, R, user, coaches, subscriptions, administrationService, modalService, nameService, userInfoService) {
+    .controller('UserProfileController', function ($state, $moment, R, user, coaches, subscriptions, administrationService, modalService, nameService, userInfoService) {
+
+        this.id = userInfoService.getUserInfo().id
+        this.isAdmin = userInfoService.getUserInfo().isAdmin
+        this.isCoach = userInfoService.getUserInfo().isCoach
 
         this.user = user
         this.subscriptions = R.reverse(R.map((subscription) => {
@@ -56,10 +60,10 @@ angular.module('kotei')
             } else {
                 subscription.free = diff
             }
+            subscription.canBeDeleted = this.isAdmin || (this.isCoach && subscription.Coach.id === this.id)
             return subscription
         }, subscriptions))
         
-        this.isAdmin = userInfoService.getUserInfo().isAdmin
 
         this.states = [
             { name: 'aktív', value: true },
@@ -83,4 +87,12 @@ angular.module('kotei')
                 .then(() => modalService.info('Felhasználó adatainakmódosítása', 'A felhasználó adatait sikeresen módosítottad'),
                     (error) => this.userError = error)
         }
+
+        this.deleteSubscription = (subscriptionId) => {
+            administrationService.deleteSubscription(subscriptionId)
+                .then(() => modalService.info(this.title, 'A bérlet törlésre került'))
+                .then(() => $state.reload())
+                .catch((error) => modalService.info(this.title, error))
+        }
+
     })
