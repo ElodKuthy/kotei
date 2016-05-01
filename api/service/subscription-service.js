@@ -234,7 +234,7 @@ const find = (query, auth) => {
             model: User,
             as: 'Coach'
         }, {
-            attributes: ['id', 'familyName', 'givenName', 'nickname'],
+            attributes: ['id', 'familyName', 'givenName', 'nickname', 'email'],
             model: User,
             as: 'Client'
         }, {            

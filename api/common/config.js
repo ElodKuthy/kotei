@@ -11,6 +11,13 @@ const config = {
         private: process.env.KOTEI_CERT_PRIVATE || 'certs/jwt-test-private.pem'
     },
     
+    mail: {
+        auth: {
+            api_key: process.env.KOTEI_MAIL_API_KEY,
+            domain: process.env.KOTEI_MAIL_DOMAIN,
+        }
+    },
+    
     mode: process.env.KOTEI_MODE || 'debug'
 }
 

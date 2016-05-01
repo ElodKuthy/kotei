@@ -21,6 +21,8 @@ app.use(bodyParser.urlencoded({
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
+require('./api/task/init-tasks').init()
+
 app.use('/api', api)
 
 app.all('/*', function(req, res, next) {
