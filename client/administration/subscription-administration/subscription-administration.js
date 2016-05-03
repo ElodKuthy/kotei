@@ -48,6 +48,8 @@ angular.module('kotei')
         this.type = this.subscriptionTypes[0]
 
         this.from = $moment().startOf('day').toDate()
+        
+        this.sendEmail = false
 
         const decorateTrainings = (trainings) => {
             trainings.forEach((training) => {
@@ -174,7 +176,8 @@ angular.module('kotei')
                 client_id: this.client.id,
                 coach_id: this.coach.id,
                 subscription_type_id: this.type.id,
-                defaultTrainings: defaultTrainings
+                defaultTrainings: defaultTrainings,
+                sendEmail: this.sendEmail
             }
 
             return administrationService.addNewSubscription(subscription).then(() => modalService.info(this.title, 'Sikeres bérletvásárlás')).catch((error => this.error = error))

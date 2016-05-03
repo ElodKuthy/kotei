@@ -19,6 +19,8 @@ const Attendee = model.Attendee
 
 const attendeeService = require('./attendee-service')
 
+const mailerService = require('./mailer-service')
+
 const Promise = require('bluebird')
 
 const mapIndexed = R.addIndex(R.map)
@@ -121,7 +123,10 @@ const decorateNewSubcriptionData = (subscription) => {
 }
 
 const addSubscription = (subscription) => {
-    return Subscription.create(subscription, { include: [ Credit ] }).then(() => subscription)
+    return Subscription.create(subscription, { include: [ Credit ] }).then((result) => {
+        subscription.id = result.id
+        return subscription
+    })
 }
 
 const orDatesAndLocation = R.map((training) => { 
@@ -173,6 +178,32 @@ const addToDefaultTrainings = (subscription, defaultTrainings, auth) => {
         })
 }
 
+const sendEmail = (newSubscription) => {
+    if (newSubscription.sendEmail) {
+        Subscription.findById(newSubscription.id, {
+            attributes: ['from', 'to', 'price'],
+            include: [{
+                attributes: ['familyName', 'givenName', 'nickname'],
+                model: User,
+                as: 'Coach'
+            }, {
+                attributes: ['familyName', 'givenName', 'nickname', 'email'],
+                model: User,
+                as: 'Client'
+            }, {            
+                attributes: ['amount'],
+                model: Credit,
+                as: 'Credits'
+            }]
+        }).then(subscription => {
+            subscription.all = R.reduce((acc, credit) => acc + credit.amount, 0, newSubscription.Credits)
+            mailerService.sendNewSubscriptionNotification(subscription)
+        })
+    }
+    
+    return newSubscription
+}
+
 const add = (subscription, auth) => {
 
     return checkAuth(subscription, auth)
@@ -181,6 +212,7 @@ const add = (subscription, auth) => {
         .then(checkIssuerIsCoach)
         .then(decorateNewSubcriptionData)
         .then(addSubscription)
+        .then(sendEmail)
         .then((newSubscription) => addToDefaultTrainings(newSubscription, newSubscription.defaultTrainings, auth))
 }
 

@@ -64,6 +64,11 @@
                 </tbody>
             </table>
         </div>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" ng-model="subscriptionAdministration.sendEmail"> Email küldése a vásárlásról 
+            </label>
+        </div>
         <button type="submit" class="btn btn-primary pull-right" ng-click="subscriptionAdministration.submit()" ng-disabled="subscriptionForm.$pristine || subscriptionForm.$invalid || subscriptionAdministration.invalid()">Mentés</button>
     </form>
 </div>

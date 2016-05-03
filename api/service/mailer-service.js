@@ -11,7 +11,7 @@ const dummyTransporter = {
 
 const transporter = (config.mode === 'debug') ? dummyTransporter : nodemailer.createTransport(mailgun(config.mail))
 
-const from = '360Gym Lomb <no-reply@kotei.hu>'
+const from = '360Gym Lomb <no-reply@lomb.kotei.hu>'
 
 const sendMail = Promise.promisify(transporter.sendMail, { context: transporter })
 
@@ -89,7 +89,7 @@ const sendRegistration = (user, token) => {
                 Itt megnézheted a terem órarendjét, illetve hogy mely órákra jelentkezél, és még sok minden mást is!
             </div>
             
-            <div>Ha további kérdéseid lennének, szintén fordulj bizalommal edződhöz személyesen, vagy írj nekünk a <a href="mailto:360gymlomb@gmail.com">360gymlomb@gmail.com</a> email címre.</div>
+            <div>Ha további kérdéseid lennének, fordulj bizalommal edződhöz személyesen, vagy írj nekünk a <a href="mailto:360gymlomb@gmail.com">360gymlomb@gmail.com</a> email címre.</div>
 
             <div>
                 Üdvözlettel,<br/>
@@ -127,7 +127,7 @@ const sendSubscriptionAlmostDepletedNotification = (subscription) => {
             
             <div>Új bérletet akkor kell venned, ha az összes alkalmadat lejártad az aktuális bérleteden, vagy annak érvényességi ideje lejárt.</div>
             
-            <div>Ha további kérdéseid lennének, szintén fordulj bizalommal edződhöz személyesen, vagy írj nekünk a <a href="mailto:360gymlomb@gmail.com">360gymlomb@gmail.com</a> email címre.</div>
+            <div>Ha további kérdéseid lennének, fordulj bizalommal edződhöz személyesen, vagy írj nekünk a <a href="mailto:360gymlomb@gmail.com">360gymlomb@gmail.com</a> email címre.</div>
 
             <div>
                 Üdvözlettel,<br/>
@@ -144,8 +144,48 @@ const sendSubscriptionAlmostDepletedNotification = (subscription) => {
     return sendMail(mailOptions)
 }
 
+const sendNewSubscriptionNotification = (subscription) => {
+    const mailOptions = {
+        from: from,
+        to: subscription.Client.email,
+        subject: '360Gym Lomb - Emlékeztető bérlet vásárlásról',
+        html:
+            `<html>
+            <head>
+                <style type="text/css">
+                    div {
+                        margin-bottom: 10px;
+                    }
+                </style>
+            </head>
+            <body>
+            <div>Kedves ${subscription.Client.fullName}!</div>
+
+            <div>Ez csak egy emlékeztető, hogy új bérletet vásároltál. Ezt a bérletedet ${moment(subscription.from).format('YYYY. MM. DD')}-n vásároltad, 
+            ${moment(subscription.to).format('YYYY. MM. DD')}-ig érvényes, és összesen ${subscription.all} edzésalkalomra szól.</div>
+            
+            <div>Új bérletet akkor kell venned, ha az összes alkalmadat lejártad az aktuális bérleteden, vagy annak érvényességi ideje lejárt.</div>
+            
+            <div>Ha további kérdéseid lennének, fordulj bizalommal edződhöz személyesen, vagy írj nekünk a <a href="mailto:360gymlomb@gmail.com">360gymlomb@gmail.com</a> email címre.</div>
+
+            <div>
+                Üdvözlettel,<br/>
+                ${subscription.Coach.fullName}
+            </div>
+
+            <div>
+                P.S.: Ez egy automatikus üzenet, kérjük erre az emailre ne válaszolj.
+            </div>
+            </body>
+            <html>`
+        }
+
+    return sendMail(mailOptions)    
+}
+
 module.exports = {
     sendResetPasswordToken: sendResetPasswordToken,
     sendRegistration: sendRegistration,
-    sendSubscriptionAlmostDepletedNotification: sendSubscriptionAlmostDepletedNotification 
+    sendSubscriptionAlmostDepletedNotification: sendSubscriptionAlmostDepletedNotification,
+    sendNewSubscriptionNotification: sendNewSubscriptionNotification
 }
