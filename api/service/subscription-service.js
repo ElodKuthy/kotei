@@ -4,6 +4,7 @@ const R = require('ramda')
 const errors = require('../common/errors')
 const parser = require('../common/parser')
 const roles = require('../common/roles')
+const logger = require('../common/logger')
 
 const model = require('../model/model')
 const User = model.User
@@ -197,7 +198,7 @@ const sendEmail = (newSubscription) => {
             }]
         }).then(subscription => {
             subscription.all = R.reduce((acc, credit) => acc + credit.amount, 0, newSubscription.Credits)
-            mailerService.sendNewSubscriptionNotification(subscription)
+            mailerService.sendNewSubscriptionNotification(subscription).then(result => logger.info(result)).catch((error => logger.error(error)))
         })
     }
     
