@@ -1,6 +1,6 @@
 {
   "name": "kotei",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "kotei web application",
   "main": "app.js",
   "scripts": {
