@@ -18,6 +18,8 @@ const config = {
         }
     },
     
+    theme: process.env.KOTEI_THEME || 'lomb',
+    
     mode: process.env.KOTEI_MODE || 'debug'
 }
 
