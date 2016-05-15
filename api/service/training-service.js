@@ -17,7 +17,7 @@ const Promise = require('bluebird')
 
 const checkAdmin = (training, auth) => {
     if (!auth.isAdmin) {
-        return Promise.reject(errors.unauthorized)
+        return Promise.reject(errors.unauthorized())
     }
 
     return Promise.resolve(training)
@@ -31,7 +31,7 @@ const checkCoach = (training) => {
     }).then((coach) => {
 
         if (!coach) {
-            return Promise.reject(errors.invalidCoach)
+            return Promise.reject(errors.invalidCoach())
         }
 
         return Promise.resolve(training)
@@ -41,11 +41,11 @@ const checkCoach = (training) => {
 const calculateDates = (training) => {
 
     if (moment(training.from).add({ minutes: 5 }).isAfter(training.to)) {
-        return Promise.reject(errors.trainingTooShort)
+        return Promise.reject(errors.trainingTooShort())
     }
 
     if (!moment(training.from).isSame(training.to, 'day')) {
-        return Promise.reject(errors.trainingTooLong)
+        return Promise.reject(errors.trainingTooLong())
     }
 
     var dates = []
@@ -84,12 +84,12 @@ const addTraining = (training) => {
     }).then((collidingTraining) => {
 
         if (collidingTraining) {
-            return Promise.reject(errors.trainingTimeCollide)
+            return Promise.reject(errors.trainingTimeCollide())
         }
 
         return Training.create(training)
             .catch((error) => {
-                return Promise.reject(errors.missingOrInvalidParameters)
+                return Promise.reject(errors.missingOrInvalidParameters())
             })
     })
 
@@ -112,7 +112,7 @@ const add = (training, auth) => {
 
 const find = (query, auth) => {
     if (!auth.isAuth) {
-        return Promise.reject(errors.unauthorized)
+        return Promise.reject(errors.unauthorized())
     }
 
     return Training.findAll(parser.parseQuery({
@@ -138,17 +138,17 @@ const find = (query, auth) => {
                 as: 'Client'
             }]
         }]
-    }, query)).catch((error) => Promise.reject(errors.missingOrInvalidParameters))
+    }, query)).catch((error) => Promise.reject(errors.missingOrInvalidParameters()))
 }
 
 const findTrainingType = (query, auth) => {
     if (!auth.isCoach && !auth.isAdmin) {
-        return Promise.reject(errors.unauthorized)
+        return Promise.reject(errors.unauthorized())
     }
 
     return TrainingType.findAll(parser.parseQuery({
         attributes: ['id', 'name']
-    }, query)).catch((error) => Promise.reject(errors.missingOrInvalidParameters))
+    }, query)).catch((error) => Promise.reject(errors.missingOrInvalidParameters()))
 }
 
 module.exports = {

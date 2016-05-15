@@ -35,16 +35,16 @@ const login = (credential, userPassword) => {
         include: [ Password ]
     }).then((results) => {
         if (!results || results.length === 0) {
-            return Promise.reject(errors.invalidUserNameOrPassword)
+            return Promise.reject(errors.invalidUserNameOrPassword())
         }
         if (results.length > 1) {
-            return Promise.reject(errors.nonUniqueUserName)
+            return Promise.reject(errors.nonUniqueUserName())
         }
 
         const user = results[0]
 
         if (!user.Password.checkPassword(userPassword)) {
-            return Promise.reject(errors.invalidUserNameOrPassword)
+            return Promise.reject(errors.invalidUserNameOrPassword())
         }
 
         return { jwt: jwt.sign(userInfo(user), cert, { algorithm: 'RS512' }) }
@@ -55,7 +55,7 @@ const forgot = (email) => {
 
     const user = User.findOne({ where: { email: email }, include: [ Password ]})
 
-    return user.then((result) => (result ? result.Password.resetPassword() : Promise.reject(errors.invalidUserNameOrPassword)))
+    return user.then((result) => (result ? result.Password.resetPassword() : Promise.reject(errors.invalidUserNameOrPassword())))
         .then((token) => mailerService.sendResetPasswordToken(user.value(), token))
         .then(() => 'OK')
         .catch(() => 'OK')
@@ -64,10 +64,10 @@ const forgot = (email) => {
 const reset = (token, newPassword) => {
 
     if (!newPassword)
-        return Promise.reject(errors.missingOrInvalidParameters)
+        return Promise.reject(errors.missingOrInvalidParameters())
 
     return Password.findOne({ where: { token: token } })
-        .then((password) => password ? password.setPassword(newPassword) : Promise.reject(errors.invalidOrExpiredToken))
+        .then((password) => password ? password.setPassword(newPassword) : Promise.reject(errors.invalidOrExpiredToken()))
         .then(() => 'OK')
 }
 

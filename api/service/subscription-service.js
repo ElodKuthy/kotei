@@ -28,17 +28,17 @@ const mapIndexed = R.addIndex(R.map)
 
 const findSubscriptionType = (query, auth) => {
     if (!auth.isCoach && !auth.isAdmin) {
-        return Promise.reject(errors.unauthorized)
+        return Promise.reject(errors.unauthorized())
     }
 
     return SubscriptionType.findAll(parser.parseQuery({
         attributes: ['id', 'name']
-    }, query)).catch((error) => Promise.reject(errors.missingOrInvalidParameters))
+    }, query)).catch((error) => Promise.reject(errors.missingOrInvalidParameters()))
 }
 
 const findSubscriptionTemplate = (query, auth) => {
     if (!auth.isCoach && !auth.isAdmin) {
-        return Promise.reject(errors.unauthorized)
+        return Promise.reject(errors.unauthorized())
     }
 
     return SubscriptionTemplate.findAll(parser.parseQuery({
@@ -58,17 +58,17 @@ const findSubscriptionTemplate = (query, auth) => {
                 as: 'Coach'
             }]
         }]
-    }, query)).catch((error) => Promise.reject(errors.missingOrInvalidParameters))
+    }, query)).catch((error) => Promise.reject(errors.missingOrInvalidParameters()))
 }
 
 const checkAuth = (subscription, auth) => {
     if (!auth.isCoach && !auth.isAdmin) {
-        return Promise.reject(errors.unauthorized)
+        return Promise.reject(errors.unauthorized())
     }
 
     if (auth.isCoach) {
         if (subscription.coach_id != auth.id) {
-            return Promise.reject(errors.unauthorized)
+            return Promise.reject(errors.unauthorized())
         }
     }
 
@@ -77,7 +77,7 @@ const checkAuth = (subscription, auth) => {
 
 const checkDates = (subscription) => {
     if (moment(subscription.from).isAfter(subscription.to)) {
-        Promise.reject(errors.missingOrInvalidParameters)
+        Promise.reject(errors.missingOrInvalidParameters())
     }
 
     return Promise.resolve(subscription)
@@ -91,7 +91,7 @@ const checkSubscriberIsClient = (subscription) => {
     })).then((result) => {
         return result
             ? Promise.resolve(subscription)
-            : Promise.reject(errors.missingOrInvalidParameters)
+            : Promise.reject(errors.missingOrInvalidParameters())
     })
 }
 
@@ -103,7 +103,7 @@ const checkIssuerIsCoach = (subscription) => {
     })).then((result) => {
         return result
             ? Promise.resolve(subscription)
-            : Promise.reject(errors.missingOrInvalidParameters)
+            : Promise.reject(errors.missingOrInvalidParameters())
     })
 }
 
@@ -220,13 +220,13 @@ const add = (subscription, auth) => {
 const update = (updatedSubscription, auth) => {
 
     if (!auth.isAdmin) {
-        return Promise.reject(errors.unauthorized)
+        return Promise.reject(errors.unauthorized())
     }
 
     return Subscription.findById(updatedSubscription.id)
         .then((subscription) => {
             if (!subscription) {
-                return Promise.reject(errors.invalidId)
+                return Promise.reject(errors.invalidId())
             }
             subscription.subscription_type_id = updatedSubscription.subscription_type_id
             subscription.from = updatedSubscription.from
@@ -254,7 +254,7 @@ const update = (updatedSubscription, auth) => {
 
 const find = (query, auth) => {
     if (!auth.isAuth) {
-        return Promise.reject(errors.unauthorized)
+        return Promise.reject(errors.unauthorized())
     }
 
     return Subscription.findAll(parser.parseQuery({
@@ -286,12 +286,12 @@ const find = (query, auth) => {
                 model: TrainingType
             }]
         }]
-    }, query)).catch((error) => Promise.reject(errors.missingOrInvalidParameters))
+    }, query)).catch((error) => Promise.reject(errors.missingOrInvalidParameters()))
 }
 
 const remove = (args, auth) => {
     if (!auth.isAdmin && !auth.isCoach) {
-        return Promise.reject(errors.unauthorized)
+        return Promise.reject(errors.unauthorized())
     }
     
     return Subscription.findById(args.subscriptionId, {
@@ -299,11 +299,11 @@ const remove = (args, auth) => {
         })
         .then((subscription) => {
             if (!subscription) {
-                return Promise.reject(errors.invalidId)
+                return Promise.reject(errors.invalidId())
             }
             
             if (auth.isCoach && auth.id !== subscription.coach_id) {
-                return Promise.reject(errors.unauthorized)
+                return Promise.reject(errors.unauthorized())
             }
             
             return Attendee.findAll({

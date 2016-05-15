@@ -16,7 +16,7 @@ const Promise = require('bluebird')
 
 const find = (query, auth) => {
     if (!auth.isCoach && !auth.isAdmin) {
-        return Promise.reject(errors.unauthorized)
+        return Promise.reject(errors.unauthorized())
     }
 
     return User.findAll(parser.parseQuery({
@@ -33,7 +33,7 @@ const find = (query, auth) => {
             'coach_id',
             'created_at'
         ]
-    }, query)).catch((error) => Promise.reject(errors.missingOrInvalidParameters))
+    }, query)).catch((error) => Promise.reject(errors.missingOrInvalidParameters()))
 }
 
 const add = (newUser, auth) => {
@@ -41,7 +41,7 @@ const add = (newUser, auth) => {
         || auth.isClient
         || (auth.isCoach && newUser.role !== roles.client)) {
 
-        return Promise.reject(errors.unauthorized)
+        return Promise.reject(errors.unauthorized())
     }
 
     if (!newUser.familyName
@@ -49,7 +49,7 @@ const add = (newUser, auth) => {
         || !newUser.email
         || !newUser.role) {
 
-        return Promise.reject(errors.missingOrInvalidParameters)
+        return Promise.reject(errors.missingOrInvalidParameters())
     }
 
     if (!newUser.nickname) {
@@ -75,11 +75,11 @@ const add = (newUser, auth) => {
         .catch((error) => {
             if (error.name === 'SequelizeUniqueConstraintError') {
                 if (error.fields.normalizedNickname) {
-                    return Promise.reject(errors.nameAlreadyUsed)
+                    return Promise.reject(errors.nameAlreadyUsed())
                 }
 
                 if (error.fields.email) {
-                    return Promise.reject(errors.emailAlreadyUsed)
+                    return Promise.reject(errors.emailAlreadyUsed())
                 }
             }
 
@@ -89,7 +89,7 @@ const add = (newUser, auth) => {
 
 const findMe = (auth) => {
     if (!auth.isAuth) {
-        return Promise.reject(errors.unauthorized)
+        return Promise.reject(errors.unauthorized())
     }
 
     return User.findById(auth.id, {
@@ -111,7 +111,7 @@ const findMe = (auth) => {
 
 const resendRegistration = (user, auth) => {
     if (!auth.isAdmin && !auth.isCoach) {
-        return Promise.reject(errors.unauthorized)
+        return Promise.reject(errors.unauthorized())
     }
 
     return User.findById(user.id, {
@@ -126,7 +126,7 @@ const resendRegistration = (user, auth) => {
 
 const update = (updatedUser, auth) => {
     if (!auth.isAdmin && !auth.isCoach) {
-        return Promise.reject(errors.unauthorized)
+        return Promise.reject(errors.unauthorized())
     }
 
     return User.findById(updatedUser.id)
@@ -144,11 +144,11 @@ const update = (updatedUser, auth) => {
         .catch((error) => {
             if (error.name === 'SequelizeUniqueConstraintError') {
                 if (error.fields.normalizedNickname) {
-                    return Promise.reject(errors.nameAlreadyUsed)
+                    return Promise.reject(errors.nameAlreadyUsed())
                 }
 
                 if (error.fields.email) {
-                    return Promise.reject(errors.emailAlreadyUsed)
+                    return Promise.reject(errors.emailAlreadyUsed())
                 }
             }
 

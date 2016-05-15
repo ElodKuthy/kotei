@@ -7,12 +7,12 @@ const Promise = require('bluebird')
 
 const find = (query, auth) => {
     if (!auth.isCoach && !auth.isAdmin) {
-        return Promise.reject(errors.unauthorized)
+        return Promise.reject(errors.unauthorized())
     }
 
     return Location.findAll(parser.parseQuery({
             attributes: ['id', 'name']
-        }, query)).catch((error) => Promise.reject(errors.missingOrInvalidParameters))
+        }, query)).catch((error) => Promise.reject(errors.missingOrInvalidParameters()))
 }
 
 module.exports = {
