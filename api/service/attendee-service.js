@@ -181,8 +181,12 @@ const update = (training_id, client_id, checkIn, auth) => {
     return Promise.all([findTraining(training_id), findClient(client_id)])
         .spread((training, client) => {
 
+            if (auth.isCoach && training.coach_id !== auth.id) {
+                return Promise.reject(errors.unauthorized())
+            }
+
             if (!auth.isAdmin && moment().isBefore(training.from)) {
-                return Promise.reject(errors.tooEarlyToCheckIn)
+                return Promise.reject(errors.tooEarlyToCheckIn())
             }
 
             // if (!auth.isAdmin && moment().isAfter(moment(training.to).endOf('day'))) {

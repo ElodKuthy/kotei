@@ -5,7 +5,13 @@
             <div>{{attendeeList.training.name}} - {{attendeeList.training.date | date: 'EEEE HH:mm'}} - {{attendeeList.training.location}}</div>
             <div>Edző: {{attendeeList.training.coach}}</div>
          </li>
-        <li class="list-item" ng-repeat="attendee in attendeeList.attendees" ng-click="attendeeList.toggleAttendee(attendee)"><i class="fa fa-circle" ng-class="attendee.cssClass"></i>{{$index + 1}}. {{attendee.name}}<i ng-if="attendeeList.canModify" class="fa fa-times pull-right" ng-click="$event.stopPropagation();attendeeList.removeAttendee(attendee)"></i></li>
+        <li class="list-item" ng-repeat="attendee in attendeeList.attendees" ng-click="attendeeList.toggleAttendee(attendee)">
+            <i class="fa fa-circle" ng-class="attendee.cssClass"></i>
+            {{$index + 1}}. 
+            <a ng-if="!attendeeList.userInfo.isClient" class="attendee-name" ui-sref="administration.user-profile({ userId: attendee.id })" ng-click="$event.stopPropagation();">{{attendee.name}}</a>
+            <span ng-if="attendeeList.userInfo.isClient">{{attendee.name}}</span>
+            <i ng-if="attendeeList.canModify" class="fa fa-times pull-right" ng-click="$event.stopPropagation();attendeeList.removeAttendee(attendee)"></i>
+        </li>
         <li ng-if="attendeeList.canAdd" class="list-item">
             <div class="input-group">
                 <input id="addClient" name="addClient" type="text" ng-model="attendeeList.clientToAdd" uib-typeahead="client as client.displayName for client in attendeeList.clients | filter: { displayName: $viewValue }" typeahead-editable="false" class="form-control" placeholder="Tanítvány hozzáadása" ng-keydown="attendeeList.addClientKeyDown($event)">

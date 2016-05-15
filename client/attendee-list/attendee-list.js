@@ -50,6 +50,7 @@ angular.module('kotei')
             id: training.id,
             name: training.TrainingType.name,
             date: $moment(training.from).toDate(),
+            coach_id: training.Coach.id,
             coach: training.Coach.nickname,
             location: training.Location.name,
             count: training.Subscriptions.length,
@@ -68,9 +69,9 @@ angular.module('kotei')
 
         this.clients = generateAddClientsList(this.attendees, clients)
 
-        this.canAdd = (this.training.count < this.training.max) && (this.userInfo.isAdmin || (this.userInfo.isCoach && this.userInfo.id === this.training.id))
+        this.canAdd = (this.training.count < this.training.max) && (this.userInfo.isAdmin || (this.userInfo.isCoach && this.userInfo.id === this.training.coach_id))
 
-        this.canModify = this.userInfo.isAdmin || (this.userInfo.isCoach && this.userInfo.id === this.training.id)
+        this.canModify = this.userInfo.isAdmin || (this.userInfo.isCoach && this.userInfo.id === this.training.coach_id)
 
         this.canJoin = this.userInfo.isClient && moment().isBefore(training.to) && (this.training.count < this.training.max) && !isAttendee(this.attendees, this.userInfo)
 
@@ -78,11 +79,11 @@ angular.module('kotei')
 
         this.toggleAttendee = (attendee) => {
 
-            //if (this.userInfo.isAdmin || (this.userInfo.isCoach && moment().isAfter(training.from) && moment().isBefore(moment(training.to).endOf('day')))) {
+            if (!this.userInfo.isClient) {
                 administrationService.updateAttendee(training.id, attendee.id, !attendee.checkIn)
                     .then(() => $state.reload())
                     .catch((error) => this.error = error)
-            //}
+            }
         }
 
         this.removeAttendee = (attendee) => {

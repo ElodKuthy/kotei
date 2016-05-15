@@ -18,7 +18,8 @@ const texts = {
     tooLateToLeave: 'Too late to leave this training',
     notAttendee: 'This training has not been attended',
     noCredit: 'Client has no credit',
-    invalidId: 'Invalid ID'
+    invalidId: 'Invalid ID',
+    tooEarlyToCheckIn: 'Too early to check in'
 }
 
 module.exports = texts
