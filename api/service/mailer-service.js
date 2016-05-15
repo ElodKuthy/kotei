@@ -7,7 +7,10 @@ const Promise = require('bluebird')
 const mails = require('../mail/' + config.theme)
 
 const dummyTransporter = {
-    sendMail: (mailOptions, callback) => callback(null, mailOptions)
+    sendMail: (mailOptions, callback) => {
+        console.log(mailOptions)
+        callback(null, mailOptions)
+    }
 }
 
 const transporter = (config.mode === 'debug') ? dummyTransporter : nodemailer.createTransport(mailgun(config.mail))
@@ -22,8 +25,7 @@ const sendResetPasswordToken = (user, token) => {
         from: from,
         to: user.email,
         subject: mails.sendResetPasswordToken.subject,
-        html: mails.sendResetPasswordToken.html
-
+        html: mails.sendResetPasswordToken.html(user, token)
     })
 }
 
@@ -33,8 +35,7 @@ const sendRegistration = (user, token) => {
         from: from,
         to: user.email,
         subject: mails.sendRegistration.subject,
-        html: mails.sendRegistration.html
-
+        html: mails.sendRegistration.html(user, token)
     })
 }
 
@@ -44,8 +45,7 @@ const sendSubscriptionAlmostDepletedNotification = (subscription) => {
         from: from,
         to: subscription.Client.email,
         subject: mails.sendSubscriptionAlmostDepletedNotification.subject,
-        html: mails.sendSubscriptionAlmostDepletedNotification.html
-
+        html: mails.sendSubscriptionAlmostDepletedNotification.html(subscription)
     })
 }
 
@@ -55,8 +55,7 @@ const sendNewSubscriptionNotification = (subscription) => {
         from: from,
         to: subscription.Client.email,
         subject: mails.sendNewSubscriptionNotification.subject,
-        html: mails.sendNewSubscriptionNotification.html
-
+        html: mails.sendNewSubscriptionNotification.html(subscription)
     })
 }
 

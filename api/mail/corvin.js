@@ -1,8 +1,10 @@
+const moment = require('moment')
+
 const from = '360Gym Corvin <no-reply@corvin.kotei.hu>'
 
 const sendResetPasswordToken = {
     subject: '360Gym Corvin - Elfelejtett jelszó',
-    html:
+    html: (user, token) =>
         `<html>
         <head>
             <style type="text/css">
@@ -38,7 +40,7 @@ const sendResetPasswordToken = {
 
 const sendRegistration = {
     subject: '360Gym Corvin - Üdvözlünk',
-    html:
+    html: (user, token) =>
         `<html>
         <head>
             <style type="text/css">
@@ -80,7 +82,7 @@ const sendRegistration = {
 
 const sendSubscriptionAlmostDepletedNotification = {
     subject: '360Gym Corvin - Emlékeztető bérlet lejáratáról',
-    html:
+    html: (subscription) =>
         `<html>
         <head>
             <style type="text/css">
@@ -112,7 +114,7 @@ const sendSubscriptionAlmostDepletedNotification = {
 
 const sendNewSubscriptionNotification = {
     subject: '360Gym Corvin - Emlékeztető bérlet vásárlásról',
-    html:
+    html: (subscription) =>
         `<html>
         <head>
             <style type="text/css">
