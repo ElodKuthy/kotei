@@ -31,7 +31,7 @@ angular.module('kotei')
                 roles: ['coach', 'admin']
         })
     })
-    .controller('SubscriptionAdministrationController', function (R, $scope, $moment, userInfoService, clients, coaches, subscriptionTypes, allTrainingTypes, infoService, modalService, administrationService, nameService) {
+    .controller('SubscriptionAdministrationController', function (R, $scope, $state, $moment, userInfoService, clients, coaches, subscriptionTypes, allTrainingTypes, infoService, modalService, administrationService, nameService) {
 
         this.title = 'Bérletvásárlás'
 
@@ -58,6 +58,14 @@ angular.module('kotei')
                 training.coach = training.Coach.fullName
             })
             return trainings
+        }
+        
+        const filterTrainings = () => {
+            if (this.isAdmin || this.showAllTraining) {
+                this.trainings = this.allTrainings
+            } else {
+                this.trainings = R.filter((training) => training.Coach.id === this.coach.id, this.allTrainings)
+            }            
         }
 
         this.typeChanged = () => {
@@ -137,10 +145,8 @@ angular.module('kotei')
 
                     infoService.getTrainingsByDateAndType(from, to, trainingTypeIds)
                         .then((trainings) => {
-                            this.trainings = decorateTrainings(trainings)
-                            if (this.coach) {
-                                this.trainings = R.filter((training) => training.Coach.id === this.coach.id, this.trainings)
-                            }
+                            this.allTrainings = decorateTrainings(trainings)
+                            filterTrainings()
                         })
                 })
 
@@ -149,6 +155,8 @@ angular.module('kotei')
         $scope.$watch(() => this.coach, this.typeChanged)
 
         $scope.$watch(() => this.from, this.typeChanged)
+        
+        $scope.$watch(() => this.showAllTraining, filterTrainings)
 
         this.clickTraining = (training) => {
             training.selected = !training.selected
@@ -180,6 +188,9 @@ angular.module('kotei')
                 sendEmail: this.sendEmail
             }
 
-            return administrationService.addNewSubscription(subscription).then(() => modalService.info(this.title, 'Sikeres bérletvásárlás')).catch((error => this.error = error))
+            return administrationService.addNewSubscription(subscription)
+                .then(() => modalService.info(this.title, 'Sikeres bérletvásárlás'))
+                .then(() => $state.go('administration.user-profile', { userId: subscription.client_id }))
+                .catch(error => this.error = error)
         }
     })

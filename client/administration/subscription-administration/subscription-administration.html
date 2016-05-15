@@ -49,6 +49,11 @@
         </div>
         <div>
             <label>Alapértelmezett órák</label>
+            <div class="checkbox" ng-if="!subscriptionAdministration.isAdmin">
+                <label>
+                    <input type="checkbox" ng-model="subscriptionAdministration.showAllTraining"> Mutasd más edzők óráit is
+                </label>
+            </div>
             <table class="table table-bordered table-responsive">
                 <thead>
                     <th>Óra</th>

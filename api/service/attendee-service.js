@@ -107,10 +107,6 @@ const add = (training_id, client_id, auth) => {
             if (auth.isClient && client.id !== auth.id) {
                 return Promise.reject(errors.unauthorized())
             }
-            
-            if (auth.isCoach && training.coach_id !== auth.id) {
-                return Promise.reject(errors.unauthorized())
-            }
 
             if (auth.isClient && moment().isAfter(training.to)) {
                 return Promise.reject(errors.trainingEnded())
