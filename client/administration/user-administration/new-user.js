@@ -60,7 +60,7 @@ angular.module('kotei')
             checkAdminRole().then(() => {
                 administrationService.addNewUser(this.user)
                     .then((result) => {
-                        modalService.info(this.title, result).then($state.go('administration.new-subscription'))
+                        return modalService.info(this.title, 'Sikeres regisztráció').then(() => $state.go('administration.new-subscription', { clientId: result.id }))
                     })
                     .catch((error) => {
                         this.error = error

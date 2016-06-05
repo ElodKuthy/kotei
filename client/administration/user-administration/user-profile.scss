@@ -2,8 +2,11 @@
     input, select, .info {
         margin-bottom: 10px;
     }
-    button {
+    .btn {
         margin-top: 10px;
+    }
+    .btn.pull-right {
+        margin-left: 10px;
     }
     .subscription-panel {
         max-height: 646px;

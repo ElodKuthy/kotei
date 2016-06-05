@@ -70,8 +70,7 @@ const add = (newUser, auth) => {
                 token: uuid()
             }
         }, { include: [ Password ] })
-        .then((user) => mailerService.sendRegistration(user, user.Password.token))
-        .then(() => texts.successfulRegistration)
+        .then((user) => mailerService.sendRegistration(user, user.Password.token).then(() => user))
         .catch((error) => {
             if (error.name === 'SequelizeUniqueConstraintError') {
                 if (error.fields.normalizedNickname) {

@@ -4,6 +4,9 @@ angular.module('kotei')
         $stateProvider
             .state('administration.new-subscription', {
                 url: '/new-subscription',
+                params: {
+                    clientId: null,  
+                },
                 views: {
                     'navbar@': {
                         templateUrl: 'navbar/navbar.html',
@@ -31,7 +34,7 @@ angular.module('kotei')
                 roles: ['coach', 'admin']
         })
     })
-    .controller('SubscriptionAdministrationController', function (R, $scope, $state, $moment, userInfoService, clients, coaches, subscriptionTypes, allTrainingTypes, infoService, modalService, administrationService, nameService) {
+    .controller('SubscriptionAdministrationController', function (R, $scope, $stateParams, $state, $moment, userInfoService, clients, coaches, subscriptionTypes, allTrainingTypes, infoService, modalService, administrationService, nameService) {
 
         this.title = 'Bérletvásárlás'
 
@@ -46,6 +49,8 @@ angular.module('kotei')
         this.coaches = nameService.addDisplayName(coaches)
         this.subscriptionTypes = subscriptionTypes
         this.type = this.subscriptionTypes[0]
+        const clientId = +$stateParams.clientId
+        this.client = clientId ? this.clients.find(client => client.id === clientId) : null
 
         this.from = $moment().startOf('day').toDate()
         
