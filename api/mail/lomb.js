@@ -149,7 +149,7 @@ const sendNewSubscriptionNotification = {
 module.exports = {
     from: from,
     sendResetPasswordToken: sendResetPasswordToken,
-    sendRegistration: sendRegistration.html,
+    sendRegistration: sendRegistration,
     sendSubscriptionAlmostDepletedNotification: sendSubscriptionAlmostDepletedNotification, 
     sendNewSubscriptionNotification: sendNewSubscriptionNotification
 }
