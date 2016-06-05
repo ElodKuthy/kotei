@@ -43,15 +43,26 @@ angular.module('kotei')
             subscription.attendeed = 0
             subscription.missed = 0
             subscription.Trainings = R.sort((a, b) => $moment(a.from).valueOf() - $moment(b.from).valueOf(), R.map((training) => {
-                if (training.Attendee.checkIn) {
-                    training.cssClass = 'text-success'
-                    subscription.attendeed++
-                } else if ($moment().isAfter(training.to)) {
-                    training.cssClass = 'text-danger'
-                    subscription.missed++
+                if ($moment().isAfter(training.to)) {
+                    training.canModify = false
+                    if (training.Attendee.checkIn) {
+                        training.cssClass = 'text-success'
+                        subscription.attendeed++
+                    } else {
+                        training.cssClass = 'text-danger'
+                        subscription.missed++
+                    }                    
                 } else {
-                    subscription.assigned++
+                    training.canModify = true
+                    subscription.assigned++                    
                 }
+                if (this.isCoach) {
+                    training.canModify = training.canModify && training.Coach.id === this.id                    
+                }
+                if (this.isAdmin) {
+                    training.canModify = true
+                }
+                                
                 return training
             }, subscription.Trainings))
             var diff = subscription.amount - subscription.assigned - subscription.attendeed - subscription.missed
@@ -91,6 +102,12 @@ angular.module('kotei')
         this.deleteSubscription = (subscriptionId) => {
             administrationService.deleteSubscription(subscriptionId)
                 .then(() => modalService.info(this.title, 'A bérlet törlésre került'))
+                .then(() => $state.reload())
+                .catch((error) => modalService.info(this.title, error))
+        }
+        
+        this.removeAttendee = (training) => {
+            administrationService.removeAttendee(training.id, this.user.id)
                 .then(() => $state.reload())
                 .catch((error) => modalService.info(this.title, error))
         }

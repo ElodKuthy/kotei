@@ -284,6 +284,10 @@ const find = (query, auth) => {
             include: [{
                 attributes: ['name'],
                 model: TrainingType
+            }, {
+                attributes: ['id', 'familyName', 'givenName'],
+                model: User,
+                as: 'Coach'
             }]
         }]
     }, query)).catch((error) => Promise.reject(errors.missingOrInvalidParameters()))

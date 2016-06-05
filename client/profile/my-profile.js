@@ -27,9 +27,9 @@ angular.module('kotei')
                 roles: ['client', 'coach', 'admin']
         })
     })
-    .controller('MyProfileController', function (R, $moment, profileInfo, subscriptions) {
+    .controller('MyProfileController', function (R, $state, $moment, profileInfo, subscriptions, administrationService, modalService) {
         this.profileInfo = profileInfo
-        this.subscriptions = R.map((subscription) => {
+        this.subscriptions = R.reverse(R.map((subscription) => {
             subscription.from = $moment(subscription.from).toDate()
             subscription.to = $moment(subscription.to).toDate()
             subscription.amount = R.reduce((acc, credit) => acc + credit.amount, 0, subscription.Credits)
@@ -37,15 +37,20 @@ angular.module('kotei')
             subscription.attendeed = 0
             subscription.missed = 0
             subscription.Trainings = R.sort((a, b) => $moment(a.from).valueOf() - $moment(b.from).valueOf(), R.map((training) => {
-                if (training.Attendee.checkIn) {
-                    training.cssClass = 'text-success'
-                    subscription.attendeed++
-                } else if ($moment().isAfter(training.to)) {
-                    training.cssClass = 'text-danger'
-                    subscription.missed++
+                if ($moment().isAfter(training.to)) {
+                    training.canModify = false
+                    if (training.Attendee.checkIn) {
+                        training.cssClass = 'text-success'
+                        subscription.attendeed++
+                    } else {
+                        training.cssClass = 'text-danger'
+                        subscription.missed++
+                    }                    
                 } else {
-                    subscription.assigned++
+                    training.canModify = true
+                    subscription.assigned++                    
                 }
+                                                
                 return training
             }, subscription.Trainings))
             var diff = subscription.amount - subscription.assigned - subscription.attendeed - subscription.missed
@@ -55,5 +60,11 @@ angular.module('kotei')
                 subscription.free = diff
             }
             return subscription
-        }, subscriptions)
+        }, subscriptions))
+                        
+        this.leaveTraining = (training) => {
+            administrationService.removeAttendee(training.id, this.profileInfo.id)
+                .then(() => $state.reload())
+                .catch((error) => modalService.info(this.title, error))
+        }
     })

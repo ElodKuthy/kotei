@@ -85,7 +85,12 @@
                             <div ng-if="subscription.attendeed">Részvételek: {{subscription.attendeed}}</div>
                             <div ng-if="subscription.assigned">Feliratkozások: {{subscription.assigned}}</div>
                             <ul class="list-group">
-                                <li class="list-group-item clearfix" ng-repeat="training in subscription.Trainings"><a ui-sref="attendee-list({ trainingId: training.id })"><i class="fa fa-circle" ng-class="training.cssClass"></i>{{ training.from | date }}: {{ training.TrainingType.name }}</a></li>
+                                <li class="list-group-item clearfix" ng-repeat="training in subscription.Trainings">
+                                    <a ui-sref="attendee-list({ trainingId: training.id })">
+                                        <i class="fa fa-circle" ng-class="training.cssClass"></i>{{ training.from | date }}: {{ training.TrainingType.name }}
+                                    </a>
+                                    <i ng-if="training.canModify" class="fa fa-times pull-right" ng-click="$event.stopPropagation();userProfile.removeAttendee(training)"></i>
+                                </li>
                             </ul>
                             <button ng-if="userProfile.isAdmin" type="button" class="btn btn-primary pull-left" ui-sref="administration.edit-subscription({ subscriptionId: subscription.id })">Módosítás</button>
                             <button ng-if="subscription.canBeDeleted" type="button" class="btn btn-primary pull-right" ng-click="userProfile.deleteSubscription(subscription.id)">Törlés</button>

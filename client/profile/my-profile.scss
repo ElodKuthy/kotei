@@ -19,5 +19,12 @@
     }
     i {
         margin-right: 10px;
-    }    
+    }
+    i.fa-times {
+        padding-top: 2px;
+        margin-right: 0;
+    }
+    i.fa-times:hover {
+        cursor: pointer;
+    }  
 }
