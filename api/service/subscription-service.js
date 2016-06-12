@@ -263,7 +263,7 @@ const find = (query, auth) => {
              attributes: ['id', 'name'],
              model: SubscriptionType
         }, {
-            attributes: ['id', 'familyName', 'givenName', 'nickname'],
+            attributes: ['id', 'familyName', 'givenName', 'nickname', 'email'],
             model: User,
             as: 'Coach'
         }, {

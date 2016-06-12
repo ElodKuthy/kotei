@@ -44,6 +44,7 @@ const sendSubscriptionAlmostDepletedNotification = (subscription) => {
     return sendMail({
         from: from,
         to: subscription.Client.email,
+        bcc: subscription.Coach.email,
         subject: mails.sendSubscriptionAlmostDepletedNotification.subject,
         html: mails.sendSubscriptionAlmostDepletedNotification.html(subscription)
     })
