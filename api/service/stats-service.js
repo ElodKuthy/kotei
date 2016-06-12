@@ -17,11 +17,6 @@ const payoffs = (query, auth) => {
         return Promise.reject(errors.unauthorized())        
     }
 
-    console.log(query)
-
-    // const from = (moment(month).isValid() ? moment(month).startOf('month') : moment().subtract({month: 1}).startOf(month)).format('YYYY-MM-DD')
-    // const to = (moment(month).isValid() ? moment(month).endOf('month') : moment().subtract({month: 1}).endOf(month)).format('YYYY-MM-DD')
-    
     const coaches = User.findAll({
         where: {
             role: 'coach'
