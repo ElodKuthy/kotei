@@ -7,8 +7,11 @@
             </div>
         </div>
         <div class="col-xs-12">
-            <div class="table-responsive">
-            <table ng-if="payoffs.payoffs && payoffs.payoffs.length" class="table table-bordered">
+            <h3 ng-if="!payoffs.payoffs || !payoffs.payoffs.length">
+                Adatok betöltése ...
+            </h3>
+            <div ng-if="payoffs.payoffs && payoffs.payoffs.length" class="table-responsive">
+            <table class="table table-bordered">
                 <thead>
                     <tr>
                         <th ng-if="payoffs.isAdmin"></th>

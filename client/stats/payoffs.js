@@ -25,6 +25,11 @@ angular.module('kotei')
         this.isAdmin = userInfo.isAdmin
         
         this.dateChanged = () => {
+            if (this.last && this.last.isSame(this.month, 'month')) {
+                return
+            }
+            this.last = $moment(this.month)
+            this.payoffs = null
             const from = $moment(this.month).startOf('month').format('YYYY-MM-DD')
             const to = $moment(this.month).endOf('month').format('YYYY-MM-DD')
             infoService.getPayoffs(from, to).then(payoffs => {
