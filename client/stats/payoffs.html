@@ -1,0 +1,28 @@
+<div class="payoffs container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="calendar">
+                <label for="month">Elszámolás hónapja</label>
+                <ko-calendar id="month" model="payoffs.month" format="yyyy. MMMM" minDate="payoffs.minDate" maxDate="payoffs.maxDate" enable-time="false" min-mode="month" datepicker-mode="month"></ko-calendar>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <div class="table-responsive">
+            <table ng-if="payoffs.payoffs && payoffs.payoffs.length" class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th ng-if="payoffs.isAdmin"></th>
+                        <th ng-repeat="amount in payoffs.payoffs[0].amounts">{{ amount.coach.fullName }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="row in payoffs.payoffs">
+                        <td ng-if="payoffs.isAdmin">{{ row.coach.fullName }}</td>
+                        <td ng-repeat="amount in row.amounts" ng-class="amount.cssClass">{{ amount.amount === '-' ? amount.amount : (amount.amount | currency : 'Ft': 0) }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+        </div>
+    </div>
+</div>

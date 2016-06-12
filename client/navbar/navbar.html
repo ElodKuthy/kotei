@@ -6,6 +6,7 @@
             </ul>
             <ul class="list-inline pull-right">
                 <li ng-if="navbar.userInfo.isAuth && !navbar.userInfo.isClient"><a ui-sref="administration"><i class="fa fa-pencil fa-2x"></i></a></li>
+                <li ng-if="navbar.userInfo.isAuth && !navbar.userInfo.isClient"><a ui-sref="stats"><i class="fa fa-table fa-2x"></i></a></li>
                 <li ng-if="navbar.userInfo.isAuth"><a ui-sref="schedule"><i class="fa fa-calendar fa-2x"></i></a></li>
                 <li ng-if="navbar.userInfo.isAuth"><a ui-sref="profile"><i class="fa fa-user fa-2x"></i></a></li>
                 <li ng-if="!navbar.userInfo.isAuth"><a ui-sref="login"><i class="fa fa-sign-in fa-2x"></i></a></li>
@@ -32,6 +33,16 @@
                         </li>
                         <li>
                             <a ui-sref="administration.new-subscription">Bérletvásárlás</a>
+                        </li>
+                    </ul>
+                </li>
+                <li ng-if="navbar.userInfo.isAuth && !navbar.userInfo.isClient" uib-dropdown on-toggle="toggled(open)">
+                    <a href uib-dropdown-toggle>
+                        Statisztikák
+                    </a>
+                    <ul class="uib-dropdown-menu">
+                        <li>
+                            <a ui-sref="stats.payoffs">Elszámolás</a>
                         </li>
                     </ul>
                 </li>

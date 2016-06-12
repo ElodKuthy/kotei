@@ -9,13 +9,16 @@ angular.module('kotei')
                 minDate: '=',
                 maxDate: '=',
                 format:  '@',
-                enableTime: '='
+                enableTime: '=',
+                minMode: '@',
+                datepickerMode: '@'
             },
             controller: function () {
 
                 this.dateOptions = {
                     formatYear: 'yy',
-                    startingDay: 1
+                    startingDay: 1,
+                    minMode: this.minMode || 'day'                    
                 }
 
                 this.timeOptions = {

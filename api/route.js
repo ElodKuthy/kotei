@@ -14,6 +14,7 @@ const subscriptionService = require('./service/subscription-service')
 const locationService = require('./service/location-service')
 const trainingService = require('./service/training-service')
 const attendeeService = require('./service/attendee-service')
+const statsService = require('./service/stats-service')
 
 const cert = fs.readFileSync(config.certs.public)
 
@@ -90,5 +91,7 @@ router.delete('/attendee', handler(attendeeService.remove, { query: ['training_i
 router.put('/attendee', handler(attendeeService.update, { query: ['training_id', 'client_id'], body: ['checkIn'] }))
 
 router.get('/location', handler(locationService.find, { query: 'query' }))
+
+router.get('/stats/payoffs', handler(statsService.payoffs, { query: 'query' }))
 
 module.exports = router
