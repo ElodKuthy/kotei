@@ -1,5 +1,7 @@
 .schedule {
 
+    margin-bottom: 60px;
+
     table {
         font-size: 14px;
         background-color: #3F4147;
@@ -44,5 +46,12 @@
     .list-inline > li {
         padding-top: 0px;
         padding-left: 10px;
+    }
+
+    .short-dates {
+        padding-left: 15px;
+        padding-top: 5px;
+        font-size: 1.5em;
+        color: #f97a6a;
     }
 }

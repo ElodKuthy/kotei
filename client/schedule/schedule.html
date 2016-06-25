@@ -27,9 +27,12 @@
             </div>
         </div>
     </div>
-    <nav class="navbar navbar-default">
+    <nav class="navbar navbar-default navbar-fixed-bottom">
         <div class="container-fluid">
             <div class="visible-xs small-navbar">
+                <div class="short-dates pull-left">
+                    {{ schedule.from.valueOf() | date : 'MMM d.' }} - {{ schedule.to.valueOf() | date : 'MMM d.' }} 
+                </div>
                 <ul class="list-inline pull-right">
                     <li><a ui-sref="schedule.custom({from: schedule.previous.from, to: schedule.previous.to })"><i class="fa fa-arrow-left fa-2x"></i></a></li>
                     <li><a ui-sref="schedule"><i class="fa fa-calendar fa-2x"></i></a></li>
