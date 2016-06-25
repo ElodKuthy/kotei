@@ -183,7 +183,7 @@ angular.module('kotei')
 
             var subscription = {
                 from: $moment(this.from).startOf('day').format(),
-                to: $moment(this.from).startOf('day').add({ days: this.variant.valid }).format(),
+                to: $moment(this.from).startOf('day').add({ days: this.variant.valid }).subtract({ seconds: 1 }).format(),
                 Credits: this.credits,
                 price: this.credits.price,
                 client_id: this.client.id,
