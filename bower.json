@@ -33,6 +33,7 @@
     "angular-filter": "0.5.8",
     "ramda": "0.19.0",
     "chartist": "0.9.5",
-    "ngSmoothScroll": "~2.0.0"
+    "ngSmoothScroll": "~2.0.0",
+    "jquery": "2.2.4"
   }
 }
