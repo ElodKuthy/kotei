@@ -75,8 +75,8 @@ angular.module('kotei')
 
         this.canJoin = this.userInfo.isClient && moment().isBefore(training.to) && (this.training.count < this.training.max) && !isAttendee(this.attendees, this.userInfo)
 
-        this.canLeave = (moment().diff(training.from, 'hours') <= -3) && isAttendee(this.attendees, this.userInfo)
-
+        this.canLeave = isAttendee(this.attendees, this.userInfo) && training.canLeave
+        
         this.toggleAttendee = (attendee) => {
 
             if (!this.userInfo.isClient) {

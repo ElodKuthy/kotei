@@ -4,6 +4,7 @@ const R = require('ramda')
 const errors = require('../common/errors')
 const texts = require('../localization/texts')
 const parser = require('../common/parser')
+const rules = require('../common/rules')
 
 const roles = require('../common/roles')
 const model = require('../model/model')
@@ -115,7 +116,7 @@ const find = (query, auth) => {
         return Promise.reject(errors.unauthorized())
     }
 
-    return Training.findAll(parser.parseQuery({
+    return Promise.all([rules.minHoursToLeaveTraining(), Training.findAll(parser.parseQuery({
         attributes: ['id', 'from', 'to', 'max'],
         include: [{
              attributes: ['id', 'name'],
@@ -138,7 +139,12 @@ const find = (query, auth) => {
                 as: 'Client'
             }]
         }]
-    }, query)).catch((error) => Promise.reject(errors.missingOrInvalidParameters()))
+    }, query))])
+    .spread((minHours, trainings) => R.map(training => {
+        training.dataValues.canLeave = auth.isClient && moment().diff(training.from, 'hours') <= -minHours
+        return training
+    }, trainings))
+    .catch((error) => Promise.reject(errors.missingOrInvalidParameters()))
 }
 
 const findTrainingType = (query, auth) => {

@@ -6,6 +6,7 @@ const errors = require('../common/errors')
 
 const roles = require('../common/roles')
 const model = require('../model/model')
+const rules = require('../common/rules')
 const Training = model.Training
 const User = model.User
 const Attendee = model.Attendee
@@ -147,8 +148,8 @@ const remove = (training_id, client_id, auth) => {
         return Promise.reject(errors.unauthorized())
     }
 
-    return Promise.all([findTraining(training_id), findClient(client_id)])
-        .spread((training, client) => {
+    return Promise.all([findTraining(training_id), findClient(client_id), rules.minHoursToLeaveTraining()])
+        .spread((training, client, minHours) => {
 
             if (auth.isClient && client.id !== auth.id) {
                 return Promise.reject(errors.unauthorized())
@@ -158,7 +159,7 @@ const remove = (training_id, client_id, auth) => {
                 return Promise.reject(errors.unauthorized())
             }
 
-            if (auth.isClient && moment().diff(training.from, 'hours') > -3) {
+            if (auth.isClient && moment().diff(training.from, 'hours') > -minHours) {
                 return Promise.reject(errors.tooLateToLeave())
             }
 

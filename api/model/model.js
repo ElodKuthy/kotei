@@ -11,6 +11,7 @@ const SubscriptionVariant = require('./subscription-variant')
 const Training = require('./training')
 const TrainingType = require('./training-type')
 const User = require('./user')
+const Rule = require('./rule')
 
 Training.belongsTo(Location, {
     foreignKey: {
@@ -185,5 +186,6 @@ module.exports = {
     SubscriptionVariant: SubscriptionVariant,
     Training: Training,
     TrainingType: TrainingType,
-    User: User
+    User: User,
+    Rule: Rule
 }
