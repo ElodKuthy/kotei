@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize')
-const database = require('./database')
 
-const Rule = database.define('Rule', {
+module.exports = database =>
+database.define('Rule', {
     name: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -15,5 +15,3 @@ const Rule = database.define('Rule', {
         }
     }
 })
-
-module.exports = Rule

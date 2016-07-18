@@ -3,7 +3,7 @@ const moment = require('moment')
 const errors = require('../common/errors')
 const parser = require('../common/parser')
 
-const model = require('../model/model')
+const model = require('../model/model')()
 const Training = model.Training
 const Subscription = model.Subscription
 const User = model.User

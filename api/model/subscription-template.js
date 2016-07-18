@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize')
-const database = require('./database')
 
-const SubscriptionTemplate = database.define('SubscriptionTemplate', {
+module.exports = database =>
+database.define('SubscriptionTemplate', {
     max: {
         type: Sequelize.INTEGER,
         allowNull: true,
@@ -11,5 +11,3 @@ const SubscriptionTemplate = database.define('SubscriptionTemplate', {
         }
     }
 })
-
-module.exports = SubscriptionTemplate

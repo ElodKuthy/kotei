@@ -1,9 +1,9 @@
 const Sequelize = require('sequelize')
-const database = require('./database')
 const bcrypt = require('bcrypt')
 const uuid = require('node-uuid').v4
 
-const Password = database.define('Password', {
+module.exports = database =>
+database.define('Password', {
     hash: {
         type: Sequelize.STRING
     },
@@ -41,5 +41,3 @@ const Password = database.define('Password', {
         }
     }
 })
-
-module.exports = Password

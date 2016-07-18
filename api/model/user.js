@@ -1,8 +1,8 @@
 const Sequelize = require('sequelize')
-const database = require('./database')
 const localization = require('../localization/name')
 
-const User = database.define('User', {
+module.exports = database =>
+database.define('User', {
     familyName: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -101,5 +101,3 @@ const User = database.define('User', {
         allowNull: true
     }
 })
-
-module.exports = User

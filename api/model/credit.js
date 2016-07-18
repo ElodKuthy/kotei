@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize')
-const database = require('./database')
 
-const Credit = database.define('Credit', {
+module.exports = database =>
+database.define('Credit', {
     amount: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -11,5 +11,3 @@ const Credit = database.define('Credit', {
         }
     }
 })
-
-module.exports = Credit

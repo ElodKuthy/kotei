@@ -5,7 +5,7 @@ const filterIndexed = R.addIndex(R.filter)
 const errors = require('../common/errors')
 
 const roles = require('../common/roles')
-const model = require('../model/model')
+const model = require('../model/model')()
 const rules = require('../common/rules')
 const Training = model.Training
 const User = model.User

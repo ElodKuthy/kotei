@@ -1,8 +1,8 @@
 const moment = require('moment')
 const Sequelize = require('sequelize')
-const database = require('./database')
 
-const Training = database.define('Training', {
+module.exports = database =>
+database.define('Training', {
     from: {
         type: Sequelize.DATE,
         allowNull: false,
@@ -26,5 +26,3 @@ const Training = database.define('Training', {
         }
     }
 })
-
-module.exports = Training

@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize')
-const database = require('./database')
 
-const Location = database.define('Location', {
+module.exports = database =>
+database.define('Location', {
     name: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -10,5 +10,3 @@ const Location = database.define('Location', {
         }
     }
 })
-
-module.exports = Location

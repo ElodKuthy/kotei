@@ -6,7 +6,7 @@ const parser = require('../common/parser')
 const roles = require('../common/roles')
 const logger = require('../common/logger')
 
-const model = require('../model/model')
+const model = require('../model/model')()
 const User = model.User
 const Subscription = model.Subscription
 const SubscriptionType = model.SubscriptionType

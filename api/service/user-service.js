@@ -6,7 +6,7 @@ const localization = require('../localization/name')
 const texts = require('../localization/texts')
 const parser = require('../common/parser')
 
-const model = require('../model/model')
+const model = require('../model/model')()
 const User = model.User
 const Password = model.Password
 

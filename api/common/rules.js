@@ -1,4 +1,4 @@
-const Rule = require('../model/model').Rule
+const Rule = require('../model/model')().Rule
 const Promise = require('bluebird')
 
 var _minHoursToLeaveTraining

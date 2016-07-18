@@ -1,14 +1,15 @@
 const uuid = require('node-uuid').v4
 const all = require('bluebird').all
-const database = require('./model/database')
-const User = require('./model/user')
-const Password = require('./model/password')
-const Location = require('./model/location')
-const Training = require('./model/training')
-const Subscription = require('./model/subscription')
-const Attendee = require('./model/attendee')
-const SubscriptionType = require('./model/subscription-type')
-const SubscriptionVariant = require('./model/subscription-variant')
+const model = require('./model/model')()
+const database = model.database
+const User = model.User
+const Password = model.Password
+const Location = model.Location
+const Training = model.Training
+const Subscription = model.Subscription
+const Attendee = model.Attendee
+const SubscriptionType = model.SubscriptionType
+const SubscriptionVariant = model.SubscriptionVariant
 
 database.sync({ force: true })
     .then(() => {

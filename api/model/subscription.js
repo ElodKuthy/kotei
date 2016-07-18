@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize')
-const database = require('./database')
 
-const Subscription = database.define('Subscription', {
+module.exports = database =>
+database.define('Subscription', {
     from: {
         type: Sequelize.DATE,
         allowNull: false,
@@ -25,5 +25,3 @@ const Subscription = database.define('Subscription', {
         }
     }
 })
-
-module.exports = Subscription

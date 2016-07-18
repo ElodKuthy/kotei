@@ -7,7 +7,7 @@ const parser = require('../common/parser')
 const rules = require('../common/rules')
 
 const roles = require('../common/roles')
-const model = require('../model/model')
+const model = require('../model/model')()
 const Training = model.Training
 const User = model.User
 const Location = model.Location

@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize')
-const database = require('./database')
 
-const CreditTemplate = database.define('CreditTemplate', {
+module.exports = database =>
+database.define('CreditTemplate', {
     amount: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -11,5 +11,3 @@ const CreditTemplate = database.define('CreditTemplate', {
         }
     }
 })
-
-module.exports = CreditTemplate

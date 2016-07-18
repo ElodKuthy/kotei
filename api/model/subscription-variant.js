@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize')
-const database = require('./database')
 
-const SubscriptionVariant = database.define('SubscriptionVariant', {
+module.exports = database =>
+database.define('SubscriptionVariant', {
     valid: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -19,5 +19,3 @@ const SubscriptionVariant = database.define('SubscriptionVariant', {
         }
     }
 })
-
-module.exports = SubscriptionVariant
