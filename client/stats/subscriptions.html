@@ -1,0 +1,28 @@
+<div class="subscriptions container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Tanítvány</th>
+                            <th>Alkalmak</th>
+                            <th>Lejárat</th>
+                            <th>Típus</th>
+                            <th ng-if="vm.isAdmin">Edző</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="subscription in vm.subscriptions" ng-click="vm.userProfile(subscription.Client.id)">
+                            <td>{{subscription.Client.fullName + (subscription.Client.fullName !== subscription.Client.nickname ? '(' + subscription.Client.nickname + ')' : '')}}</td>
+                            <td ng-class="subscription.remainingCssClass">{{subscription.remaining}}</td>
+                            <td ng-class="subscription.toCssClass">{{subscription.to | date : 'yyyy. MMMM d.'}}</td>
+                            <td>{{subscription.name}}</td>
+                            <td ng-if="vm.isAdmin">{{subscription.Coach.fullName + (subscription.Coach.fullName !== subscription.Coach.nickname ? '(' + subscription.Coach.nickname + ')' : '')}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

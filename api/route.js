@@ -78,6 +78,7 @@ router.post('/user/resend', handler(userService.resendRegistration, { body: 'use
 router.get('/subscription/type', handler(subscriptionService.findSubscriptionType, { query: 'query' }))
 router.get('/subscription/template', handler(subscriptionService.findSubscriptionTemplate, { query: 'query' }))
 router.get('/subscription', handler(subscriptionService.find, { query: 'query' }))
+router.get('/subscription/active', handler(subscriptionService.findActive, { query: 'query' }))
 router.post('/subscription', handler(subscriptionService.add, { body: 'newSubscription' }))
 router.put('/subscription', handler(subscriptionService.update, { body: 'subscription' }))
 router.delete('/subscription/:subscriptionId', handler(subscriptionService.remove, { url: 'subscriptionId' }))
