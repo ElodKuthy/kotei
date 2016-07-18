@@ -1,6 +1,6 @@
 <div class="coaches container">
-    <div class="row">
-        <div class="col-xs-12" ng-repeat="gymStat in vm.coachesStats">
+    <div class="row" ng-repeat="gymStat in vm.coachesStats">
+        <div class="col-xs-12">
             <h3>{{gymStat.gym.charAt(0).toUpperCase() + gymStat.gym.slice(1)}}</h3>
             <div class="table-responsive">
             <table class="table table-bordered">

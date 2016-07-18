@@ -1,0 +1,29 @@
+<div class="trainings container">
+    <div class="row" ng-repeat="gymStats in vm.trainingsStats">
+        <div class="col-xs-12">
+            <h3>{{gymStats.gym.charAt(0).toUpperCase() + gymStats.gym.slice(1)}}</h3>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Típus</th>
+                            <th>Időpont</th>
+                            <th>Edző</th>
+                            <th>Terem</th>
+                            <th>Kihasználtság</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="training in gymStats.trainings">
+                            <td>{{training.name}}</td>
+                            <td>{{training.from | date : 'EEEE HH:mm'}}</td>
+                            <td>{{training.coach}}</td>
+                            <td>{{training.location}}</td>
+                            <td>{{(training.utilization / training.max * 100) | number : 0}}%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

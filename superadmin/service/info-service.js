@@ -13,6 +13,7 @@ angular.module('superadmin')
         }
 
         return {
-            getCoachesStats: () => get('api/stats/coaches')
+            getCoachesStats: () => get('api/stats/coaches'),
+            getTrainingsStats: () => get('api/stats/trainings')
         }
     })
