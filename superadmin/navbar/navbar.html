@@ -1,0 +1,24 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid navbar-container">
+        <div class="visible-xs small-navbar">
+            <ul class="list-inline pull-left">
+                <li><a ui-sref="welcome"><i class="fa fa-home fa-2x"></i></a></li>
+            </ul>
+            <ul class="list-inline pull-right">
+                <li ng-if="!navbar.userInfo.isAuth"><a ui-sref="login"><i class="fa fa-sign-in fa-2x"></i></a></li>
+                <li ng-if="navbar.userInfo.isAuth"><a ng-click="navbar.logout()"><i class="fa fa-sign-out fa-2x"></i></a></li>
+            </ul>
+        </div>
+        <div class="navbar-header hidden-xs">
+            <a class="navbar-brand" ui-sref="welcome">
+                kotei superadmin
+            </a>
+        </div>
+        <div class="collapse navbar-collapse" id="top-navbar">
+            <ul class="nav navbar-nav navbar-right">
+                <li ng-if="!navbar.userInfo.isAuth"><a ui-sref="login">Belépés</a></li>
+                <li ng-if="navbar.userInfo.isAuth"><a ng-click="navbar.logout()">Kilépés</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>

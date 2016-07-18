@@ -1,0 +1,29 @@
+<div class="container-fluid center-block clearfix login">
+    <form name="loginForm" novalidate>
+        <div class="alert alert-danger" ng-if="login.error">
+            {{login.error}}
+        </div>
+        <div class="credential" ng-class="{ 'has-error': (loginForm.credential.$invalid && loginForm.credential.$touched) }">
+            <label for="credential">Név vagy email cím</label>
+            <input id="credential" name="credential" type="text" class="form-control" ng-model="login.credential" required>
+            <div ng-messages="loginForm.credential.$error" ng-if="loginForm.credential.$touched">
+                <div class="help-block" ng-message="required">Kötelező megadni</div>
+            </div>
+        </div>
+        <div class="password" ng-class="{ 'has-error': (loginForm.password.$invalid && loginForm.password.$touched) }">
+            <label for="password">Jelszó</label>
+            <input id="password" name="password" type="password" class="form-control"ng-model="login.password" required>
+            <div ng-messages="loginForm.password.$error" ng-if="loginForm.password.$touched">
+                <div class="help-block" ng-message="required">Kötelező megadni</div>
+            </div>
+        <div class="submit center-block">
+            <button class="btn btn-primary pull-right" ng-click="login.submit()" ng-disabled="!loginForm.$valid">Belépés</button>
+            <label>
+                <input type="checkbox"> Emlékezz rám
+            </label>
+        </div>
+        <div class="forgotten-password text-center">
+            <a ui-sref="forgotten-password">Elfelejtetted a jelszavad?</a>
+        </div>
+    </form>
+</div>

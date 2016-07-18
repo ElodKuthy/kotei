@@ -5,6 +5,9 @@ public/kotei.js
 public/templates.js
 public/vendor.js
 public/fonts
+public/kotei.superadmin.css
+public/kotei.superadmin.js
+public/templates.superadmin.js
 build
 certs
 logs

@@ -5,11 +5,11 @@ const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const http = require('http')
 
-const api = require('./api/route.js')
+const api = require('./api/route.superadmin.js')
 
 const app = express()
 
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 2999
 
 app.set('port', port)
 
@@ -21,12 +21,10 @@ app.use(bodyParser.urlencoded({
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
-require('./api/task/init-tasks').init()
-
 app.use('/api', api)
 
 app.all('/*', function(req, res, next) {
-    res.sendFile('index.app.html', { root: __dirname + '/public' })
+    res.sendFile('index.superadmin.html', { root: __dirname + '/public' })
 })
 
 const server = http.createServer(app)

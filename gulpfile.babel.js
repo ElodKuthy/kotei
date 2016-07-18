@@ -34,6 +34,12 @@ gulp.task('html', () => {
         .pipe(gulp.dest('public'))
 })
 
+gulp.task('html.superadmin', () => {
+    return gulp.src('./superadmin/**/*.html')
+        .pipe(templateCache('templates.superadmin.js'))
+        .pipe(gulp.dest('public'))
+})
+
 gulp.task('sass', () => {
     return gulp.src('./client/**/*.scss')
         .pipe(sass().on('error', sass.logError))
@@ -41,6 +47,15 @@ gulp.task('sass', () => {
         .pipe(cssnano())
         .pipe(gulp.dest('./public/'))
 })
+
+gulp.task('sass.superadmin', () => {
+    return gulp.src('./superadmin/**/*.scss')
+        .pipe(sass().on('error', sass.logError))
+        .pipe(concat('kotei.superadmin.css'))
+        .pipe(cssnano())
+        .pipe(gulp.dest('./public/'))
+})
+
 
 gulp.task('vendor', () => {
     return gulp.src([
@@ -76,17 +91,42 @@ gulp.task('js', () => {
         .pipe(gulp.dest('./public/'));
 });
 
+gulp.task('js.superadmin', () => {
+    return gulp.src('./superadmin/**/*.js')
+        .pipe(babel({
+            presets: ['es2015']
+        }))
+        .pipe(concat('kotei.superadmin.js'))
+        .pipe(gulp.dest('./public/'));
+});
+
 gulp.task('watch', ['html', 'sass', 'js'], () => {
     gulp.watch('./client/**/*.html', ['html'])
     gulp.watch('./client/**/*.scss', ['sass'])
     gulp.watch('./client/**/*.js', ['js'])
 })
 
+gulp.task('watch.superadmin', ['html.superadmin', 'sass.superadmin', 'js.superadmin'], () => {
+    gulp.watch('./superadmin/**/*.html', ['html.superadmin'])
+    gulp.watch('./superadmin/**/*.scss', ['sass.superadmin'])
+    gulp.watch('./superadmin/**/*.js', ['js.superadmin'])
+})
+
 gulp.task('build', ['vendor', 'fonts', 'html', 'sass', 'js'])
+
+gulp.task('build.superadmin', ['vendor', 'fonts', 'html.superadmin', 'sass.superadmin', 'js.superadmin'])
 
 gulp.task('nodemon', ['fonts', 'watch'], () => {
     nodemon({
         script: 'app.js',
+        ext: 'js html',
+        env: { 'NODE_ENV': 'development' }
+    })
+})
+
+gulp.task('nodemon.superadmin', ['fonts', 'watch.superadmin'], () => {
+    nodemon({
+        script: 'app.superadmin.js',
         ext: 'js html',
         env: { 'NODE_ENV': 'development' }
     })

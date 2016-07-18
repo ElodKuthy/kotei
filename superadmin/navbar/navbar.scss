@@ -1,0 +1,17 @@
+.small-navbar {
+    margin: 6px -10px 0 -20px;
+    
+    li {
+        padding-top: 5px;
+        padding-left: 20px;
+    }
+    
+    ul.list-inline {
+        display: inline-block;
+        margin-bottom: 0;
+    }
+    
+    a:hover {
+        cursor: pointer;
+    }
+}
