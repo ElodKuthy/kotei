@@ -5,6 +5,8 @@ const config = {
         user: process.env.KOTEI_DB_USER || 'root',
         password: process.env.KOTEI_DB_PASSWORD
     },
+
+    databases: [],
     
     certs: {
         public: process.env.KOTEI_CERT_PUBLIC || 'certs/jwt-test-public.pem',

@@ -9,6 +9,7 @@ const logger = require('./common/logger')
 const roles = require('./common/roles')
 const config = require('./common/config')
 const securityService = require('./service/security-service')
+const superAdminService = require('./service/superadmin-service')
 
 const cert = fs.readFileSync(config.certs.public)
 
@@ -61,5 +62,7 @@ router.post('/login', handler(securityService.login, { body: ['userName', 'passw
 
 router.post('/password/forgot', handler(securityService.forgot, { body: ['email'] }))
 router.post('/password/reset', handler(securityService.reset, { body: ['token', 'password'] }))
+
+router.get('/stats/coaches', handler(superAdminService.getCoachesStats, {}))
 
 module.exports = router

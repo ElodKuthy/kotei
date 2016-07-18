@@ -1,0 +1,25 @@
+<div class="coaches container">
+    <div class="row">
+        <div class="col-xs-12" ng-repeat="gymStat in vm.coachesStats">
+            <h3>{{gymStat.gym.charAt(0).toUpperCase() + gymStat.gym.slice(1)}}</h3>
+            <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Edző</th>
+                        <th>Heti óraszám</th>
+                        <th>Órák</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="coachStats in gymStat.coaches">
+                        <td>{{coachStats.coach.fullName}}</td>
+                        <td>{{coachStats.count}}</td>
+                        <td><div ng-repeat="training in coachStats.trainings">{{training.name}} ({{training.from | date : 'EEEE HH:mm' }})</div></td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+        </div>
+    </div>
+</div>

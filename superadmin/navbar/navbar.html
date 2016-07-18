@@ -5,6 +5,7 @@
                 <li><a ui-sref="welcome"><i class="fa fa-home fa-2x"></i></a></li>
             </ul>
             <ul class="list-inline pull-right">
+                <li ng-if="navbar.userInfo.isAuth"><a ui-sref="stats"><i class="fa fa-table fa-2x"></i></a></li>
                 <li ng-if="!navbar.userInfo.isAuth"><a ui-sref="login"><i class="fa fa-sign-in fa-2x"></i></a></li>
                 <li ng-if="navbar.userInfo.isAuth"><a ng-click="navbar.logout()"><i class="fa fa-sign-out fa-2x"></i></a></li>
             </ul>
@@ -16,6 +17,16 @@
         </div>
         <div class="collapse navbar-collapse" id="top-navbar">
             <ul class="nav navbar-nav navbar-right">
+                <li ng-if="navbar.userInfo.isAuth" uib-dropdown on-toggle="toggled(open)">
+                    <a href uib-dropdown-toggle>
+                        Statisztikák
+                    </a>
+                    <ul class="uib-dropdown-menu">
+                        <li>
+                            <a ui-sref="stats.coaches">Edzők</a>
+                        </li>
+                    </ul>
+                </li>
                 <li ng-if="!navbar.userInfo.isAuth"><a ui-sref="login">Belépés</a></li>
                 <li ng-if="navbar.userInfo.isAuth"><a ng-click="navbar.logout()">Kilépés</a></li>
             </ul>
