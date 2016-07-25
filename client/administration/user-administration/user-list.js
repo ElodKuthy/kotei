@@ -25,10 +25,10 @@ angular.module('kotei')
                 roles: ['coach', 'admin']
         })
     })
-    .controller('UserListController', function ($state, userInfoService, clients, coaches) {
+    .controller('UserListController', function ($state, userInfoService, clients, coaches, nameService) {
         this.isAdmin = userInfoService.getUserInfo().isAdmin
-        this.clients = clients
-        this.coaches = coaches
+        this.clients = nameService.addDisplayName(clients)
+        this.coaches = nameService.addDisplayName(coaches)
         this.newUserButtonTitle = this.isAdmin ? 'Új felhasználó létrehozása' : 'Új tanítvány regisztrálása'
 
         this.newUser = () => $state.go('administration.new-user')

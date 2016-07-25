@@ -19,18 +19,18 @@
                 <table class="table table-bordered table-hover">
                     <thead>
                         <tr>
-                            <th>Vezetéknév</th>
-                            <th>Keresztnév</th>
-                            <th>Becenév</th>
+                            <th>Név</th>
+                            <th>Telefonszám</th>                            
                             <th>Email</th>
+                            <th>Számlázási cím</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="client in userList.clients | filter: userList.search" ng-click="userList.userProfile(client)">
-                            <td>{{client.familyName}}</td>
-                            <td>{{client.givenName}}</td>
-                            <td>{{client.nickname}}</td>
+                            <td>{{client.displayName}}</td>
+                            <td>{{client.phone}}</td>
                             <td>{{client.email}}</td>
+                            <td>{{client.address}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -44,18 +44,18 @@
                 <table class="table table-bordered table-hover">
                     <thead>
                         <tr>
-                            <th>Vezetéknév</th>
-                            <th>Keresztnév</th>
-                            <th>Becenév</th>
+                            <th>Név</th>
+                            <th>Telefonszám</th>
                             <th>Email</th>
+                            <th>Számlázási cím</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="coach in userList.coaches | filter: userList.search" ng-click="userList.userProfile(coach)">
-                            <td>{{coach.familyName}}</td>
-                            <td>{{coach.givenName}}</td>
-                            <td>{{coach.nickname}}</td>
+                            <td>{{coach.displayName}}</td>
+                            <td>{{coach.phone}}</td>
                             <td>{{coach.email}}</td>
+                            <td>{{coach.address}}</td>
                         </tr>
                     </tbody>
                 </table>
