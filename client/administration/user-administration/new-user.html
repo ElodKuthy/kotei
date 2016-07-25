@@ -5,14 +5,14 @@
             {{newUser.error}}
         </div>
         <div ng-class="{ 'has-error': (userForm.familyName.$invalid && userForm.familyName.$touched) }">
-            <label for="familyName">Vezetéknév</label>
+            <label for="familyName">Vezetéknév<sup>*</sup></label>
             <input id="familyName" name="familyName" type="text" class="form-control" ng-model="newUser.user.familyName" required>
             <div ng-messages="userForm.familyName.$error" ng-if="userForm.familyName.$touched">
                 <div class="help-block" ng-message="required">Kötelező megadni</div>
             </div>
         </div>
         <div ng-class="{ 'has-error': (userForm.givenName.$invalid && userForm.givenName.$touched) }">
-            <label for="givenName">Keresztnév</label>
+            <label for="givenName">Keresztnév<sup>*</sup></label>
             <input id="givenName" name="givenName" type="text" class="form-control" ng-model="newUser.user.givenName" required>
             <div ng-messages="userForm.givenName.$error" ng-if="userForm.givenName.$touched">
                 <div class="help-block" ng-message="required">Kötelező megadni</div>
@@ -25,7 +25,7 @@
             </div>
         </div>
         <div ng-class="{ 'has-error': (userForm.email.$invalid && userForm.email.$touched) }">
-            <label for="email">Email</label>
+            <label for="email">Email<sup>*</sup></label>
             <input id="email" name="email" type="email" class="form-control" ng-model="newUser.user.email" required>
             <div ng-messages="userForm.email.$error" ng-if="userForm.email.$touched">
                 <div class="help-block" ng-message="required">Kötelező megadni</div>
@@ -59,6 +59,9 @@
                 ng-model="newUser.coach"
                 ng-options="coach.displayName for coach in newUser.coaches track by coach.id | orderBy: 'displayName' ">
             </select>
+        </div>
+        <div>
+            * Kötelező megadni
         </div>
         <button type="submit" class="btn btn-primary pull-right" ng-click="newUser.submit()" ng-disabled="userForm.$pristine || userForm.$invalid">Mentés</button>
     </form>
