@@ -1,6 +1,6 @@
 <div class="edit-subscription container">
     <h3>{{editSubscription.title}}</h3>
-    <form name="subscriptionForm" novalidate>
+    <form name="subscriptionForm" autocomplete="off" novalidate>
         <div class="alert alert-danger" ng-if="editSubscription.error">
             {{editSubscription.error}}
         </div>

@@ -1,6 +1,6 @@
 <div class="new-user container">
     <h3>{{newUser.title}}</h3>
-    <form name="userForm" novalidate>
+    <form name="userForm" autocomplete="off" novalidate>
         <div class="alert alert-danger" ng-if="newUser.error">
             {{newUser.error}}
         </div>
