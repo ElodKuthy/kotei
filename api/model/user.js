@@ -36,7 +36,6 @@ database.define('User', {
         allowNull: false,
         validate: {
             notEmpty: true,
-            isAlphanumeric: true,
             shouldBeConsistentWithFamilyAndGivenNames: function (value) {
                 if (localization.normalizedFullName(this.familyName, this.givenName) != value) {
                     throw Error('Normalized name should be consistent with family and given names')
@@ -62,7 +61,6 @@ database.define('User', {
         unique: true,
         validate: {
             notEmpty: true,
-            isAlphanumeric: true,
             shouldBeConsistentWithNickname: function (value) {
                 if (localization.normalizedName(this.nickname) != value) {
                     throw Error('Normalized nickname should be consistent with nickname')
