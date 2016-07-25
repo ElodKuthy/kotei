@@ -11,8 +11,12 @@
         </div>
         <div ng-if="subscriptionAdministration.isAdmin" ng-class="{ 'has-error': (!subscriptionAdministration.coach && subscriptionForm.coach.$touched) }">
             <label for="coach">Edző</label>
-            <input id="coach" name="coach" type="text" ng-model="subscriptionAdministration.coach" uib-typeahead="coach as coach.displayName for coach in subscriptionAdministration.coaches | filter: { displayName: $viewValue }" typeahead-editable="false" class="form-control" autocomplete="off">
-            <div class="help-block" ng-show="subscriptionForm.coach.$touched && !subscriptionAdministration.coach">Nincs ilyen nevű edző</div>
+            <select id="coach" name="coach" 
+                class="form-control"
+                ng-model="subscriptionAdministration.coach"
+                ng-options="coach.displayName for coach in subscriptionAdministration.coaches track by coach.id | orderBy: 'displayName' ">
+            </select>
+            <div class="help-block" ng-show="subscriptionForm.coach.$touched && !subscriptionAdministration.coach">Kötelező megadni</div>
         </div>
         <div>
             <label for="subscriptionType">Bérlettípus</label>

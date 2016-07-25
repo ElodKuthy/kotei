@@ -58,7 +58,11 @@
                         </div>
                         <div>
                             <label for="coach">Edző</label>
-                            <input id="coach" name="coach" type="text" ng-model="userProfile.coach" uib-typeahead="coach as coach.displayName for coach in userProfile.coaches | filter: { displayName: $viewValue }" typeahead-editable="false" class="form-control" autocomplete="off">
+                            <select id="coach" name="coach" 
+                                class="form-control"
+                                ng-model="userProfile.coach"
+                                ng-options="coach.displayName for coach in userProfile.coaches track by coach.id | orderBy: 'displayName' ">
+                            </select>
                         </div>
                         <button type="button" class="btn btn-primary pull-left" ng-click="userProfile.resendRegistration()">Regisztrációs email újraküldése</button>
                         <button type="submit" class="btn btn-primary pull-right" ng-click="userProfile.submitUser()" ng-disabled="userForm.$pristine || userForm.$invalid">Mentés</button>

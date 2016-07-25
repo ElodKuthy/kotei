@@ -4,14 +4,23 @@
         <div class="alert alert-danger" ng-if="trainingAdministration.error">
             {{trainingAdministration.error}}
         </div>
-        <div>
-            <label>Típus</label>
-            <select class="form-control" ng-options="type.name for type in trainingAdministration.trainingTypes track by type.id" ng-model="trainingAdministration.training.type"></select>
+        <div ng-class="{ 'has-error': (trainingForm.trainingType.$touched && !trainingAdministration.training.type) }">
+            <label for="trainingType">Típus</label>
+            <select id="trainingType" name="trainingType" 
+                class="form-control" 
+                ng-model="trainingAdministration.training.type"
+                ng-options="type.name for type in trainingAdministration.trainingTypes track by type.id | orderBy: 'name' "> 
+            </select>
+            <div class="help-block" ng-show="trainingForm.trainingType.$touched && !trainingAdministration.training.type">Kötelező megadni</div>
         </div>
         <div ng-class="{ 'has-error': (!trainingAdministration.training.coach && trainingForm.coach.$touched) }">
             <label for="coach">Edző</label>
-            <input id="coach" name="coach" type="text" ng-model="trainingAdministration.training.coach" uib-typeahead="coach as coach.nickname for coach in trainingAdministration.coaches | filter: { nickname: $viewValue }" typeahead-editable="false" class="form-control">
-            <div class="help-block" ng-show="trainingForm.coach.$touched && !trainingAdministration.training.coach">Nincs ilyen nevű edző</div>
+            <select id="coach" name="coach" 
+                class="form-control"
+                ng-model="trainingAdministration.training.coach"
+                ng-options="coach.displayName for coach in trainingAdministration.coaches track by coach.id | orderBy: 'displayName' ">
+            </select>
+            <div class="help-block" ng-show="trainingForm.coach.$touched && !trainingAdministration.training.coach">Kötelező megadni</div>
         </div>
         <div ng-class="{ 'has-error': (trainingForm.max.$invalid && trainingForm.max.$touched) }">
             <label for="max">Max létszám</label>
@@ -23,8 +32,12 @@
         </div>
         <div ng-class="{ 'has-error': (!trainingAdministration.training.location && trainingForm.location.$touched) }">
             <label for="location">Terem</label>
-            <input id="location" name="location" type="text" ng-model="trainingAdministration.training.location" uib-typeahead="location as location.name for location in trainingAdministration.locations | filter: { name: $viewValue }" typeahead-editable="false" class="form-control">
-            <div class="help-block" ng-show="trainingForm.location.$touched && !trainingAdministration.training.location">Nincs ilyen nevű terem</div>
+            <select id="location" name="location" 
+                class="form-control"
+                ng-model="trainingAdministration.training.location"
+                ng-options="location.name for location in trainingAdministration.locations track by location.id | orderBy: 'name' ">
+            </select>
+            <div class="help-block" ng-show="trainingForm.location.$touched && !trainingAdministration.training.location">Kötelező megadni</div>
         </div>
         <div>
             <label for="fromCalendar">Kezdés</label>

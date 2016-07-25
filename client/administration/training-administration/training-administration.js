@@ -28,11 +28,11 @@ angular.module('kotei')
                 roles: ['admin']
         })
     })
-    .controller('TrainingAdministrationController', function ($state, $moment, coaches, locations, trainingTypes, modalService, administrationService) {
+    .controller('TrainingAdministrationController', function ($state, $moment, coaches, locations, trainingTypes, modalService, administrationService, nameService) {
 
         this.title = 'Új edzésalkalom létrehozása'
 
-        this.coaches = coaches
+        this.coaches = nameService.addDisplayName(coaches)
         this.locations = locations
         this.trainingTypes = trainingTypes
 

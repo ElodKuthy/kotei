@@ -19,8 +19,12 @@
         </div>
         <div ng-class="{ 'has-error': (!editSubscription.subscription.Coach && subscriptionForm.coach.$touched) }">
             <label for="coach">Edző</label>
-            <input id="coach" name="coach" type="text" ng-model="editSubscription.subscription.Coach" uib-typeahead="coach as coach.displayName for coach in editSubscription.coaches | filter: { displayName: $viewValue }" typeahead-editable="false" class="form-control" autocomplete="off">
-            <div class="help-block" ng-show="subscriptionForm.coach.$touched && !editSubscription.subscription.Coach">Nincs ilyen nevű edző</div>
+            <select id="coach" name="coach" 
+                class="form-control"
+                ng-model="editSubscription.subscription.Coach"
+                ng-options="coach.displayName for coach in editSubscription.coaches track by coach.id | orderBy: 'displayName' ">
+            </select>
+            <div class="help-block" ng-show="subscriptionForm.coach.$touched && !editSubscription.subscription.Coach">Kötelező megadni</div>
         </div>
         <div ng-class="{ 'has-error': (subscriptionForm.price.$invalid && subscriptionForm.price.$touched) }">
             <label for="price">Ár</label>
