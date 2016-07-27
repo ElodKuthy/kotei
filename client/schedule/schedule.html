@@ -17,7 +17,7 @@
                                 <div class="training-container" ng-repeat="training in cell" ng-click="schedule.showAttendees(training.id)">
                                     <div>{{training.name}}</div>
                                     <div class="coach"><i class="fa fa-circle fa-lg pull-left" ng-class="{ 'hide': !training.involved, 'text-success': training.participated, 'text-danger': training.missed }"></i>{{training.coach}}</div>
-                                    <div ng-if="training.hasMinutes" class="time">{{training.from}} - {{training.to}}</div>
+                                    <div class="time">{{training.from}} - {{training.to}}</div>
                                     <div><uib-progressbar class="progress" max="training.max" value="training.current"><i>{{training.current}} / {{training.max}}</i></uib-progressbar></div>
                                 </div>
                             </td>
