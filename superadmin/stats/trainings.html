@@ -19,7 +19,7 @@
                             <td>{{training.from | date : 'EEEE HH:mm'}}</td>
                             <td>{{training.coach}}</td>
                             <td>{{training.location}}</td>
-                            <td>{{(training.utilization / training.max * 100) | number : 0}}%</td>
+                            <td>{{(training.utilization / training.max * 100) | number : 0}}% ({{ training.utilization }} / {{ training.max }})</td>
                         </tr>
                     </tbody>
                 </table>
