@@ -37,6 +37,7 @@ angular.module('kotei')
             getSubscriptionsByClient: (clientId) => get(`/api/subscription?where={"client_id":${clientId}}&order=\`from\`%20ASC`),
             getSubscription: (subscriptionId) => get(`/api/subscription?where={"id":${subscriptionId}}`),
             getActiveSubscriptions: () => get(`/api/subscription/active`),
-            getPayoffs: (from, to) => get(`/api/stats/payoffs?where={"from":{"$gte":"${from}"},"to":{"$lte":"${to}"}}`)
+            getPayoffs: (from, to) => get(`/api/stats/payoffs?where={"from":{"$gte":"${from}"},"to":{"$lte":"${to}"}}`),
+            getRuleAllowedFreeCredit: () => get('/api/rule/allow/free/credit')
         }
     })

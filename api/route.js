@@ -8,6 +8,7 @@ const version = require('../package.json').version
 const logger = require('./common/logger')
 const roles = require('./common/roles')
 const config = require('./common/config')
+const rules = require('./common/rules')
 const securityService = require('./service/security-service')
 const userService = require('./service/user-service')
 const subscriptionService = require('./service/subscription-service')
@@ -94,5 +95,7 @@ router.put('/attendee', handler(attendeeService.update, { query: ['training_id',
 router.get('/location', handler(locationService.find, { query: 'query' }))
 
 router.get('/stats/payoffs', handler(statsService.payoffs, { query: 'query' }))
+
+router.get('/rule/allow/free/credit', handler(rules.allowFreeCreditsOnCreateSubcription, {}))
 
 module.exports = router

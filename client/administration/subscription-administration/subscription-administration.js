@@ -18,23 +18,16 @@ angular.module('kotei')
                     }
                 },
                 resolve: {
-                    clients: (infoService) => {
-                        return infoService.getAllClients()
-                    },
-                    coaches: (infoService) => {
-                        return infoService.getAllCoaches()
-                    },
-                    subscriptionTypes: (infoService) => {
-                        return infoService.getAllSubscriptionTypes()
-                    },
-                    allTrainingTypes: (infoService) => {
-                        return infoService.getAllTrainingTypes()
-                    }
+                    clients: infoService => infoService.getAllClients(),
+                    coaches: infoService => infoService.getAllCoaches(),
+                    subscriptionTypes: infoService => infoService.getAllSubscriptionTypes(),
+                    allTrainingTypes: infoService => infoService.getAllTrainingTypes(),
+                    allowedFreeCredit: infoService => infoService.getRuleAllowedFreeCredit()
                 },
                 roles: ['coach', 'admin']
         })
     })
-    .controller('SubscriptionAdministrationController', function (R, $scope, $stateParams, $state, $moment, userInfoService, clients, coaches, subscriptionTypes, allTrainingTypes, infoService, modalService, administrationService, nameService) {
+    .controller('SubscriptionAdministrationController', function (R, $scope, $stateParams, $state, $moment, userInfoService, clients, coaches, subscriptionTypes, allTrainingTypes, allowedFreeCredit, infoService, modalService, administrationService, nameService) {
 
         this.title = 'Bérletvásárlás'
 
@@ -168,7 +161,7 @@ angular.module('kotei')
         }
         
         this.invalid = () => !this.client || !this.coach || !this.variant || !this.credits
-            || (R.filter(training => training.selected, this.trainings).length < R.reduce((acc, credit) => acc + credit.amountPerWeek, 0, this.credits))
+            || !allowedFreeCredit && (R.filter(training => training.selected, this.trainings).length < R.reduce((acc, credit) => acc + credit.amountPerWeek, 0, this.credits))
         
         this.submit = () => {
             delete this.error
