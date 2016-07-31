@@ -19,7 +19,8 @@ const texts = {
     notAttendee: 'This training has not been attended',
     noCredit: 'Client has no credit',
     invalidId: 'Invalid ID',
-    tooEarlyToCheckIn: 'Too early to check in'
+    tooEarlyToCheckIn: 'Too early to check in',
+    invalidDate: 'Invalid date'
 }
 
 module.exports = texts

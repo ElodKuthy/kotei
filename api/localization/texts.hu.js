@@ -19,7 +19,8 @@ const texts = {
     notAttendee: 'Erre az órára nincs feliratkozva',
     noCredit: 'Nincs szabad alkalma',
     invalidId: 'Érvénytelen azonosító',
-    tooEarlyToCheckIn: 'Erre az órára még túl korai bejelentkezni'
+    tooEarlyToCheckIn: 'Erre az órára még túl korai bejelentkezni',
+    invalidDate: 'Érvénytelen dátum'
 }
 
 module.exports = texts

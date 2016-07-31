@@ -14,15 +14,21 @@ angular.module('superadmin')
                         controller: 'TrainingsController as vm'
                     }
                 },
-                resolve: {
-                    trainingsStats: (infoService) => {
-                        return infoService.getTrainingsStats()
-                    }
-                },
+                resolve: {},
                 roles: ['admin']
         })
     })
-    .controller('TrainingsController', function ($scope, $state, $moment, trainingsStats) {
+    .controller('TrainingsController', function ($scope, $state, $moment, infoService) {
 
-        this.trainingsStats = trainingsStats
+        this.date = $moment().endOf('month').toDate()
+        this.minDate = $moment('2016-01-01').toDate()
+        this.maxDate = $moment().endOf('month').toDate()
+
+        this.dateChanged = () => {
+            delete this.trainingsStats
+            infoService.getTrainingsStats(this.date).then(trainingsStats => this.trainingsStats = trainingsStats)
+        }
+
+        $scope.$watch(() => this.date, this.dateChanged)
+
 })

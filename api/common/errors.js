@@ -29,7 +29,8 @@ const errors = {
     notAttendee: () => envelope(texts.notAttendee, 409),
     noCredit: () => envelope(texts.noCredit, 409),
     invalidId: () => envelope(texts.invalidId, 404),
-    tooEarlyToCheckIn: () => envelope(texts.tooEarlyToCheckIn, 409)
+    tooEarlyToCheckIn: () => envelope(texts.tooEarlyToCheckIn, 409),
+    invalidDate: () => envelope(texts.invalidDate, 400)
 }
 
 module.exports = errors

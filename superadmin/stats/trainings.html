@@ -1,4 +1,17 @@
 <div class="trainings container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="calendar">
+                <h3>Hónap</h3>
+                <ko-calendar id="month" model="vm.date" format="yyyy. MMMM" minDate="vm.minDate" maxDate="vm.maxDate" enable-time="false" min-mode="month" datepicker-mode="month"></ko-calendar>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <h3 ng-if="!vm.trainingsStats || !vm.trainingsStats.length">
+                Adatok betöltése ...
+            </h3>            
+        </div>
+    </div>
     <div class="row" ng-repeat="gymStats in vm.trainingsStats">
         <div class="col-xs-12">
             <h3>{{gymStats.gym.charAt(0).toUpperCase() + gymStats.gym.slice(1)}}</h3>

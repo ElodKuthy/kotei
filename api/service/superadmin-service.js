@@ -68,19 +68,23 @@ const getCoachesStats = (auth) => {
     }))
 }
 
-const getTrainingsStats = (auth) => {
+const getTrainingsStats = (date, auth) => {
     if (!auth.isAdmin) {
         return Promise.reject(errors.unauthorized())
+    }
+
+    if (!moment(date).isValid()) {
+        return Promise.reject(errors.invalidDate())
     }
 
     return Promise.all(models.map(current => {
         return current.model.Training.findAll({
             where: {
                 from: {
-                    $gte: moment().startOf('month')
+                    $gte: moment(date).startOf('month')
                 },
                 to: {
-                    $lte: moment().endOf('month')
+                    $lte: moment(date).endOf('month')
                 }
             },
             attributes: ['from', 'to', 'max'],

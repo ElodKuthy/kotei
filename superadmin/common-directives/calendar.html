@@ -1,0 +1,6 @@
+<div class="input-group ko-calendar">
+    <input type="text" id="{{koCalendar.id + 'Calendar'}}" name="{{koCalendar.id + 'Calendar'}}" class="form-control" datetime-picker="{{koCalendar.format}}" ng-model="koCalendar.date" is-open="koCalendar.opened" min-date="koCalendar.minDate" max-date="koCalendar.maxDate" datepicker-options="koCalendar.dateOptions" timepicker-options="koCalendar.timeOptions" date-disabled="disabled(date, mode)" ng-required="true" today-text="Mai nap" clear-text="Töröl" close-text="Bezárás" date-text="Dátum" time-text="Idő" now-text="Most" enable-time="koCalendar.enableTime" datepicker-mode="koCalendar.datepickerMode"  required />
+    <span class="input-group-btn">
+        <button type="button" class="btn btn-primary" ng-click="koCalendar.open($event)"><i class="fa fa-calendar"></i></button>
+    </span>
+</div>
