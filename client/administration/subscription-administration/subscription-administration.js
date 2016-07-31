@@ -43,7 +43,7 @@ angular.module('kotei')
         this.subscriptionTypes = subscriptionTypes
         this.type = this.subscriptionTypes[0]
         const clientId = +$stateParams.clientId
-        this.client = clientId ? this.clients.find(client => client.id === clientId) : null
+        this.client = clientId ? R.find(client => client.id === clientId, this.clients) : null
 
         this.from = $moment().startOf('day').toDate()
         
