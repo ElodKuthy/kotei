@@ -10,6 +10,8 @@
                             <th>Időpont</th>
                             <th>Edző</th>
                             <th>Terem</th>
+                            <th>Résztvevők száma</th>
+                            <th>Összes hely</th>
                             <th>Kihasználtság</th>
                         </tr>
                     </thead>
@@ -19,7 +21,9 @@
                             <td>{{training.from | date : 'EEEE HH:mm'}}</td>
                             <td>{{training.coach}}</td>
                             <td>{{training.location}}</td>
-                            <td>{{(training.utilization / training.max * 100) | number : 0}}% ({{ training.utilization }} / {{ training.max }})</td>
+                            <td>{{ training.utilization }}</td>
+                            <td>{{ training.max }}</td>
+                            <td>{{(training.utilization / training.max * 100) | number : 0}}%</td>
                         </tr>
                     </tbody>
                 </table>
