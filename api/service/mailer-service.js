@@ -60,9 +60,20 @@ const sendNewSubscriptionNotification = (subscription) => {
     })
 }
 
+const sendCancelledTrainingNotification = (training, subscription) => {
+
+    return sendMail({
+        from: from,
+        to: subscription.Client.email,
+        subject: mails.sendCancelledTrainingNotification.subject,
+        html: mails.sendCancelledTrainingNotification.html(training, subscription)
+    })
+}
+
 module.exports = {
-    sendResetPasswordToken: sendResetPasswordToken,
-    sendRegistration: sendRegistration,
-    sendSubscriptionAlmostDepletedNotification: sendSubscriptionAlmostDepletedNotification,
-    sendNewSubscriptionNotification: sendNewSubscriptionNotification
+    sendResetPasswordToken,
+    sendRegistration,
+    sendSubscriptionAlmostDepletedNotification,
+    sendNewSubscriptionNotification,
+    sendCancelledTrainingNotification
 }

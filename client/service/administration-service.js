@@ -45,6 +45,7 @@ angular.module('kotei')
             addAttendee: (training_id, client_id) => post(`/api/attendee?training_id=${training_id}&client_id=${client_id}`),
             removeAttendee: (training_id, client_id) => del(`/api/attendee?training_id=${training_id}&client_id=${client_id}`),
             updateAttendee: (training_id, client_id, checkIn) => put(`/api/attendee?training_id=${training_id}&client_id=${client_id}`, { checkIn: checkIn }),
-            resendRegistration: (userId) => post('/api/user/resend', { id: userId })
+            resendRegistration: (userId) => post('/api/user/resend', { id: userId }),
+            deleteTraining: trainingId => del(`/api/training/${trainingId}`)
         }
     })

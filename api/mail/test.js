@@ -145,6 +145,36 @@ const sendNewSubscriptionNotification = {
         <html>`
 }
 
+const sendCancelledTrainingNotification = {
+    subject: 'Teszt Gym - Elmarad egy óra',
+    html: (training, subscription) =>
+        `<html>
+        <head>
+            <style type="text/css">
+                div {
+                    margin-bottom: 10px;
+                }
+            </style>
+        </head>
+        <body>
+
+        <div>Kedves ${subscription.Client.fullName}!</div>
+
+        <div>Sajnos az alábbi óra elmarad: ${training.TrainingType.name}> / ${moment(training.from).format('YYYY. MM. DD. hh:mm')}></div>
+
+        <div>Természetesen az elmaradó alkalom jóváírásra került a bérleteden, és a bérleted érvényességét is meghosszabítottuk egy héttel.</div>
+
+        <div>
+            Üdvözlettel,<br/>
+            ${training.Coach.fullName}
+        </div>
+
+        <div>
+            P.S.: Ez egy automatikus üzenet, kérjük erre az emailre ne válaszolj.
+        </div>
+        </body>
+        <html>`
+}
 
 module.exports = {
     from: from,

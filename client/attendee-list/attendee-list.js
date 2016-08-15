@@ -25,7 +25,7 @@ angular.module('kotei')
                 roles: ['client', 'coach', 'admin']
         })
     })
-    .controller('AttendeeController', function (R, $state, $moment, training, clients, userInfoService, administrationService, modalService) {
+    .controller('AttendeeController', function (R, $state, $moment, $filter, training, clients, userInfoService, administrationService, modalService) {
 
         const displayName = (client) => {
             return client.fullName == client.nickname
@@ -57,6 +57,8 @@ angular.module('kotei')
             max: training.max
         }
 
+        this.title = `${this.training.name} - ${$filter('date')(this.training.date, 'yyyy. MM. dd. HH:mm')}`
+
         this.attendees = R.map((subscription) => {
             return {
                 id: subscription.Client.id,
@@ -71,7 +73,7 @@ angular.module('kotei')
 
         this.canAdd = (this.training.count < this.training.max) && (this.userInfo.isAdmin || (this.userInfo.isCoach && this.userInfo.id === this.training.coach_id))
 
-        this.canModify = this.userInfo.isAdmin || (this.userInfo.isCoach && this.userInfo.id === this.training.coach_id)
+        this.canModify = this.userInfo.isAdmin || (moment().isBefore(training.from) && this.userInfo.isCoach && this.userInfo.id === this.training.coach_id)
 
         this.canJoin = this.userInfo.isClient && moment().isBefore(training.to) && (this.training.count < this.training.max) && !isAttendee(this.attendees, this.userInfo)
 
@@ -111,8 +113,12 @@ angular.module('kotei')
                 .catch((error) => this.addClientError = error)
         }
 
-        this.modifyTraining = () => {
+        this.deleteTraining = () => {
 
-            console.log(training.id)
+            modalService.decision('Edzés törlése', 'Biztos, hogy törölni akarod ezt az órát? A jelenlegi feliratkozók alkalma jóváírásra kerül, a bérletük érvényessége meghosszabbodik egy héttel, és email értesítést kapnak arról, hogy elmarad az óra.')
+            .then(() => administrationService.deleteTraining(training.id))
+            .then(() => modalService.info(this.title, 'Az edzés törölve lett'))
+            .then(() => $state.go('schedule'))
+            .catch(error => this.error = error === 'no' ? '' : error)
         }
     })

@@ -87,6 +87,7 @@ router.delete('/subscription/:subscriptionId', handler(subscriptionService.remov
 router.get('/training', handler(trainingService.find, { query: 'query' }))
 router.get('/training/type', handler(trainingService.findTrainingType, { query: 'query' }))
 router.post('/training', handler(trainingService.add, { body: 'newTraining' }))
+router.delete('/training/:trainingId', handler(trainingService.remove, { url: 'trainingId' }))
 
 router.post('/attendee', handler(attendeeService.add, { query: ['training_id', 'client_id'] }))
 router.delete('/attendee', handler(attendeeService.remove, { query: ['training_id', 'client_id'] }))

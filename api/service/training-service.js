@@ -13,6 +13,9 @@ const User = model.User
 const Location = model.Location
 const Subscription = model.Subscription
 const TrainingType = model.TrainingType
+const Attendee = model.Attendee
+
+const mailerService = require('./mailer-service')
 
 const Promise = require('bluebird')
 
@@ -157,8 +160,57 @@ const findTrainingType = (query, auth) => {
     }, query)).catch((error) => Promise.reject(errors.missingOrInvalidParameters()))
 }
 
+const remove = (args, auth) => {
+
+    return Promise.all([
+        Training.findById(args.trainingId, {
+            include: [{
+                as: 'TrainingType',
+                model: TrainingType
+            }, {
+                as: 'Coach',
+                model: User
+            }, {
+                as: 'Subscriptions',
+                model: Subscription,
+                include: [{
+                    as: 'Client',
+                    model: User
+                }]
+            }]
+        }), 
+        Attendee.findAll({ where: { training_id: args.trainingId } })
+    ]).spread((training, attendees) => {
+
+        if (!training) {
+            return Promise.reject(errors.invalidId())
+        }
+
+        if (!(auth.isAdmin || (auth.isCoach && auth.id === training.Coach.id && moment().isBefore(training.from)))) {
+            return Promise.reject(errors.unauthorized())
+        }
+
+        const deleteTraining = training.destroy()
+
+        const freeCredits = attendees.map(attendee => attendee.destroy())
+
+        const extendSubscriptions =
+                training.Subscriptions.map(subscription => {
+                    subscription.to = moment(subscription.to).add({ week: 1 }).format()
+                    return subscription.save()
+                })
+
+        const sendEmailNotifications =
+            training.Subscriptions.map(subscription => mailerService.sendCancelledTrainingNotification(training, subscription)) 
+
+        return Promise.all(R.flatten([deleteTraining, freeCredits, extendSubscriptions, sendEmailNotifications]))
+
+    }).then(() => Promise.resolve('OK'))
+}
+
 module.exports = {
-    add: add,
-    find: find,
-    findTrainingType: findTrainingType
+    add,
+    find,
+    findTrainingType,
+    remove
 }
