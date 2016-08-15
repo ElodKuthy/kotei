@@ -160,7 +160,7 @@ const sendCancelledTrainingNotification = {
 
         <div>Kedves ${subscription.Client.fullName}!</div>
 
-        <div>Sajnos az alábbi óra elmarad: ${training.TrainingType.name}> / ${moment(training.from).format('YYYY. MM. DD. hh:mm')}></div>
+        <div>Sajnos az alábbi óra elmarad: ${training.TrainingType.name} / ${moment(training.from).format('YYYY. MM. DD. hh:mm')}</div>
 
         <div>Természetesen az elmaradó alkalom jóváírásra került a bérleteden, és a bérleted érvényességét is meghosszabítottuk egy héttel.</div>
 
