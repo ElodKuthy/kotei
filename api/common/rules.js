@@ -2,37 +2,45 @@ const Rule = require('../model/model')().Rule
 const Promise = require('bluebird')
 
 const getRule = args => {
-    if (args.validator(args.value)) {
-        return args.value
-    }
     return Rule.findById(args.name).then((rule) => {
         if (rule && rule.value && args.validator(rule.value)) {
-            return args.parser(rule.value)
-        } else {
-            return args.default
+            args.set(args.parser(rule.value))
         }
     })    
 }
 
-var _allowFreeCreditsOnCreateSubcription
-const allowFreeCreditsOnCreateSubcription = () => _allowFreeCreditsOnCreateSubcription = getRule({
-    value: _allowFreeCreditsOnCreateSubcription,
+const boolValidator = value => value && (value.toLowerCase() === 'true' || value.toLowerCase() === 'false')
+const boolParser = value => value.toLowerCase() === 'true'
+
+const intValidator = value => !isNaN(value)
+const intParser = value => parseInt(value)
+
+var allowFreeCreditsOnCreateSubcription = false
+getRule({
+    set: value => allowFreeCreditsOnCreateSubcription = value,
     name: 'AllowFreeCreditsOnCreateSubcription',
-    default: false,
-    validator: value => typeof(value) !== 'undefined',
-    parser: value => value === 'true'
+    validator: boolValidator,
+    parser: boolParser
 })
 
-var _minHoursToLeaveTraining
-const minHoursToLeaveTraining = () => _minHoursToLeaveTraining = getRule({
-    value: _minHoursToLeaveTraining,
+var minHoursToLeaveTraining = 3
+getRule({
+    set: value => minHoursToLeaveTraining = value,
     name: 'MinHoursToLeaveTraining',
-    default: 3,
-    validator: value => !isNaN(value),
-    parser: value => parseInt(value)
+    validator: intValidator,
+    parser: intParser
 })
+
+var coachCanModifyHistory = false
+getRule({
+    set: value => coachCanModifyHistory = value,
+    name: 'CoachCanModifyHistory',
+    validator: boolValidator,
+    parser: boolParser
+}) 
 
 module.exports = {
-    allowFreeCreditsOnCreateSubcription,
-    minHoursToLeaveTraining
+    allowFreeCreditsOnCreateSubcription: () => allowFreeCreditsOnCreateSubcription,
+    minHoursToLeaveTraining: () => minHoursToLeaveTraining,
+    coachCanModifyHistory: () => coachCanModifyHistory
 }

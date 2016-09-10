@@ -3,6 +3,7 @@ const R = require('ramda')
 const fs = require('fs')
 const jwt = require('express-jwt')
 const morgan = require('morgan')
+const Promise = require('bluebird')
 
 const version = require('../package.json').version
 const logger = require('./common/logger')
@@ -97,6 +98,6 @@ router.get('/location', handler(locationService.find, { query: 'query' }))
 
 router.get('/stats/payoffs', handler(statsService.payoffs, { query: 'query' }))
 
-router.get('/rule/allow/free/credit', handler(rules.allowFreeCreditsOnCreateSubcription, {}))
+router.get('/rule/allow/free/credit', handler(() => Promise.resolve(rules.allowFreeCreditsOnCreateSubcription()), {}))
 
 module.exports = router

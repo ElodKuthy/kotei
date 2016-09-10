@@ -38,7 +38,6 @@ angular.module('kotei')
             subscription.missed = 0
             subscription.Trainings = R.sort((a, b) => $moment(a.from).valueOf() - $moment(b.from).valueOf(), R.map((training) => {
                 if ($moment().isAfter(training.to)) {
-                    training.canModify = false
                     if (training.Attendee.checkIn) {
                         training.cssClass = 'text-success'
                         subscription.attendeed++
@@ -47,7 +46,6 @@ angular.module('kotei')
                         subscription.missed++
                     }                    
                 } else {
-                    training.canModify = true
                     subscription.assigned++                    
                 }
                                                 

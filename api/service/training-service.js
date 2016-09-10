@@ -119,7 +119,7 @@ const find = (query, auth) => {
         return Promise.reject(errors.unauthorized())
     }
 
-    return Promise.all([rules.minHoursToLeaveTraining(), Training.findAll(parser.parseQuery({
+    return Training.findAll(parser.parseQuery({
         attributes: ['id', 'from', 'to', 'max'],
         include: [{
              attributes: ['id', 'name'],
@@ -142,9 +142,13 @@ const find = (query, auth) => {
                 as: 'Client'
             }]
         }]
-    }, query))])
-    .spread((minHours, trainings) => R.map(training => {
-        training.dataValues.canLeave = auth.isClient && moment().diff(training.from, 'hours') <= -minHours
+    }, query))
+    .then(trainings => R.map(training => {
+        training.dataValues.canModify = auth.isAdmin
+            || (auth.isCoach && rules.coachCanModifyHistory())
+            || (moment().add({ hours: rules.minHoursToLeaveTraining() }).isBefore(training.from))
+        training.dataValues.canLeave = 
+            auth.isClient && moment().add({ hours: rules.minHoursToLeaveTraining() }).isBefore(training.from)
         return training
     }, trainings))
     .catch((error) => Promise.reject(errors.missingOrInvalidParameters()))

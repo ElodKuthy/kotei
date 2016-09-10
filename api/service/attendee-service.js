@@ -148,8 +148,8 @@ const remove = (training_id, client_id, auth) => {
         return Promise.reject(errors.unauthorized())
     }
 
-    return Promise.all([findTraining(training_id), findClient(client_id), rules.minHoursToLeaveTraining()])
-        .spread((training, client, minHours) => {
+    return Promise.all([findTraining(training_id), findClient(client_id)])
+        .spread((training, client) => {
 
             if (auth.isClient && client.id !== auth.id) {
                 return Promise.reject(errors.unauthorized())
@@ -159,7 +159,7 @@ const remove = (training_id, client_id, auth) => {
                 return Promise.reject(errors.unauthorized())
             }
 
-            if (auth.isClient && moment().diff(training.from, 'hours') > -minHours) {
+            if (auth.isClient && moment().diff(training.from, 'hours') > -rules.minHoursToLeaveTraining()) {
                 return Promise.reject(errors.tooLateToLeave())
             }
 

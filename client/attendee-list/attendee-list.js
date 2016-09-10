@@ -73,7 +73,7 @@ angular.module('kotei')
 
         this.canAdd = (this.training.count < this.training.max) && (this.userInfo.isAdmin || (this.userInfo.isCoach && this.userInfo.id === this.training.coach_id))
 
-        this.canModify = this.userInfo.isAdmin || (moment().isBefore(training.from) && this.userInfo.isCoach && this.userInfo.id === this.training.coach_id)
+        this.canModify = training.canModify
 
         this.canJoin = this.userInfo.isClient && moment().isBefore(training.to) && (this.training.count < this.training.max) && !isAttendee(this.attendees, this.userInfo)
 

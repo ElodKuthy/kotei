@@ -5,6 +5,7 @@ const errors = require('../common/errors')
 const parser = require('../common/parser')
 const roles = require('../common/roles')
 const logger = require('../common/logger')
+const rules = require('../common/rules')
 
 const model = require('../model/model')()
 const User = model.User
@@ -288,9 +289,39 @@ const find = (query, auth) => {
                 attributes: ['id', 'familyName', 'givenName'],
                 model: User,
                 as: 'Coach'
+            }, {
+                attributes: ['id'],
+                model: Subscription,
+                as: 'Subscriptions',
+                include: [{
+                    attributes: ['id'],
+                    model: User,
+                    as: 'Client'
+                }]
             }]
         }]
-    }, query)).catch((error) => Promise.reject(errors.missingOrInvalidParameters()))
+    }, query))
+    .then(subscriptions => subscriptions.map(subscription => {
+        subscription.dataValues.canModify = auth.isAdmin
+            || (auth.isCoach && rules.coachCanModifyHistory())
+        subscription.Trainings = subscription.Trainings.map(training => {
+            training.dataValues.canModify = auth.isAdmin
+                || (auth.isCoach
+                    && training.Coach.id === auth.id
+                    && (rules.coachCanModifyHistory()
+                        || moment().add({ hours: rules.minHoursToLeaveTraining() }).isBefore(training.from)))
+            training.dataValues.canLeave = 
+                auth.isClient
+                    && training.Subscriptions.find(subscription => subscription.Client.id === auth.id)
+                    && moment().add({ hours: rules.minHoursToLeaveTraining() }).isBefore(training.from)    
+            return training
+        })
+        return subscription
+    }))
+    .catch((error) => {
+        console.log(error)
+        Promise.reject(errors.missingOrInvalidParameters())
+    })
 }
 
 const remove = (args, auth) => {
@@ -365,11 +396,11 @@ const findActive = (_, auth) => {
 }
 
 module.exports = {
-    findSubscriptionType: findSubscriptionType,
-    findSubscriptionTemplate: findSubscriptionTemplate,
-    add: add,
-    find: find,
-    findActive: findActive,
-    update: update,
-    remove: remove
+    findSubscriptionType,
+    findSubscriptionTemplate,
+    add,
+    find,
+    findActive,
+    update,
+    remove
 }
