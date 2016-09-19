@@ -129,7 +129,7 @@ angular.module('kotei')
                 }
             })
             location.days = R.filter((day) => !!day, location.days)
-            location.trainings.sort((a, b) => a.hour >= b. hour)
+            location.trainings.sort((a, b) => a.hour < b.hour ? -1 : 1)
         })
 
         this.showAttendees = (trainingId) => {
