@@ -1,0 +1,285 @@
+<div class="training-list container">
+    <div class="row">
+        <div class="col-xs-12">
+            <button class="btn btn-primary new-training" ui-sref="administration.new-training">Új edzés létrehozása</button>
+        </div>
+    </div>
+    <uib-accordion>    
+        <div uib-accordion-group class="panel-primary" is-open="vm.filtersOpen">
+            <uib-accordion-heading>
+                Szűrők<i class="pull-right glyphicon" 
+                    ng-class="{ 'glyphicon-chevron-down': vm.filtersOpen, 'glyphicon-chevron-right': !vm.filtersOpen }"></i>
+            </uib-accordion-heading>
+            <div class="filter-row">
+                <div class="filter-row-item">
+                    <label for="from-date">Ettől a naptól</label>
+                    <ko-calendar 
+                        id="from-date" 
+                        model="vm.filter.fromDate"
+                        format="yyyy. MMM d."
+                        minDate="vm.filter.minDate"
+                        maxDate="vm.filter.maxDate"
+                        enable-time="false"
+                        change="vm.filterChanged(id, value)"></ko-calendar>
+                </div>
+                <div class="filter-row-item">
+                    <label for="search">Eddig a napig</label>
+                    <ko-calendar 
+                        id="to-date" 
+                        model="vm.filter.toDate"
+                        format="yyyy. MMM d."
+                        minDate="vm.filter.minDate"
+                        maxDate="vm.filter.maxDate"
+                        enable-time="false"
+                        change="vm.filterChanged(id, value)"></ko-calendar>
+                </div>
+                <div class="filter-row-item">
+                    <label for="trainingType">Típus</label>
+                    <select id="trainingType" name="trainingType" 
+                        class="form-control" 
+                        ng-model="vm.filter.trainingType"
+                        ng-options="type.name for type in vm.trainingTypes track by type.id | orderBy: 'name' "
+                        ng-change="vm.filterChanged()"> 
+                    </select>
+                </div>
+                <div class="filter-row-item">
+                    <label for="coach">Edző</label>
+                    <select id="coach" name="coach"
+                        class="form-control"
+                        ng-model="vm.filter.coach"
+                        ng-options="type.displayName for type in vm.coaches track by type.id | orderBy: 'displayName' " 
+                        ng-change="vm.filterChanged()"> 
+                    </select>
+                </div>
+                <div class="filter-row-item">
+                    <label for="location">Terem</label>
+                    <select id="location" name="location" 
+                        class="form-control" 
+                        ng-model="vm.filter.location"
+                        ng-options="type.name for type in vm.locations track by type.id | orderBy: 'name' " 
+                        ng-change="vm.filterChanged()"> 
+                    </select>
+                </div>
+                <div class="filter-row-item">
+                    <label for="day-of-week">Nap</label>
+                    <select id="day-of-week" name="day-of-week" 
+                        class="form-control" 
+                        ng-model="vm.filter.dayOfTheWeek"
+                        ng-options="type.name for type in vm.days track by type.id | orderBy: 'name' " 
+                        ng-change="vm.filterChanged()"> 
+                    </select>
+                </div>
+            </div>
+            <div class="filter-row">
+                <div class="filter-row-item">
+                    <label for="from-time">Kezdési időpont</label>
+                    <div class="filter-radio">
+                        <label>
+                            <input 
+                                type="radio" 
+                                ng-model="vm.filter.isFromTime" 
+                                ng-value="false"
+                                ng-change="vm.filterChanged()">
+                            Összes
+                        </label>
+                    </div>
+                    <div class="filter-radio">
+                        <label>
+                            <input
+                                type="radio"
+                                ng-model="vm.filter.isFromTime" 
+                                ng-value="true"
+                                ng-change="vm.filterChanged()">
+                            Csak az alábbi
+                        </label>
+                    </div>
+                    <div uib-timepicker
+                        id="from-time"
+                        ng-model="vm.filter.fromTime" 
+                        ng-change="vm.filterChanged()" 
+                        hour-step="1" 
+                        minute-step="1" 
+                        show-meridian="false"
+                        ng-if="vm.filter.isFromTime">
+                    </div>
+                </div>
+                <div class="filter-row-item">
+                    <label for="to-time">Végső időpont</label>
+                    <div class="filter-radio">
+                        <label>
+                            <input 
+                                type="radio" 
+                                ng-model="vm.filter.isToTime" 
+                                ng-value="false"
+                                ng-change="vm.filterChanged()">
+                            Összes
+                        </label>
+                    </div>
+                    <div class="filter-radio">
+                        <label>
+                            <input
+                                type="radio"
+                                ng-model="vm.filter.isToTime" 
+                                ng-value="true"
+                                ng-change="vm.filterChanged()">
+                            Csak az alábbi
+                        </label>
+                    </div>
+                    <div uib-timepicker
+                        id="to-time"
+                        ng-model="vm.filter.toTime" 
+                        ng-change="vm.filterChanged()" 
+                        hour-step="1" 
+                        minute-step="1" 
+                        show-meridian="false"
+                        ng-if="vm.filter.isToTime">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </uib-accordion>
+    <uib-accordion>
+        <div uib-accordion-group class="panel-primary" is-open="vm.modifyOpen">
+            <uib-accordion-heading>
+                Összes elem módosítása<i class="pull-right glyphicon" 
+                    ng-class="{ 'glyphicon-chevron-down': vm.modifyOpen, 'glyphicon-chevron-right': !vm.modifyOpen }"></i>
+            </uib-accordion-heading>
+            <div class="editor-row">
+                <div class="editor-row-item">
+                    <label for="trainingType">Típus</label>
+                    <select id="trainingType" name="trainingType" 
+                        class="form-control" 
+                        ng-model="vm.newValues.trainingType"
+                        ng-options="type.name for type in vm.trainingTypes track by type.id | orderBy: 'name' ">
+                    </select>
+                </div>
+                <div class="editor-row-item">
+                    <label for="coach">Edző</label>
+                    <select id="coach" name="coach"
+                        class="form-control"
+                        ng-model="vm.newValues.coach"
+                        ng-options="type.displayName for type in vm.coaches track by type.id | orderBy: 'displayName' "> 
+                    </select>
+                </div>
+                <div class="editor-row-item">
+                    <label for="location">Terem</label>
+                    <select id="location" name="location" 
+                        class="form-control" 
+                        ng-model="vm.newValues.location"
+                        ng-options="type.name for type in vm.locations track by type.id | orderBy: 'name' "> 
+                    </select>
+                </div>
+                <div class="editor-row-item">
+                    <label for="edit-day-of-week">Nap</label>
+                    <select id="edit-day-of-week" name="edit-day-of-week" 
+                        class="form-control" 
+                        ng-model="vm.newValues.dayOfTheWeek"
+                        ng-options="type.name for type in vm.days track by type.id | orderBy: 'name' "> 
+                    </select>
+                </div>
+            </div>
+            <div class="editor-row">
+                <div class="editor-row-item">
+                    <label for="edit-from-time">Kezdési időpont</label>
+                    <div class="editor-radio">
+                        <label>
+                            <input 
+                                type="radio" 
+                                ng-model="vm.newValues.isFromTime" 
+                                ng-value="false">
+                            Nem módosul
+                        </label>
+                    </div>
+                    <div class="editor-radio">
+                        <label>
+                            <input
+                                type="radio"
+                                ng-model="vm.newValues.isFromTime" 
+                                ng-value="true">
+                            Módosít az alábbira
+                        </label>
+                    </div>
+                    <div uib-timepicker
+                        id="editor-from-time"
+                        ng-model="vm.newValues.fromTime" 
+                        hour-step="1" 
+                        minute-step="1" 
+                        show-meridian="false"
+                        ng-if="vm.newValues.isFromTime">
+                    </div>
+                </div>
+                <div class="editor-row-item">
+                    <label for="wditor-to-time">Végső időpont</label>
+                    <div class="editor-radio">
+                        <label>
+                            <input 
+                                type="radio" 
+                                ng-model="vm.newValues.isToTime" 
+                                ng-value="false">
+                            Nem módosul
+                        </label>
+                    </div>
+                    <div class="editor-radio">
+                        <label>
+                            <input
+                                type="radio"
+                                ng-model="vm.newValues.isToTime" 
+                                ng-value="true">
+                            Módosít az alábbira
+                        </label>
+                    </div>
+                    <div uib-timepicker
+                        id="editor-to-time"
+                        ng-model="vm.newValues.toTime" 
+                        hour-step="1" 
+                        minute-step="1" 
+                        show-meridian="false"
+                        ng-if="vm.newValues.isToTime">
+                    </div>
+                </div>
+            </div>            
+            <div class="editor-button-row">
+                <button class="btn btn-primary pull-left" ng-click="vm.deleteAll()">Törlés</button>
+                <button class="btn btn-primary pull-right" ng-click="vm.saveModifications()">Módosítás</button>
+            </div>
+        </div>
+    </uib-accordion>
+    <div class="row loading" ng-if="vm.isLoading">
+        <div class="col-xs-12">
+            <h3>Adatok betöltése...</h3>
+        </div>
+    </div>
+    <div class="row trainings-table" ng-if="!vm.isLoading">
+        <div class="col-xs-12">
+            <h3>Edzések</h3>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Típus</th>
+                            <th>Edző</th>                            
+                            <th>Terem</th>
+                            <th>Nap</th>
+                            <th>Kezdete</th>
+                            <th>Vége</th>
+                            <th>Résztvevők</th>
+                            <th>Max</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="training in vm.trainings" ng-click="vm.trainingDetails(training)">
+                            <td>{{training.TrainingType.name}}</td>
+                            <td>{{training.Coach.fullName}}</td>
+                            <td>{{training.Location.name}}</td>
+                            <td>{{training.from | date : 'yyyy. MM. dd. EEEE'}}</td>
+                            <td>{{training.from | date : 'HH:mm'}}</td>
+                            <td>{{training.to | date: 'HH:mm'}}</td>
+                            <td>{{training.Subscriptions.length}}</td>
+                            <td>{{training.max}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

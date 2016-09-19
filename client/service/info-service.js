@@ -1,5 +1,5 @@
 angular.module('kotei')
-    .service('infoService', (jwtHelper, $http, $q, $moment) => {
+    .service('infoService', (jwtHelper, $http, $q, $moment, serviceUtils) => {
 
         const get = (url) => {
                 return $http({
@@ -38,6 +38,7 @@ angular.module('kotei')
             getSubscription: (subscriptionId) => get(`/api/subscription?where={"id":${subscriptionId}}`),
             getActiveSubscriptions: () => get(`/api/subscription/active`),
             getPayoffs: (from, to) => get(`/api/stats/payoffs?where={"from":{"$gte":"${from}"},"to":{"$lte":"${to}"}}`),
-            getRuleAllowedFreeCredit: () => get('/api/rule/allow/free/credit')
+            getRuleAllowedFreeCredit: () => get('/api/rule/allow/free/credit'),
+            getTrainingsByFilter: filter => get(`/api/training?where=${serviceUtils.convertTrainingsFilterToQuery(filter)}&order=\`from\`%20ASC&dayOfTheWeek="${filter.dayOfTheWeek || ''}"&trainingFromTime="${filter.fromTime || ''}"&trainingToTime="${filter.toTime || ''}"`)
         }
     })

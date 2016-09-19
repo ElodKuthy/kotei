@@ -1,0 +1,37 @@
+.training-list {
+    .new-training {
+        margin: 10px 0 20px 0;
+    }
+
+    .ko-calendar,
+    select {
+        width: 240px;
+        max-width: 100%;
+    }
+
+    .filter-row,
+    .editor-row {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        margin-top: 10px;
+    }
+
+    .filter-row-item,
+    .editor-row-item,
+    .editor-button-row {
+        margin: 10px;
+    }
+
+    .loading {
+        margin-top: 20px;
+    }
+
+    .trainings-table {
+        margin-top: 20px;
+        
+        tr {
+            cursor: pointer;
+        }
+    }
+}

@@ -1,5 +1,6 @@
 const moment = require('moment')
 const R = require('ramda')
+const sequelize = require('sequelize')
 
 const errors = require('../common/errors')
 const texts = require('../localization/texts')
@@ -66,9 +67,8 @@ const calculateDates = (training) => {
     return Promise.resolve(dates)
 }
 
-const addTraining = (training) => {
-
-    Training.findOne({
+const checkCollidingTraining = training => {
+    return Training.findOne({
         where: {
             $and: [{
                 location_id: training.location_id
@@ -86,17 +86,21 @@ const addTraining = (training) => {
             }]
         }
     }).then((collidingTraining) => {
-
         if (collidingTraining) {
             return Promise.reject(errors.trainingTimeCollide())
         }
 
+        return Promise.resolve(training)
+    })
+}
+
+const addTraining = (training) => {
+    return checkCollidingTraining(training).then(training => {
         return Training.create(training)
             .catch((error) => {
                 return Promise.reject(errors.missingOrInvalidParameters())
             })
     })
-
 }
 
 const addTrainings = (training, dates) => {
@@ -151,7 +155,9 @@ const find = (query, auth) => {
             auth.isClient && moment().add({ hours: rules.minHoursToLeaveTraining() }).isBefore(training.from)
         return training
     }, trainings))
-    .catch((error) => Promise.reject(errors.missingOrInvalidParameters()))
+    .catch((error) => {
+        Promise.reject(errors.missingOrInvalidParameters())
+    })
 }
 
 const findTrainingType = (query, auth) => {
@@ -212,9 +218,71 @@ const remove = (args, auth) => {
     }).then(() => Promise.resolve('OK'))
 }
 
+const bulkEdit = (query, newValues, auth) => {
+    if (!auth.isAdmin) {
+        return Promise.reject(errors.unauthorized())
+    }
+
+    return Promise.all(Training.findAll(parser.parseQuery({}, query))
+        .then(trainings => {
+            return trainings.map(training => {
+                if (newValues.trainingTypeId) {
+                    training.training_type_id = newValues.trainingTypeId
+                }
+                if (newValues.locationId) {
+                    training.location_id = newValues.locationId
+                }
+                if (newValues.coachId) {
+                    training.coach_id = newValues.coachId
+                }
+                if (newValues.dayOfTheWeek) {
+                    const from = moment(training.from)
+                    const to = moment(training.to)
+                    from.day(newValues.dayOfTheWeek === 1 ? 7 : newValues.dayOfTheWeek - 1)
+                    to.day(newValues.dayOfTheWeek === 1 ? 7 : newValues.dayOfTheWeek - 1)
+                    training.from = from.format()                    
+                    training.to = to.format()                    
+                }
+                if (newValues.fromTime) {
+                    const fromTime = moment(newValues.fromTime, 'hh:mm:ss')
+                    const from = moment(training.from)
+                    from.hour(fromTime.hour())
+                    from.minute(fromTime.minute())
+                    from.second(fromTime.second())
+                    training.from = from.format()                    
+                }
+                if (newValues.toTime) {
+                    const toTime = moment(newValues.toTime, 'hh:mm:ss')
+                    const to = moment(training.to)
+                    to.hour(toTime.hour())
+                    to.minute(toTime.minute())
+                    to.second(toTime.second())
+                    training.to = to.format()                    
+                }
+
+                return checkCollidingTraining(training).then(training => training.save())
+            })
+        }))
+}
+
+const removeAll = (query, auth) => {
+    if (!auth.isAdmin) {
+        return Promise.reject(errors.unauthorized())
+    }
+
+    return Promise.all(Training.findAll(parser.parseQuery({}, query))
+        .then(trainings => {
+            return trainings.map(training => {
+                return remove({ trainingId: training.id }, auth)
+            })
+        }))
+}
+
 module.exports = {
     add,
     find,
     findTrainingType,
-    remove
+    remove,
+    bulkEdit,
+    removeAll
 }

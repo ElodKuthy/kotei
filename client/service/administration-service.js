@@ -1,5 +1,5 @@
 angular.module('kotei')
-    .service('administrationService', ($http, $q) => {
+    .service('administrationService', ($http, $q, $moment, serviceUtils) => {
         const post = (url, data) => {
             return $http({
                 method: 'POST',
@@ -46,6 +46,8 @@ angular.module('kotei')
             removeAttendee: (training_id, client_id) => del(`/api/attendee?training_id=${training_id}&client_id=${client_id}`),
             updateAttendee: (training_id, client_id, checkIn) => put(`/api/attendee?training_id=${training_id}&client_id=${client_id}`, { checkIn: checkIn }),
             resendRegistration: (userId) => post('/api/user/resend', { id: userId }),
-            deleteTraining: trainingId => del(`/api/training/${trainingId}`)
+            deleteTraining: trainingId => del(`/api/training/${trainingId}`),
+            bulkEditTrainings: (filter, newValues) => post(`/api/training/bulk?where=${serviceUtils.convertTrainingsFilterToQuery(filter)}&dayOfTheWeek="${filter.dayOfTheWeek || ''}"&trainingFromTime="${filter.fromTime || ''}"&trainingToTime="${filter.toTime || ''}"`, newValues),
+            deleteAllTrainings: filter => del(`/api/training?where=${serviceUtils.convertTrainingsFilterToQuery(filter)}&dayOfTheWeek="${filter.dayOfTheWeek || ''}"&trainingFromTime="${filter.fromTime || ''}"&trainingToTime="${filter.toTime || ''}"`)
         }
     })
