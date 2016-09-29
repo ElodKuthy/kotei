@@ -36,9 +36,13 @@ angular.module('kotei')
             getTrainingsByDateAndType: (from, to, trainingTypeIds) => get(`/api/training?where={"$and":[{"from":{"$gte":"${from}"}},{"to":{"$lte":"${to}"}},{"\$or":[${concatTrainingTypeIds(trainingTypeIds)}]}]}&order=\`from\`%20ASC`),
             getSubscriptionsByClient: (clientId) => get(`/api/subscription?where={"client_id":${clientId}}&order=\`from\`%20ASC`),
             getSubscription: (subscriptionId) => get(`/api/subscription?where={"id":${subscriptionId}}`),
-            getActiveSubscriptions: () => get(`/api/subscription/active`),
+            getActiveSubscriptions: () => get(`/api/stats/subscriptions/active`),
+            getSoldSubscriptions: month => get(`/api/stats/subscriptions/sold?month=${month}`),
             getPayoffs: (from, to) => get(`/api/stats/payoffs?where={"from":{"$gte":"${from}"},"to":{"$lte":"${to}"}}`),
             getRuleAllowedFreeCredit: () => get('/api/rule/allow/free/credit'),
-            getTrainingsByFilter: filter => get(`/api/training?where=${serviceUtils.convertTrainingsFilterToQuery(filter)}&order=\`from\`%20ASC&dayOfTheWeek="${filter.dayOfTheWeek || ''}"&trainingFromTime="${filter.fromTime || ''}"&trainingToTime="${filter.toTime || ''}"`)
+            getTrainingsByFilter: filter => get(`/api/training?where=${serviceUtils.convertTrainingsFilterToQuery(filter)}&order=\`from\`%20ASC&dayOfTheWeek="${filter.dayOfTheWeek || ''}"&trainingFromTime="${filter.fromTime || ''}"&trainingToTime="${filter.toTime || ''}"`),
+            getStatsOverview: month => get(`/api/stats/overview?month=${month}`),
+            getClientsStats: month => get(`/api/stats/clients?month=${month}`),
+            getTrainingsStats: month => get(`/api/stats/trainings?month=${month}`)
         }
     })

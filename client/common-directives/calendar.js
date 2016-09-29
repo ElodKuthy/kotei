@@ -11,7 +11,8 @@ angular.module('kotei')
                 format:  '@',
                 enableTime: '=',
                 minMode: '@',
-                datepickerMode: '@'
+                datepickerMode: '@',
+                change: "&"
             },
             controller: function () {
 

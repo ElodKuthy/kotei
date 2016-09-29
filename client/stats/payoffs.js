@@ -3,7 +3,7 @@ angular.module('kotei')
 
         $stateProvider
             .state('stats.payoffs', {
-                url: '/stats/payoffs',
+                url: '/payoffs',
                 views: {
                     'navbar@': {
                         templateUrl: 'navbar/navbar.html',

@@ -80,7 +80,6 @@ router.post('/user/resend', handler(userService.resendRegistration, { body: 'use
 router.get('/subscription/type', handler(subscriptionService.findSubscriptionType, { query: 'query' }))
 router.get('/subscription/template', handler(subscriptionService.findSubscriptionTemplate, { query: 'query' }))
 router.get('/subscription', handler(subscriptionService.find, { query: 'query' }))
-router.get('/subscription/active', handler(subscriptionService.findActive, { query: 'query' }))
 router.post('/subscription', handler(subscriptionService.add, { body: 'newSubscription' }))
 router.put('/subscription', handler(subscriptionService.update, { body: 'subscription' }))
 router.delete('/subscription/:subscriptionId', handler(subscriptionService.remove, { url: 'subscriptionId' }))
@@ -98,7 +97,12 @@ router.put('/attendee', handler(attendeeService.update, { query: ['training_id',
 
 router.get('/location', handler(locationService.find, { query: 'query' }))
 
+router.get('/stats/overview', handler(statsService.overview, { query: 'query' }))
 router.get('/stats/payoffs', handler(statsService.payoffs, { query: 'query' }))
+router.get('/stats/subscriptions/active', handler(statsService.activeSubscriptions, {}))
+router.get('/stats/subscriptions/sold', handler(statsService.soldSubscriptions, { query: 'query' }))
+router.get('/stats/clients', handler(statsService.clients, { query: 'query' }))
+router.get('/stats/trainings', handler(statsService.trainings, { query: 'query' }))
 
 router.get('/rule/allow/free/credit', handler(() => Promise.resolve(rules.allowFreeCreditsOnCreateSubcription()), {}))
 

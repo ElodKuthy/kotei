@@ -1,0 +1,72 @@
+<div class="trainings container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="calendar">
+                <label for="month">Hónap</label>
+                <ko-calendar 
+                    id="month" 
+                    model="vm.month"
+                    format="yyyy. MMMM"
+                    minDate="vm.minDate"
+                    maxDate="vm.maxDate"
+                    enable-time="false"
+                    min-mode="month"
+                    datepicker-mode="month"
+                    change="vm.dateChanged(id, value)"></ko-calendar>
+            </div>
+        </div>
+        <div class="col-xs-12" ng-if="!vm.trainings">
+            <h3>
+                Adatok betöltése ...
+            </h3>
+        </div>
+        <div class="col-xs-12" ng-if="vm.trainings && vm.trainings.length">
+            <h3>Látogatottság</h3>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th rowspan="2">Típus</th>
+                            <th rowspan="2">Időpont</th>
+                            <th rowspan="2">Terem</th>
+                            <th colspan="2">Összes</th>
+                            <th colspan="2">Átlag</th>
+                            <th colspan="2">Minimum</th>
+                            <th colspan="2">Maximum</th>
+                            <th rowspan="2" ng-if="vm.isAdmin">Edző</th>
+                        </tr>
+                        <tr>
+                            <th>Feli.</th>
+                            <th>Megj.</th>
+                            <th>Feli.</th>
+                            <th>Megj.</th>
+                            <th>Feli.</th>
+                            <th>Megj.</th>
+                            <th>Feli.</th>
+                            <th>Megj.</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="training in vm.trainings">
+                            <td>{{training.typeName}}</td>
+                            <td>{{training.date | date : 'EEEE HH:mm' }}</td>
+                            <td>{{training.locationName}}</td>
+                            <td>{{training.subscriptions.sum}}</td>
+                            <td>{{training.attendees.sum}}</td>
+                            <td>{{training.subscriptions.sum / training.count | number : 2 }}</td>
+                            <td>{{training.attendees.sum / training.count | number: 2 }}</td>
+                            <td>{{training.subscriptions.min}}</td>
+                            <td>{{training.attendees.min}}</td>
+                            <td>{{training.subscriptions.max}}</td>
+                            <td>{{training.attendees.max}}</td>
+                            <td ng-if="vm.isAdmin">{{training.Coach.fullName + (training.Coach.fullName !== training.Coach.nickname ? '(' + training.Coach.nickname + ')' : '')}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-xs-12" ng-if="vm.trainings && !vm.trainings.length">
+            <h4>Haladjunk tovább, nincs itt semmi látnivaló!</h4><h4>(Ebben a hónapban nem voltak edzések tartva)</h4>
+        </div>
+    </div>
+</div>

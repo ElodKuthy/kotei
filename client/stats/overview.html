@@ -1,0 +1,54 @@
+<div class="stats-overview container">
+    <div class="row">
+        <div class="col-xs-12 selector-row">
+            <div class="calendar">
+                <label for="month">Hónap</label>
+                <ko-calendar 
+                    id="month" 
+                    model="vm.month"
+                    format="yyyy. MMMM"
+                    minDate="vm.minDate"
+                    maxDate="vm.maxDate"
+                    enable-time="false"
+                    min-mode="month"
+                    datepicker-mode="month"
+                    change="vm.dateChanged(id, value)"></ko-calendar>
+            </div>
+        </div>
+        <div class="col-xs-12 data-row">
+            <h3 ng-if="!vm.overviews">
+                Adatok betöltése ...
+            </h3>
+            <div ng-if="vm.overviews" class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Megtartott edzések</th>
+                        <th>Összes hely</th>
+                        <th>Feliratkozások</th>
+                        <th>Kihasználtság</th>
+                        <th>Résztvevők</th>
+                        <th>Résztvevők aránya</th>
+                        <th>Bérlet eladás</th>
+                        <th>Felhasznált kredit érték</th>
+                        <th ng-if="vm.isAdmin">Edző</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="overview in vm.overviews">
+                        <td class="number">{{overview.trainingsCount}}</td>
+                        <td class="number">{{overview.max}}</td>
+                        <td class="number">{{overview.subscriptions}}</td>
+                        <td class="number">{{(overview.max ? (overview.subscriptions / overview.max * 100) : 0) | number : 0}} %</td>
+                        <td class="number">{{overview.attendees}}</td>
+                        <td class="number">{{(overview.subscriptions ? (overview.attendees / overview.subscriptions * 100) : 0) | number : 0}} %</td>
+                        <td class="number">{{(overview.sold) | currency : 'Ft': 0 }}</td>
+                        <td class="number">{{(overview.spent) | currency : 'Ft': 0 }}</td>
+                        <td ng-if="vm.isAdmin">{{overview.Coach.fullName + (overview.Coach.fullName !== overview.Coach.nickname ? '(' + overview.Coach.nickname + ')' : '')}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+        </div>
+    </div>
+</div>

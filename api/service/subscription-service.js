@@ -319,7 +319,6 @@ const find = (query, auth) => {
         return subscription
     }))
     .catch((error) => {
-        console.log(error)
         Promise.reject(errors.missingOrInvalidParameters())
     })
 }
@@ -352,55 +351,11 @@ const remove = (args, auth) => {
         })
 }
 
-const findActive = (_, auth) => {
-    if (!auth.isAdmin && !auth.isCoach) {
-        return Promise.reject(errors.unauthorized())
-    }
-    
-    return find({
-        where: {
-            to: {
-                $gte: moment().format('YYYY-MM-DD')
-            }
-        }
-    }, auth)
-    .then(subscriptions => {
-        if (auth.isAdmin) {
-            return subscriptions
-        } else {
-            return R.filter(subscription => subscription.Coach.id === auth.id, subscriptions)
-        }
-    })
-    .then(subscriptions => R.map(subscription => {
-        const amount = R.reduce((acc, credit) => acc + credit.amount, 0, subscription.Credits)
-        const remaining = amount - R.reduce((acc,training) => acc + !!moment().isAfter(training.to), 0, subscription.Trainings)
-
-        return {
-            id: subscription.id,
-            name: subscription.SubscriptionType.name,
-            from: subscription.from,
-            to: subscription.to,
-            Client: subscription.Client,
-            Coach: subscription.Coach,
-            amount: amount,
-            remaining: remaining
-        }
-    }, subscriptions))
-    .then(subscriptions => R.sort((a, b) => {
-        const diff = a.remaining - b.remaining
-        if (diff) {
-            return diff
-        }
-        return moment(a.to).diff(b.to)
-    }, subscriptions))
-}
-
 module.exports = {
     findSubscriptionType,
     findSubscriptionTemplate,
     add,
     find,
-    findActive,
     update,
     remove
 }

@@ -1,0 +1,22 @@
+.stats-overview {
+    .selector-row {
+        display: flex; 
+        flex-direction: row; 
+        flex-wrap: wrap;
+
+        .calendar, 
+        select {
+            margin: 10px;
+            width: 240px;
+            max-width: 100%;        
+        }
+    }
+
+    .data-row {
+        margin: 10px;
+        
+        .number {
+            text-align: right;
+        }
+    }
+}

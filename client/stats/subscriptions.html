@@ -1,22 +1,72 @@
 <div class="subscriptions container">
     <div class="row">
-        <div class="col-xs-12">
+        <div class="col-xs-12" ng-if="vm.subscriptions && vm.subscriptions.active">
             <div class="table-responsive">
+                <h3>Aktív bérletek</h3>
                 <table class="table table-bordered">
                     <thead>
                         <tr>
                             <th>Tanítvány</th>
-                            <th>Alkalmak</th>
+                            <th>Maradék alkalmak</th>
                             <th>Lejárat</th>
                             <th>Típus</th>
                             <th ng-if="vm.isAdmin">Edző</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="subscription in vm.subscriptions" ng-click="vm.userProfile(subscription.Client.id)">
+                        <tr ng-repeat="subscription in vm.subscriptions.active" ng-click="vm.userProfile(subscription.Client.id)">
                             <td>{{subscription.Client.fullName + (subscription.Client.fullName !== subscription.Client.nickname ? '(' + subscription.Client.nickname + ')' : '')}}</td>
                             <td ng-class="subscription.remainingCssClass">{{subscription.remaining}}</td>
                             <td ng-class="subscription.toCssClass">{{subscription.to | date : 'yyyy. MMMM d.'}}</td>
+                            <td>{{subscription.name}}</td>
+                            <td ng-if="vm.isAdmin">{{subscription.Coach.fullName + (subscription.Coach.fullName !== subscription.Coach.nickname ? '(' + subscription.Coach.nickname + ')' : '')}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <h3>Eladott bérletek</h3>
+            <div class="calendar">
+                <label for="month">Hónap</label>
+                <ko-calendar 
+                    id="month" 
+                    model="vm.month"
+                    format="yyyy. MMMM"
+                    minDate="vm.minDate"
+                    maxDate="vm.maxDate"
+                    enable-time="false"
+                    min-mode="month"
+                    datepicker-mode="month"
+                    change="vm.dateChanged(id, value)"></ko-calendar>
+            </div>
+        </div>
+        <div class="col-xs-12" ng-if="!vm.subscriptions.sold">
+            <h3>
+                Adatok betöltése ...
+            </h3>
+        </div>
+        <div class="col-xs-12" ng-if="vm.subscriptions && vm.subscriptions.sold">
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Tanítvány</th>
+                            <th>Alkalmak</th>
+                            <th>Ár</th>
+                            <th>Vásárlás</th>
+                            <th>Lejárat</th>
+                            <th>Típus</th>
+                            <th ng-if="vm.isAdmin">Edző</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="subscription in vm.subscriptions.sold" ng-click="vm.userProfile(subscription.Client.id)">
+                            <td>{{subscription.Client.fullName + (subscription.Client.fullName !== subscription.Client.nickname ? '(' + subscription.Client.nickname + ')' : '')}}</td>
+                            <td>{{subscription.amount}}</td>
+                            <td>{{subscription.price | currency : 'Ft' : 0}}</td>
+                            <td>{{subscription.from | date : 'yyyy. MMMM d.'}}</td>
+                            <td>{{subscription.to | date : 'yyyy. MMMM d.'}}</td>
                             <td>{{subscription.name}}</td>
                             <td ng-if="vm.isAdmin">{{subscription.Coach.fullName + (subscription.Coach.fullName !== subscription.Coach.nickname ? '(' + subscription.Coach.nickname + ')' : '')}}</td>
                         </tr>

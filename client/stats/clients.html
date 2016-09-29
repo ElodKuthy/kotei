@@ -1,0 +1,73 @@
+<div class="clients container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="calendar">
+                <label for="month">Hónap</label>
+                <ko-calendar 
+                    id="month" 
+                    model="vm.month"
+                    format="yyyy. MMMM"
+                    minDate="vm.minDate"
+                    maxDate="vm.maxDate"
+                    enable-time="false"
+                    min-mode="month"
+                    datepicker-mode="month"
+                    change="vm.dateChanged(id, value)"></ko-calendar>
+            </div>
+        </div>
+        <div class="col-xs-12" ng-if="!vm.clients">
+            <h3>
+                Adatok betöltése ...
+            </h3>
+        </div>
+        <div class="col-xs-12" ng-if="vm.clients && vm.clients.news && vm.clients.news.length">
+            <h3>Új tanítványok ({{vm.clients.news.length}} fő)</h3>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Név</th>
+                            <th>Feliratkozás</th>
+                            <th ng-if="vm.isAdmin">Edző</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="client in vm.clients.news" ng-click="vm.userProfile(client.id)">
+                            <td>{{client.fullName + (client.fullName !== client.nickname ? '(' + client.nickname + ')' : '')}}</td>
+                            <td>{{client.created_at | date : 'yyyy. MMMM d.'}}</td>
+                            <td ng-if="vm.isAdmin">{{client.Coach.fullName + (client.Coach.fullName !== client.Coach.nickname ? '(' + client.Coach.nickname + ')' : '')}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-xs-12" ng-if="vm.clients && vm.clients.passives && vm.clients.passives.length">
+            <h3>Passzív tanítványok ({{vm.clients.passives.length}} fő)</h3>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Név</th>
+                            <th>Feliratkozás</th>
+                            <th>Utolsó bérlet vásárlás</th>
+                            <th>Utolsó bérlet lejárat</th>
+                            <th ng-if="vm.isAdmin">Edző</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="client in vm.clients.passives" ng-click="vm.userProfile(client.id)">
+                            <td>{{client.fullName + (client.fullName !== client.nickname ? '(' + client.nickname + ')' : '')}}</td>
+                            <td>{{client.created_at | date : 'yyyy. MMMM d.'}}</td>
+                            <td>{{client.from | date : 'yyyy. MMMM d.'}}</td>
+                            <td>{{client.to | date : 'yyyy. MMMM d.'}}</td>
+                            <td ng-if="vm.isAdmin">{{client.Coach.fullName + (client.Coach.fullName !== client.Coach.nickname ? '(' + client.Coach.nickname + ')' : '')}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-xs-12" ng-if="!vm.clients.news.length && !vm.clients.passives.length">
+            <h4>Haladjunk tovább, nincs itt semmi látnivaló!</h4><h4>(Ebben a hónapban nem voltak se új, se passzív tanítványok)</h4>
+        </div>
+    </div>
+</div>
