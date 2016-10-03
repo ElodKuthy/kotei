@@ -32,8 +32,15 @@ const find = (query, auth) => {
             'active',
             'coach_id',
             'created_at'
-        ]
-    }, query)).catch((error) => Promise.reject(errors.missingOrInvalidParameters()))
+        ],
+        include: [{
+            model: User,
+            as: 'Coach'
+        }]
+    }, query))
+    .then(users => auth.isAdmin ? users : users.filter(user => user.id === auth.id
+        || (user.role === roles.client && (!user.coach_id || user.coach_id === auth.id))))
+    .catch((error) => Promise.reject(errors.missingOrInvalidParameters()))
 }
 
 const add = (newUser, auth) => {

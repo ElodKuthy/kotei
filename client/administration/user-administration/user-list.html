@@ -20,6 +20,7 @@
                     <thead>
                         <tr>
                             <th>Név</th>
+                            <th ng-if="userList.isAdmin">Edző</th>                            
                             <th>Telefonszám</th>                            
                             <th>Email</th>
                             <th>Számlázási cím</th>
@@ -28,6 +29,7 @@
                     <tbody>
                         <tr ng-repeat="client in userList.clients | filter: userList.search" ng-click="userList.userProfile(client)">
                             <td>{{client.displayName}}</td>
+                            <td ng-if="userList.isAdmin">{{client.Coach.fullName}}</td>
                             <td>{{client.phone}}</td>
                             <td>{{client.email}}</td>
                             <td>{{client.address}}</td>

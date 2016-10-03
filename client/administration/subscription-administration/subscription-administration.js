@@ -62,7 +62,7 @@ angular.module('kotei')
             if (this.isAdmin || this.showAllTraining) {
                 this.trainings = this.allTrainings
             } else {
-                this.trainings = R.filter((training) => training.Coach.id === this.coach.id, this.allTrainings)
+                this.trainings = R.filter((training) => training.Coach.id === this.coach.id, this.allTrainings || [])
             }            
         }
 
