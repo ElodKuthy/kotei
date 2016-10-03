@@ -72,6 +72,10 @@ const checkCollidingTraining = training => {
     return Training.findOne({
         where: {
             $and: [{
+                id: {
+                    $not: training.id
+                }
+            }, {
                 location_id: training.location_id
             }, {
                 $or: [
@@ -79,7 +83,7 @@ const checkCollidingTraining = training => {
                     { to: { $and: [ { $gt: training.from }, { $lt: training.to } ] } },
                     {
                         $and: [
-                            { from: { $eq: training.from} },
+                            { from: { $eq: training.from } },
                             { to: { $eq: training.to } }
                         ]
                     }
