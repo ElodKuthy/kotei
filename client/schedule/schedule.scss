@@ -7,10 +7,6 @@
         background-color: #3F4147;
     }
 
-    .training-container {
-        cursor: pointer;
-    }
-
     .training-container > div {
         margin: 10px 0;
     }
@@ -53,5 +49,10 @@
         padding-top: 5px;
         font-size: 1.5em;
         color: #f97a6a;
+    }
+
+    .interactive {
+        background-color: #54565E;
+        cursor: pointer;
     }
 }

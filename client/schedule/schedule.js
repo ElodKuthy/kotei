@@ -54,7 +54,7 @@ angular.module('kotei')
                 roles: ['client', 'coach', 'admin']
         })
     })
-    .controller('ScheduleController', function (R, $state, $moment, from, to, trainings, userInfoService) {
+    .controller('ScheduleController', function (R, $state, $moment, from, to, trainings, userInfoService, administrationService) {
 
         this.previous = {
             from: $moment(from).subtract({ week: 1 }).format('YYYY-MM-DD'),
@@ -97,24 +97,27 @@ angular.module('kotei')
                 location.trainings.push(row)
             }
 
-            var userSubscription = R.find((current) => current.Client.id === this.userInfo.id, training.Subscriptions)
-            var involved = !!userSubscription
             var dayIndex = from.isoWeekday() - 1
 
             location.days[dayIndex] = days[dayIndex]
             row.cells[dayIndex].push({
                 id: training.id,
                 name: training.TrainingType.name,
-                current: training.Subscriptions.length,
+                utilization: training.utilization,
+                current: training.Subscriptions && training.Subscriptions.length,
                 max: training.max,
                 coach: training.Coach.nickname,
                 from: from.format('HH:mm'),
                 to: to.format('HH:mm'),
                 hasMinutes: from.minutes() || to.minutes(),
-                involved: involved,
-                attended: involved && $moment().isBefore(from),
-                participated: involved && $moment().isAfter(from) && userSubscription.Attendee.checkIn,
-                missed: involved && $moment().isAfter(from) && !userSubscription.Attendee.checkIn
+                involved: training.involved,
+                attended: training.attended,
+                participated: training.participated,
+                missed: training.missed,
+                canJoin: training.canJoin,
+                canLeave: training.canLeave,
+                canModify: training.canModify,
+                isCoach: training.Coach.id === this.userInfo.id
             })
         })
 
@@ -132,7 +135,17 @@ angular.module('kotei')
             location.trainings.sort((a, b) => a.hour < b.hour ? -1 : 1)
         })
 
-        this.showAttendees = (trainingId) => {
-            $state.go('attendee-list', { trainingId: trainingId })
+        this.manipulate = (training) => {
+            if (training.canModify || training.isCoach) {
+                $state.go('attendee-list', { trainingId: training.id })
+            } else if (training.canJoin) {
+                administrationService.addAttendee(training.id, this.userInfo.id)
+                    .then(() => $state.reload())
+                    .catch((error) => this.addClientError = error)
+            } else if (training.canLeave) {
+                administrationService.removeAttendee(training.id, this.userInfo.id)
+                    .then(() => $state.reload())
+                    .catch((error) => this.error = error)
+            }
         }
     })

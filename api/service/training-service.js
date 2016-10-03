@@ -15,6 +15,7 @@ const Location = model.Location
 const Subscription = model.Subscription
 const TrainingType = model.TrainingType
 const Attendee = model.Attendee
+const Credit = model.Credit
 
 const mailerService = require('./mailer-service')
 
@@ -123,39 +124,91 @@ const find = (query, auth) => {
         return Promise.reject(errors.unauthorized())
     }
 
-    return Training.findAll(parser.parseQuery({
-        attributes: ['id', 'from', 'to', 'max'],
-        include: [{
-             attributes: ['id', 'name'],
-             model: TrainingType
-        }, {
-            attributes: ['id', 'familyName', 'givenName', 'nickname'],
-            model: User,
-            as: 'Coach'
-        }, {
-            attributes: ['id', 'name'],
-            model: Location,
-            as: 'Location'
-        }, {
-            attributes: ['id'],
-            model: Subscription,
-            as: 'Subscriptions',
+    return Promise.all([
+        Training.findAll(parser.parseQuery({
+            attributes: ['id', 'from', 'to', 'max'],
             include: [{
+                attributes: ['id', 'name'],
+                model: TrainingType
+            }, {
                 attributes: ['id', 'familyName', 'givenName', 'nickname'],
                 model: User,
-                as: 'Client'
+                as: 'Coach'
+            }, {
+                attributes: ['id', 'name'],
+                model: Location,
+                as: 'Location'
+            }, {
+                attributes: ['id'],
+                model: Subscription,
+                as: 'Subscriptions',
+                include: [{
+                    attributes: ['id', 'familyName', 'givenName', 'nickname'],
+                    model: User,
+                    as: 'Client'
+                }, {
+                    attributes: ['id'],
+                    model: Training
+                }, {
+                    attributes: ['id'],
+                    model: Credit
+                }]
             }]
-        }]
-    }, query))
-    .then(trainings => R.map(training => {
+        }, query)), 
+        Subscription.findAll({
+            where: {
+                client_id: auth.id
+            },
+            include: [{
+                model: Training
+            }, {
+                model: Credit
+            }]
+        })
+    ])
+    .spread((trainings, subscriptions) => R.map(training => {
+
+        training.dataValues.utilization = Math.round(training.Subscriptions.length / training.max * 100)
+
+        if (auth.isClient) {                    
+            const subscription = R.find(subscription => subscription.Client.id === auth.id, training.Subscriptions)                       
+            const involved = training.dataValues.involved = !!subscription
+            training.dataValues.attendee = involved && moment().isBefore(training.from)
+            training.dataValues.participated = involved 
+                && moment().isAfter(training.from)
+                && subscription.Attendee.checkIn
+            training.dataValues.missed = involved 
+                && moment().isAfter(training.to)
+                && !subscription.Attendee.checkIn
+            training.dataValues.canJoin = !involved 
+                && moment().isBefore(training.from)
+                && subscriptions.filter(subscription => 
+                    moment().startOf('day').isBefore(subscription.to)
+                    && subscription.Credits.reduce((acc, credit) => { 
+                        if ((!credit.training_type_id || credit.training_type_id === training.TrainingType.id)
+                         && (!credit.coach_id || credit.coach_id === training.Coach.id)) {
+                            acc += credit.amount
+                        }
+                        return acc
+                    }, 0) - subscription.Trainings.length > 0).length > 0
+            training.dataValues.canLeave = training.Subscriptions.find(subscription => subscription.Client.id === auth.id)
+                && moment().add({ hours: rules.minHoursToLeaveTraining() }).isBefore(training.from)
+        }
+
+        if (auth.isClient || (auth.isCoach && training.Coach.id !== auth.id)) {
+            delete training.dataValues.max
+            delete training.dataValues.Subscriptions
+        }
+
         training.dataValues.canModify = auth.isAdmin
-            || (auth.isCoach && rules.coachCanModifyHistory())
-            || (moment().add({ hours: rules.minHoursToLeaveTraining() }).isBefore(training.from))
-        training.dataValues.canLeave = 
-            auth.isClient && moment().add({ hours: rules.minHoursToLeaveTraining() }).isBefore(training.from)
+            || (auth.isCoach 
+                && training.Coach.id === auth.id) 
+                && (rules.coachCanModifyHistory() 
+                    || moment().add({ hours: rules.minHoursToLeaveTraining() }).isBefore(training.from))
         return training
     }, trainings))
     .catch((error) => {
+        console.log(error)
         Promise.reject(errors.missingOrInvalidParameters())
     })
 }

@@ -22,11 +22,17 @@ angular.module('kotei')
                         return userInfoService.getUserInfo().isClient ? [] : infoService.getAllClients()
                     }
                 },
-                roles: ['client', 'coach', 'admin']
+                roles: ['coach', 'admin']
         })
     })
     .controller('AttendeeController', function (R, $state, $moment, $filter, training, clients, userInfoService, administrationService, modalService) {
 
+        this.userInfo = userInfoService.getUserInfo()
+
+        if (this.userInfo.isCoach && this.userInfo.id !== training.Coach.id) {
+            return $state.go('welcome')
+        }
+        
         const displayName = (client) => {
             return client.fullName == client.nickname
                 ? client.fullName
@@ -43,8 +49,6 @@ angular.module('kotei')
         const findNotAttendees = (attendees, clients) => R.filter(R.compose(R.not, isAttendee(attendees)), clients)
 
         const generateAddClientsList = R.compose(addDisplayName, findNotAttendees)
-
-        this.userInfo = userInfoService.getUserInfo()
 
         this.training = {
             id: training.id,
@@ -74,10 +78,6 @@ angular.module('kotei')
         this.canAdd = (this.training.count < this.training.max) && (this.userInfo.isAdmin || (this.userInfo.isCoach && this.userInfo.id === this.training.coach_id))
 
         this.canModify = training.canModify
-
-        this.canJoin = this.userInfo.isClient && moment().isBefore(training.to) && (this.training.count < this.training.max) && !isAttendee(this.attendees, this.userInfo)
-
-        this.canLeave = isAttendee(this.attendees, this.userInfo) && training.canLeave
         
         this.toggleAttendee = (attendee) => {
 

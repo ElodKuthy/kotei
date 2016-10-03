@@ -22,7 +22,5 @@
             <div class="add-client-error text-danger" ng-show="attendeeList.addClientError">{{attendeeList.addClientError}}</div>
         </li>
     </ul>
-    <div ng-if="attendeeList.canJoin" class="btn-container"><button type="button" class="btn btn-primary" ng-click="attendeeList.addClient(attendeeList.userInfo)">Csatlakozom</button></div>
-    <div ng-if="attendeeList.canLeave" class="btn-container"><button type="button" class="btn btn-primary" ng-click="attendeeList.removeAttendee(attendeeList.userInfo)">Kihagyom</button></div>
     <div ng-if="attendeeList.canModify" class="btn-container"><button type="button" class="btn btn-primary" ng-click="attendeeList.deleteTraining()">Edzés törlése</button></div>
 </div>
