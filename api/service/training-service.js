@@ -150,12 +150,6 @@ const find = (query, auth) => {
                     attributes: ['id', 'familyName', 'givenName', 'nickname'],
                     model: User,
                     as: 'Client'
-                }, {
-                    attributes: ['id'],
-                    model: Training
-                }, {
-                    attributes: ['id'],
-                    model: Credit
                 }]
             }]
         }, query)), 
