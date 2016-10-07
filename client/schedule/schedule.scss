@@ -30,9 +30,22 @@
     .navbar {
         bottom: 0;
     }
+
+    .table {
+        margin: auto;
+        width: auto;
+        max-width: auto;
+    }
     
     .table > thead > tr > th {
         vertical-align: middle;
+        width: 160px;
+        min-width: 160px;
+    }
+
+    .table > thead > tr > th.hour {
+        width: auto;
+        min-width: initial;
     }
     
     .small-navbar {
@@ -54,5 +67,9 @@
     .interactive {
         background-color: #54565E;
         cursor: pointer;
+    }
+
+    h3 {
+        text-align: center;
     }
 }
