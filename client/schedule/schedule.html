@@ -15,12 +15,11 @@
                             <td>{{row.hour}}</td>
                             <td class="schedule-cell" 
                                 ng-repeat="cell in row.cells"
-                                ng-class="{interactive: cell[0].canModify || cell[0].canJoin || cell[0].canLeave || cell[0].isCoach }">
+                                ng-class="{ 'attended': cell[0].involved && !cell[0].missed && !cell[0].participated, 'participated': cell[0].participated, 'missed': cell[0].missed }">
                                 <div class="training-container" 
-                                    ng-repeat="training in cell" 
-                                    ng-click="schedule.manipulate(training)">
+                                    ng-repeat="training in cell">
                                     <div>{{training.name}}</div>
-                                    <div class="coach"><i class="fa fa-circle fa-lg pull-left" ng-class="{ 'hide': !training.involved, 'text-success': training.participated, 'text-danger': training.missed }"></i>{{training.coach}}</div>
+                                    <div class="coach">{{training.coach}}</div>
                                     <div class="time">{{training.from}} - {{training.to}}</div>
                                     <div>
                                         <uib-progressbar 
@@ -30,6 +29,9 @@
                                             <i ng-if="training.max">{{training.current}} / {{training.max}}</i>
                                         </uib-progressbar>
                                     </div>
+                                    <button class="btn btn-primary pull-right" ng-if="cell[0].canJoin" ng-click="schedule.manipulate(training)">Jelentkezem</button>
+                                    <button class="btn btn-primary pull-right" ng-if="cell[0].canLeave" ng-click="schedule.manipulate(training)">Kihagyom</button>
+                                    <button class="btn btn-primary pull-right" ng-if="cell[0].canModify || cell[0].isCoach" ng-click="schedule.manipulate(training)">Részletek</button>
                                 </div>
                             </td>
                         </tr>

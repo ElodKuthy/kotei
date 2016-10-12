@@ -39,8 +39,8 @@
     
     .table > thead > tr > th {
         vertical-align: middle;
-        width: 160px;
-        min-width: 160px;
+        width: 180px;
+        min-width: 180px;
     }
 
     .table > thead > tr > th.hour {
@@ -71,5 +71,17 @@
 
     h3 {
         text-align: center;
+    }
+
+    .attended {
+        background-color: #607D8B;
+    }
+
+    .participated {
+        background-color: #43A047;
+    }
+
+    .missed {
+        background-color: #F44336;
     }
 }
