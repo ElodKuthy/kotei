@@ -29,9 +29,11 @@
                                             <i ng-if="training.max">{{training.current}} / {{training.max}}</i>
                                         </uib-progressbar>
                                     </div>
-                                    <button class="btn btn-primary pull-right" ng-if="cell[0].canJoin" ng-click="schedule.manipulate(training)">Jelentkezem</button>
-                                    <button class="btn btn-primary pull-right" ng-if="cell[0].canLeave" ng-click="schedule.manipulate(training)">Kihagyom</button>
-                                    <button class="btn btn-primary pull-right" ng-if="cell[0].canModify || cell[0].isCoach" ng-click="schedule.manipulate(training)">Részletek</button>
+                                    <div class="button-container">
+                                        <button class="btn btn-primary" ng-if="cell[0].canJoin" ng-click="schedule.manipulate(training)">Jelentkezem</button>
+                                        <button class="btn btn-primary" ng-if="cell[0].canLeave" ng-click="schedule.manipulate(training)">Kihagyom</button>
+                                        <button class="btn btn-primary" ng-if="cell[0].canModify || cell[0].isCoach" ng-click="schedule.manipulate(training)">Részletek</button>
+                                    </div>
                                 </div>
                             </td>
                         </tr>
