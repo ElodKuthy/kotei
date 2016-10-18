@@ -21,13 +21,12 @@ angular.module('kotei')
                     clients: infoService => infoService.getAllClients(),
                     coaches: infoService => infoService.getAllCoaches(),
                     subscriptionTypes: infoService => infoService.getAllSubscriptionTypes(),
-                    allTrainingTypes: infoService => infoService.getAllTrainingTypes(),
-                    allowedFreeCredit: infoService => infoService.getRuleAllowedFreeCredit()
+                    allTrainingTypes: infoService => infoService.getAllTrainingTypes()
                 },
                 roles: ['coach', 'admin']
         })
     })
-    .controller('SubscriptionAdministrationController', function (R, $scope, $stateParams, $state, $moment, userInfoService, clients, coaches, subscriptionTypes, allTrainingTypes, allowedFreeCredit, infoService, modalService, administrationService, nameService) {
+    .controller('SubscriptionAdministrationController', function (R, $scope, $stateParams, $state, $moment, userInfoService, clients, coaches, subscriptionTypes, allTrainingTypes, infoService, modalService, administrationService, nameService) {
 
         this.title = 'Bérletvásárlás'
 
@@ -161,7 +160,7 @@ angular.module('kotei')
         }
         
         this.invalid = () => !this.client || !this.coach || !this.variant || !this.credits
-            || !allowedFreeCredit && (R.filter(training => training.selected, this.trainings).length < R.reduce((acc, credit) => acc + credit.amountPerWeek, 0, this.credits))
+            || !this.variant.allowedFreeCredit && (R.filter(training => training.selected, this.trainings).length < R.reduce((acc, credit) => acc + credit.amountPerWeek, 0, this.credits))
         
         this.submit = () => {
             delete this.error

@@ -43,7 +43,7 @@ const findSubscriptionTemplate = (query, auth) => {
     }
 
     return SubscriptionTemplate.findAll(parser.parseQuery({
-        attributes: ['id', 'subscription_type_id'],
+        attributes: ['id', 'subscription_type_id', 'allowFreeCredits'],
         include: [{
             attributes: ['valid', 'price'],
             model: SubscriptionVariant
@@ -59,7 +59,20 @@ const findSubscriptionTemplate = (query, auth) => {
                 as: 'Coach'
             }]
         }]
-    }, query)).catch((error) => Promise.reject(errors.missingOrInvalidParameters()))
+    }, query))
+    .then(subscriptions => {
+        const allowFreeCreditsOnCreateSubcription = rules.allowFreeCreditsOnCreateSubcription()
+        subscriptions.map(subscription => {
+            if (subscription.dataValues.allowFreeCredits === null) {
+                subscription.dataValues.allowFreeCredits = allowFreeCreditsOnCreateSubcription
+            }        
+            return subscription
+        })
+        return subscriptions
+    })
+    .catch((error) => {
+        Promise.reject(errors.missingOrInvalidParameters())
+    })
 }
 
 const checkAuth = (subscription, auth) => {
