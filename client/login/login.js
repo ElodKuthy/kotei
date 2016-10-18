@@ -21,13 +21,7 @@ angular.module('kotei')
             delete this.error
             loginService.login(this.credential, this.password)
                 .then((result) => {
-                    if ($rootScope.previousState.abstract
-                        || $rootScope.previousState.name === 'forgotten-password'
-                        || $rootScope.previousState.name === 'reset-password') {
-                        $state.go('welcome')
-                    } else {
-                        $state.go($rootScope.previousState)
-                    }
+                    $state.go('schedule')
                 })
                 .catch((error) => {
                     this.error = error
