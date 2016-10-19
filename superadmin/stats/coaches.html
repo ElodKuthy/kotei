@@ -1,30 +1,32 @@
 <div class="coaches container">
-    <div class="calendar">
-        <label for="month">Hónap</label>
-        <ko-calendar 
-            id="month"
-            model="vm.month"
-            format="yyyy. MMMM"
-            minDate="vm.minDate"
-            maxDate="vm.maxDate"
-            enable-time="false"
-            min-mode="month"
-            datepicker-mode="month"
-            change="vm.dateChanged(id, value)"></ko-calendar>
-    </div>
-    <button 
-        class="btn btn-primary" 
-        csv-header="['Edző neve', 'Edzőterem', 'Heti óraszám', 'Órák']"
-        ng-csv="vm.exportCoaches()"
-        filename="edzok.csv"
-        charset="utf-16"
-        add-bom="true"
-        >CSV export</button>
-    <div class="checkbox">
-        <label>
-            <input type="checkbox" ng-model="vm.onlyCore" ng-change="vm.fetchStats(vm.month)"> Csak Lakatos Péter termei
-        </label>
-    </div>    
+    <div class="row">
+        <div class="calendar">
+            <h3>Hónap</h3>
+            <ko-calendar 
+                id="month"
+                model="vm.month"
+                format="yyyy. MMMM"
+                minDate="vm.minDate"
+                maxDate="vm.maxDate"
+                enable-time="false"
+                min-mode="month"
+                datepicker-mode="month"
+                change="vm.dateChanged(id, value)"></ko-calendar>
+        </div>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" ng-model="vm.onlyCore" ng-change="vm.fetchStats(vm.month)"> Csak Lakatos Péter termei
+            </label>
+        </div> 
+        <button 
+            class="btn btn-primary" 
+            csv-header="['Edző neve', 'Edzőterem', 'Heti óraszám', 'Órák']"
+            ng-csv="vm.exportCoaches()"
+            filename="edzok.csv"
+            charset="utf-16"
+            add-bom="true"
+            ng-disabled="vm.isLoading">CSV export</button>
+    </div>   
     <div class="row" ng-if="vm.isLoading">
         <h3>Adatok betöltése...</h3>
     </div>

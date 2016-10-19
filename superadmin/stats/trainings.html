@@ -3,8 +3,32 @@
         <div class="col-xs-12">
             <div class="calendar">
                 <h3>Hónap</h3>
-                <ko-calendar id="month" model="vm.date" format="yyyy. MMMM" minDate="vm.minDate" maxDate="vm.maxDate" enable-time="false" min-mode="month" datepicker-mode="month"></ko-calendar>
+                <ko-calendar 
+                    id="month"
+                    model="vm.date"
+                    format="yyyy. MMMM"
+                    minDate="vm.minDate"
+                    maxDate="vm.maxDate"
+                    enable-time="false"
+                    min-mode="month"
+                    datepicker-mode="month"></ko-calendar>
             </div>
+            <div class="checkbox">
+                <label>
+                    <input 
+                        type="checkbox" 
+                        ng-model="vm.onlyCore" 
+                        ng-change="vm.dateChanged()"> Csak Lakatos Péter termei
+                </label>
+            </div> 
+            <button 
+                class="btn btn-primary" 
+                csv-header="['Terem', 'Típus', 'Időpont', 'Edző', 'Terem', 'Résztvevők száma', 'Összes hely', 'Kihasználtság']"
+                ng-csv="vm.exportTrainings()"
+                filename="orak.csv"
+                charset="utf-16"
+                add-bom="true"
+                ng-disabled="!vm.trainingsStats || !vm.trainingsStats.length">CSV export</button>
         </div>
         <div class="col-xs-12">
             <h3 ng-if="!vm.trainingsStats || !vm.trainingsStats.length">
