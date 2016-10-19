@@ -74,7 +74,9 @@ gulp.task('vendor', () => {
             './bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
             './bower_components/bootstrap-ui-datetime-picker/dist/datetime-picker.js',
             './bower_components/angular-momentjs/angular-momentjs.js',
-            './bower_components/ngSmoothScroll/lib/angular-smooth-scroll.js'
+            './bower_components/ngSmoothScroll/lib/angular-smooth-scroll.js',
+            './bower_components/angular-sanitize/angular-sanitize.js',
+            './bower_components/ng-csv/build/ng-csv.js'
         ])
         .pipe(concat('vendor.js'))
         .pipe(uglify())

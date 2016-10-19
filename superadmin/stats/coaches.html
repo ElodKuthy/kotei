@@ -1,4 +1,12 @@
 <div class="coaches container">
+    <button 
+        class="btn btn-primary" 
+        csv-header="['Edző neve', 'Edzőterem', 'Heti óraszám', 'Órák']"
+        ng-csv="vm.exportCoaches()"
+        filename="edzok.csv"
+        charset="utf-16"
+        add-bom="true"
+        >CSV export</button>
     <div class="row" ng-repeat="gymStat in vm.coachesStats">
         <div class="col-xs-12">
             <h3>{{gymStat.gym.charAt(0).toUpperCase() + gymStat.gym.slice(1)}}</h3>

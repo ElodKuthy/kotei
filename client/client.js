@@ -8,7 +8,9 @@ angular.module('kotei', [
         'ui.bootstrap',
         'ui.bootstrap.datetimepicker',
         'angular-momentjs',
-        'templates'
+        'templates',
+        'ngSanitize',
+        'ngCsv'
     ])
     .constant('R', R)
     .constant('Chartist', Chartist)
