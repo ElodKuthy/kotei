@@ -20,6 +20,11 @@
         charset="utf-16"
         add-bom="true"
         >CSV export</button>
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" ng-model="vm.onlyCore" ng-change="vm.fetchStats(vm.month)"> Csak Lakatos Péter termei
+        </label>
+    </div>    
     <div class="row" ng-if="vm.isLoading">
         <h3>Adatok betöltése...</h3>
     </div>

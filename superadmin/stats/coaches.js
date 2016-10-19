@@ -20,27 +20,30 @@ angular.module('superadmin')
     })
     .controller('CoachesController', function ($scope, $moment, $filter, infoService) {
         this.month = $moment().toDate()
+        this.onlyCore = true
+        const coreGyms = ['retro', 'omszk', 'zuglo']
         
         this.dateChanged = (id, value) => {
-            if ($moment(this.month).isSame(value, 'month')) {
-                return
+            if (!$moment(this.month).isSame(value, 'month')) {
+                this.fetchStats(value)
             }
-            this.fetchStats(value)
         }
 
         this.fetchStats = month => {
             this.isLoading = true
             infoService.getCoachesStats(month).then(coachesStats => {
                 this.isLoading = false
-                this.coachesStats = coachesStats.map(function (stat) {
-                    stat.coaches = stat.coaches.map(function (coach) {
-                        coach.trainings = coach.trainings.sort(function (a, b) {
-                            return $moment(a.from).valueOf() - $moment(b.from).valueOf()
+                this.coachesStats = coachesStats
+                    .filter(stat => !this.onlyCore || coreGyms.indexOf(stat.gym) > -1)
+                    .map(stat => {
+                        stat.coaches = stat.coaches.map(coach => {
+                            coach.trainings = coach.trainings.sort((a, b) => {
+                                return $moment(a.from).valueOf() - $moment(b.from).valueOf()
+                            })
+                            return coach
                         })
-                        return coach
+                        return stat
                     })
-                    return stat
-                })
             })
         }
 
