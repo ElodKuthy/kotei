@@ -14,30 +14,45 @@ angular.module('superadmin')
                         controller: 'CoachesController as vm'
                     }
                 },
-                resolve: {
-                    coachesStats: (infoService) => infoService.getCoachesStats()
-                },
+                resolve: {},
                 roles: ['admin']
         })
     })
-    .controller('CoachesController', function ($scope, $moment, $filter, coachesStats) {
-        this.coachesStats = coachesStats.map(function (stat) {
-            stat.coaches = stat.coaches.map(function (coach) {
-                coach.trainings = coach.trainings.sort(function (a, b) {
-                    return $moment(a.from).valueOf() - $moment(b.from).valueOf()
-                })
-                return coach
-            })
-            return stat
-        })
-
-        function aggregateTrainings(acc, curr) {
-            return acc + (acc === '' ? '' : '\n') +  curr.name + ' (' + $filter('date')(curr.from, 'EEEE HH:mm') + ')'
+    .controller('CoachesController', function ($scope, $moment, $filter, infoService) {
+        this.month = $moment().toDate()
+        
+        this.dateChanged = (id, value) => {
+            if ($moment(this.month).isSame(value, 'month')) {
+                return
+            }
+            this.fetchStats(value)
         }
 
-        this.exportCoaches = function () {
-            return this.coachesStats.reduce(function (acc, curr) {
-                return acc.concat(curr.coaches.map(function (item) {
+        this.fetchStats = month => {
+            this.isLoading = true
+            infoService.getCoachesStats(month).then(coachesStats => {
+                this.isLoading = false
+                this.coachesStats = coachesStats.map(function (stat) {
+                    stat.coaches = stat.coaches.map(function (coach) {
+                        coach.trainings = coach.trainings.sort(function (a, b) {
+                            return $moment(a.from).valueOf() - $moment(b.from).valueOf()
+                        })
+                        return coach
+                    })
+                    return stat
+                })
+            })
+        }
+
+        this.fetchStats(this.month)
+
+        function aggregateTrainings(acc, curr) {
+            return acc + (acc === '' ? '' : '\n') + curr.name + ' (' + $filter('date')(curr.from, 'EEEE HH:mm') + ')'
+        }
+
+        this.exportCoaches = () => {
+            return this.coachesStats.reduce((acc, curr) => {
+                return acc.concat(curr.coaches.map(item => {
                     return {
                         fullName: item.coach.fullName,
                         gym: curr.gym,

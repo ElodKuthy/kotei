@@ -1,4 +1,17 @@
 <div class="coaches container">
+    <div class="calendar">
+        <label for="month">Hónap</label>
+        <ko-calendar 
+            id="month"
+            model="vm.month"
+            format="yyyy. MMMM"
+            minDate="vm.minDate"
+            maxDate="vm.maxDate"
+            enable-time="false"
+            min-mode="month"
+            datepicker-mode="month"
+            change="vm.dateChanged(id, value)"></ko-calendar>
+    </div>
     <button 
         class="btn btn-primary" 
         csv-header="['Edző neve', 'Edzőterem', 'Heti óraszám', 'Órák']"
@@ -7,7 +20,10 @@
         charset="utf-16"
         add-bom="true"
         >CSV export</button>
-    <div class="row" ng-repeat="gymStat in vm.coachesStats">
+    <div class="row" ng-if="vm.isLoading">
+        <h3>Adatok betöltése...</h3>
+    </div>
+    <div class="row" ng-if="!vm.isLoading" ng-repeat="gymStat in vm.coachesStats">
         <div class="col-xs-12">
             <h3>{{gymStat.gym.charAt(0).toUpperCase() + gymStat.gym.slice(1)}}</h3>
             <div class="table-responsive">

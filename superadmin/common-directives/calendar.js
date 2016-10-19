@@ -11,7 +11,8 @@ angular.module('superadmin')
                 format:  '@',
                 enableTime: '=',
                 minMode: '@',
-                datepickerMode: '@'
+                datepickerMode: '@',
+                change: "&"
             },
             controller: function () {
 
