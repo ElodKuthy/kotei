@@ -14,40 +14,33 @@ angular.module('superadmin')
                         controller: 'CoachesController as vm'
                     }
                 },
-                resolve: {},
+                resolve: {
+                    coachesStats: infoService => infoService.getCoachesStats()
+                },
                 roles: ['admin']
         })
     })
-    .controller('CoachesController', function ($scope, $moment, $filter, infoService) {
-        this.month = $moment().toDate()
+    .controller('CoachesController', function ($scope, $moment, $filter, coachesStats) {
         this.onlyCore = true
         const coreGyms = ['retro', 'omszk', 'zuglo']
         
-        this.dateChanged = (id, value) => {
-            if (!$moment(this.month).isSame(value, 'month')) {
-                this.fetchStats(value)
-            }
-        }
-
-        this.fetchStats = month => {
-            this.isLoading = true
-            infoService.getCoachesStats(month).then(coachesStats => {
-                this.isLoading = false
-                this.coachesStats = coachesStats
-                    .filter(stat => !this.onlyCore || coreGyms.indexOf(stat.gym) > -1)
-                    .map(stat => {
-                        stat.coaches = stat.coaches.map(coach => {
-                            coach.trainings = coach.trainings.sort((a, b) => {
-                                return $moment(a.from).valueOf() - $moment(b.from).valueOf()
-                            })
-                            return coach
-                        })
-                        return stat
-                    })
+        const sortedCoachesStats = coachesStats.map(stat => {
+            stat.coaches = stat.coaches.map(coach => {
+                coach.trainings = coach.trainings.sort((a, b) => {
+                    return $moment(a.from).valueOf() - $moment(b.from).valueOf()
+                })
+                return coach
             })
+            return stat
+        })
+
+        this.changeFilter = () => {
+            this.coachesStats = sortedCoachesStats
+                .filter(stat => !this.onlyCore || coreGyms.indexOf(stat.gym) > -1)
+
         }
 
-        this.fetchStats(this.month)
+        this.changeFilter()
 
         function aggregateTrainings(acc, curr) {
             return acc + (acc === '' ? '' : '\n') + curr.name + ' (' + $filter('date')(curr.from, 'EEEE HH:mm') + ')'
@@ -63,6 +56,6 @@ angular.module('superadmin')
                         trainings: item.trainings.reduce(aggregateTrainings, '')
                     }
                 }))
-            }, []);
+            }, [])
         }
 })

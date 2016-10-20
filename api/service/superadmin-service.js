@@ -26,7 +26,7 @@ const models = databases.map(current => ({
     gym: current.gym
 }))
 
-const getCoachesStats = (auth) => {
+const getCoachesStats = auth => {
     if (!auth.isAdmin) {
         return Promise.reject(errors.unauthorized())
     } 
@@ -133,7 +133,72 @@ const getTrainingsStats = (date, auth) => {
     }))
 }
 
+const getClientsStats = auth => {
+    if (!auth.isAdmin) {
+        return Promise.reject(errors.unauthorized())
+    }
+
+    return Promise.all(models
+        .filter(current => ['retro', 'omszk', 'zuglo'].indexOf(current.gym) > -1)
+        .map(current => {
+            return current.model.User.findAll({
+                where: {
+                    role: 'client'
+                },
+                include: [{
+                    model: current.model.User,
+                    as: 'Coach'
+                }, {
+                    model: current.model.Subscription,
+                    as: 'Subscriptions',
+                    include: [{
+                        model: current.model.Credit,
+                        as: 'Credits',
+                        include: [{
+                            model: current.model.TrainingType,
+                            as: 'TrainingType'
+                        }]
+                    }, {
+                        model: current.model.User,
+                        as: 'Coach'
+                    }, {
+                        model: current.model.SubscriptionType,
+                        as: 'SubscriptionType'
+                    }]
+                }]
+            })
+            .map(user => {
+                function getCoaches(acc, curr) {
+                    if (curr.Coach && acc.indexOf(curr.Coach.fullName) === -1) {
+                        acc.push(curr.Coach.fullName)
+                    }
+                    return acc
+                }
+                function getTrainingTypes(acc, curr) {
+                    if (curr.TrainingType && acc.indexOf(curr.TrainingType.name) === -1) {
+                        acc.push(curr.TrainingType.name)
+                    }
+                    return acc
+                }
+                return {
+                    name: user.fullName,
+                    email: user.email,
+                    phone: user.phone,
+                    coaches: R.union((user.Coach ? [user.Coach.fullName] : []), user.Subscriptions.reduce(getCoaches, [])),
+                    registered: user.created_at,
+                    trainings: user.Subscriptions.reduce((acc, curr) => {
+                        return R.union(acc.concat(curr.SubscriptionType.name), curr.Credits.reduce(getTrainingTypes, []))
+                    }, []),
+                    active: user.Subscriptions.some(subscription => moment().isBefore(subscription.to))
+                }
+            })
+            .then(clients => ({ gym: current.gym, clients }))
+        })
+    )
+}
+
 module.exports = {
      getCoachesStats,
-     getTrainingsStats
+     getTrainingsStats,
+     getClientsStats
 }

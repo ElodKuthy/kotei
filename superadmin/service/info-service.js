@@ -14,6 +14,7 @@ angular.module('superadmin')
 
         return {
             getCoachesStats: () => get('api/stats/coaches'),
-            getTrainingsStats: (date) => get(`api/stats/trainings/${$moment(date).format('YYYY-MM-DD')}`)
+            getTrainingsStats: date => get(`api/stats/trainings/${$moment(date).format('YYYY-MM-DD')}`),
+            getClientsStats: () => get('api/stats/clients')
         }
     })

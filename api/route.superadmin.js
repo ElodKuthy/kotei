@@ -65,5 +65,6 @@ router.post('/password/reset', handler(securityService.reset, { body: ['token', 
 
 router.get('/stats/coaches', handler(superAdminService.getCoachesStats, {}))
 router.get('/stats/trainings/:date', handler(superAdminService.getTrainingsStats, { url: ['date'] }))
+router.get('/stats/clients', handler(superAdminService.getClientsStats, {}))
 
 module.exports = router
