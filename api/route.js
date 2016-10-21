@@ -52,16 +52,19 @@ const handler = R.curry((fn, props, req, res, next) => {
     const bodyArgs = parseProps(props.body, req.body)
     const queryArgs = parseProps(props.query, req.query)
 
-    const args = R.concat(R.concat(R.concat(urlArgs, queryArgs), bodyArgs), roles.decorate(req.user))
+    userService.findMe({ id: req.user && req.user.id, isAuth: true}).then(user => {
 
-    const result = R.apply(fn, args)
+        const args = R.concat(R.concat(R.concat(urlArgs, queryArgs), bodyArgs), roles.decorate(user))
 
-    result.done((result) => res.json(result), (error) => {
-        if (error.isPublic) {
-            res.status(error.status).json({ Error: error.message })
-        } else {
-            res.status(500).json({ Error: error })
-        }
+        const result = R.apply(fn, args)
+
+        result.done((result) => res.json(result), (error) => {
+            if (error.isPublic) {
+                res.status(error.status).json({ Error: error.message })
+            } else {
+                res.status(500).json({ Error: error })
+            }
+        })
     })
 })
 
