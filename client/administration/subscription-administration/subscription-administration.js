@@ -160,7 +160,7 @@ angular.module('kotei')
         }
         
         this.invalid = () => !this.client || !this.coach || !this.variant || !this.credits
-            || !this.variant.allowedFreeCredit && (R.filter(training => training.selected, this.trainings).length < R.reduce((acc, credit) => acc + credit.amountPerWeek, 0, this.credits))
+            || (!this.variant.allowFreeCredits && (R.filter(training => training.selected, this.trainings).length < R.reduce((acc, credit) => acc + credit.amountPerWeek, 0, this.credits)))
         
         this.submit = () => {
             delete this.error
