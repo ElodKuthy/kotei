@@ -38,7 +38,7 @@
                     <select id="trainingType" name="trainingType" 
                         class="form-control" 
                         ng-model="vm.filter.trainingType"
-                        ng-options="type.name for type in vm.trainingTypes track by type.id | orderBy: 'name' "
+                        ng-options="type.name for type in vm.trainingTypes track by type.id"
                         ng-change="vm.filterChanged()"> 
                     </select>
                 </div>
@@ -47,7 +47,7 @@
                     <select id="coach" name="coach"
                         class="form-control"
                         ng-model="vm.filter.coach"
-                        ng-options="type.displayName for type in vm.coaches track by type.id | orderBy: 'displayName' " 
+                        ng-options="type.displayName for type in vm.coaches track by type.id" 
                         ng-change="vm.filterChanged()"> 
                     </select>
                 </div>
@@ -56,7 +56,7 @@
                     <select id="location" name="location" 
                         class="form-control" 
                         ng-model="vm.filter.location"
-                        ng-options="type.name for type in vm.locations track by type.id | orderBy: 'name' " 
+                        ng-options="type.name for type in vm.locations track by type.id" 
                         ng-change="vm.filterChanged()"> 
                     </select>
                 </div>
@@ -65,7 +65,7 @@
                     <select id="day-of-week" name="day-of-week" 
                         class="form-control" 
                         ng-model="vm.filter.dayOfTheWeek"
-                        ng-options="type.name for type in vm.days track by type.id | orderBy: 'name' " 
+                        ng-options="type.name for type in vm.days track by type.id" 
                         ng-change="vm.filterChanged()"> 
                     </select>
                 </div>
@@ -150,7 +150,7 @@
                     <select id="trainingType" name="trainingType" 
                         class="form-control" 
                         ng-model="vm.newValues.trainingType"
-                        ng-options="type.name for type in vm.trainingTypes track by type.id | orderBy: 'name' ">
+                        ng-options="type.name for type in vm.trainingTypes track by type.id">
                     </select>
                 </div>
                 <div class="editor-row-item">
@@ -158,7 +158,7 @@
                     <select id="coach" name="coach"
                         class="form-control"
                         ng-model="vm.newValues.coach"
-                        ng-options="type.displayName for type in vm.coaches track by type.id | orderBy: 'displayName' "> 
+                        ng-options="type.displayName for type in vm.coaches track by type.id"> 
                     </select>
                 </div>
                 <div class="editor-row-item">
@@ -166,7 +166,7 @@
                     <select id="location" name="location" 
                         class="form-control" 
                         ng-model="vm.newValues.location"
-                        ng-options="type.name for type in vm.locations track by type.id | orderBy: 'name' "> 
+                        ng-options="type.name for type in vm.locations track by type.id"> 
                     </select>
                 </div>
                 <div class="editor-row-item">
@@ -174,7 +174,7 @@
                     <select id="edit-day-of-week" name="edit-day-of-week" 
                         class="form-control" 
                         ng-model="vm.newValues.dayOfTheWeek"
-                        ng-options="type.name for type in vm.days track by type.id | orderBy: 'name' "> 
+                        ng-options="type.name for type in vm.days track by type.id"> 
                     </select>
                 </div>
             </div>

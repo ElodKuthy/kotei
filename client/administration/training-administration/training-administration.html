@@ -9,7 +9,7 @@
             <select id="trainingType" name="trainingType" 
                 class="form-control" 
                 ng-model="trainingAdministration.training.type"
-                ng-options="type.name for type in trainingAdministration.trainingTypes track by type.id | orderBy: 'name' "> 
+                ng-options="type.name for type in trainingAdministration.trainingTypes track by type.id"> 
             </select>
             <div class="help-block" ng-show="trainingForm.trainingType.$touched && !trainingAdministration.training.type">Kötelező megadni</div>
         </div>
@@ -18,7 +18,7 @@
             <select id="coach" name="coach" 
                 class="form-control"
                 ng-model="trainingAdministration.training.coach"
-                ng-options="coach.displayName for coach in trainingAdministration.coaches track by coach.id | orderBy: 'displayName' ">
+                ng-options="coach.displayName for coach in trainingAdministration.coaches track by coach.id">
             </select>
             <div class="help-block" ng-show="trainingForm.coach.$touched && !trainingAdministration.training.coach">Kötelező megadni</div>
         </div>
@@ -35,7 +35,7 @@
             <select id="location" name="location" 
                 class="form-control"
                 ng-model="trainingAdministration.training.location"
-                ng-options="location.name for location in trainingAdministration.locations track by location.id | orderBy: 'name' ">
+                ng-options="location.name for location in trainingAdministration.locations track by location.id ">
             </select>
             <div class="help-block" ng-show="trainingForm.location.$touched && !trainingAdministration.training.location">Kötelező megadni</div>
         </div>

@@ -57,7 +57,7 @@
             <select id="coach" name="coach" 
                 class="form-control"
                 ng-model="newUser.coach"
-                ng-options="coach.displayName for coach in newUser.coaches track by coach.id | orderBy: 'displayName' ">
+                ng-options="coach.displayName for coach in newUser.coaches track by coach.id">
             </select>
         </div>
         <div>

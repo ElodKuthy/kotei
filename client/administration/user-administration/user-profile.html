@@ -61,7 +61,7 @@
                             <select id="coach" name="coach" 
                                 class="form-control"
                                 ng-model="userProfile.coach"
-                                ng-options="coach.displayName for coach in userProfile.coaches track by coach.id | orderBy: 'displayName' ">
+                                ng-options="coach.displayName for coach in userProfile.coaches track by coach.id">
                             </select>
                         </div>
                         <button type="button" class="btn btn-primary pull-left" ng-click="userProfile.resendRegistration()">Regisztrációs email újraküldése</button>

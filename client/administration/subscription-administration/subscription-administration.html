@@ -14,7 +14,7 @@
             <select id="coach" name="coach" 
                 class="form-control"
                 ng-model="subscriptionAdministration.coach"
-                ng-options="coach.displayName for coach in subscriptionAdministration.coaches track by coach.id | orderBy: 'displayName' ">
+                ng-options="coach.displayName for coach in subscriptionAdministration.coaches track by coach.id">
             </select>
             <div class="help-block" ng-show="subscriptionForm.coach.$touched && !subscriptionAdministration.coach">Kötelező megadni</div>
         </div>
@@ -39,7 +39,7 @@
             </div>
             <div class="col-xs-6">
                 <label>Heti alkalom</label>
-                <div ng-if="subscriptionAdministration.variant" class="radio" ng-repeat="template in subscriptionAdministration.templates | filter: { valid : subscriptionAdministration.variant.valid } | orderBy: 'amountPerWeek' ">
+                <div ng-if="subscriptionAdministration.variant" class="radio" ng-repeat="template in subscriptionAdministration.templates | filter: { valid : subscriptionAdministration.variant.valid }">
                     <label>
                         <input type="radio" ng-model="subscriptionAdministration.credits" ng-value="template.CreditTemplates" ng-change="subscriptionAdministration.amountChanged()">
                         {{ template.amountPerWeek }}

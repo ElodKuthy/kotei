@@ -22,7 +22,7 @@
             <select id="coach" name="coach" 
                 class="form-control"
                 ng-model="editSubscription.subscription.Coach"
-                ng-options="coach.displayName for coach in editSubscription.coaches track by coach.id | orderBy: 'displayName' ">
+                ng-options="coach.displayName for coach in editSubscription.coaches track by coach.id">
             </select>
             <div class="help-block" ng-show="subscriptionForm.coach.$touched && !editSubscription.subscription.Coach">Kötelező megadni</div>
         </div>
