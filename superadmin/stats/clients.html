@@ -37,7 +37,7 @@
                             <td><div ng-repeat="training in clientStats.trainings">{{training}}</div></td>
                             <td><div ng-repeat="coach in clientStats.coaches">{{coach}}</div></td>
                             <td>{{clientStats.active ? 'Aktív' : 'Passzív'}}</td>
-                            <td>{{clientStats.registered | date: 'yyyy. MMM dd.'}}</td>
+                            <td>{{clientStats.registered | date: 'yyyy-MM-dd'}}</td>
                         </tr>
                     </tbody>
                 </table>

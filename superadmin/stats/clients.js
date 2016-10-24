@@ -37,7 +37,7 @@ angular.module('superadmin')
                         trainings: client.trainings.join('\n'),
                         coaches: client.coaches.join('\n'),
                         active: client.active ? 'Aktív' : 'Passzív',
-                        registered: $filter('date')(client.registered, 'yyyy. MMMM dd.')
+                        registered: $filter('date')(client.registered, 'yyyy-MM-dd')
                     }
                 }))
             }, [])
