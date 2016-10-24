@@ -87,6 +87,11 @@
 
     .schedule-cell {
         height: 200px;
+        padding: 0!important;
+    }
+
+    .schedule-cell > div {
+        padding: 10px;
     }
 
     .button-container {

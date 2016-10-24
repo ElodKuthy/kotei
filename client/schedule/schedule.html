@@ -14,10 +14,10 @@
                         <tr ng-repeat="row in location.trainings">
                             <td>{{row.hour}}</td>
                             <td class="schedule-cell" 
-                                ng-repeat="cell in row.cells"
-                                ng-class="{ 'attended': cell[0].involved && !cell[0].missed && !cell[0].participated, 'participated': cell[0].participated, 'missed': cell[0].missed }">
+                                ng-repeat="cell in row.cells">
                                 <div class="training-container" 
-                                    ng-repeat="training in cell">
+                                    ng-repeat="training in cell"
+                                    ng-class="{ 'attended': training.involved && !training.missed && !training.participated, 'participated': training.participated, 'missed': training.missed }">
                                     <div>{{training.name}}</div>
                                     <div class="coach">{{training.coach}}</div>
                                     <div class="time">{{training.from}} - {{training.to}}</div>
@@ -30,9 +30,9 @@
                                         </uib-progressbar>
                                     </div>
                                     <div class="button-container">
-                                        <button class="btn btn-primary" ng-if="cell[0].canJoin" ng-click="schedule.manipulate(training)">Jelentkezem</button>
-                                        <button class="btn btn-primary" ng-if="cell[0].canLeave" ng-click="schedule.manipulate(training)">Kihagyom</button>
-                                        <button class="btn btn-primary" ng-if="cell[0].canModify || cell[0].isCoach" ng-click="schedule.manipulate(training)">Részletek</button>
+                                        <button class="btn btn-primary" ng-if="training.canJoin" ng-click="schedule.manipulate(training)">Jelentkezem</button>
+                                        <button class="btn btn-primary" ng-if="training.canLeave" ng-click="schedule.manipulate(training)">Kihagyom</button>
+                                        <button class="btn btn-primary" ng-if="training.canModify || training.isCoach" ng-click="schedule.manipulate(training)">Részletek</button>
                                     </div>
                                 </div>
                             </td>
