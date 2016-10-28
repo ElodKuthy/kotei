@@ -87,7 +87,7 @@ angular.module('kotei')
                             : `${template.valid} nap`
 
                         if (template.CreditTemplates.length > 1) {
-                            template.CreditTemplates.sort((a, b) => a.TrainingType.name >= b.TrainingType.name)
+                            template.CreditTemplates = r.sort((a, b) => a.TrainingType.name >= b.TrainingType.name, template.CreditTemplates)
                             template.CreditTemplates = R.map((creditTemplate) => {
                                creditTemplate.amountPerWeek = 
                                     template.valid >= 7
@@ -122,6 +122,13 @@ angular.module('kotei')
                         coach = R.reduce((acc, value) => acc ? acc : value.Coach, null, template.CreditTemplates)
                         return !coach || coach.id === this.coach.id
                     }, this.templates)
+                    this.templates = R.sort((a, b) => {
+                        if (a.valid === b.valid) {
+                            return a.amount > b.amount
+                        }
+
+                        return a.valid > b.valid
+                    } , this.templates)
 
                     const trainingTypeIds =
                         this.templates.some((template) => template.CreditTemplates.some((creditTemplate) => !creditTemplate.TrainingType))
