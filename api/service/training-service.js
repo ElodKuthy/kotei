@@ -16,6 +16,7 @@ const Subscription = model.Subscription
 const TrainingType = model.TrainingType
 const Attendee = model.Attendee
 const Credit = model.Credit
+const TrainingCategory = model.TrainingCategory
 
 const mailerService = require('./mailer-service')
 
@@ -221,6 +222,14 @@ const findTrainingType = (query, auth) => {
     }, query)).catch((error) => Promise.reject(errors.missingOrInvalidParameters()))
 }
 
+const findTrainingCategory = (query, auth) => {
+    return TrainingCategory.findAll({
+        attributes: ['id', 'name']
+    }).catch((error) => {
+        console.log(error)
+        Promise.reject(errors.missingOrInvalidParameters())
+    })
+}
 const remove = (args, auth) => {
 
     return Promise.all([
@@ -333,6 +342,7 @@ module.exports = {
     add,
     find,
     findTrainingType,
+    findTrainingCategory,
     remove,
     bulkEdit,
     removeAll

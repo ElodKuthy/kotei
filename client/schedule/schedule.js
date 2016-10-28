@@ -3,7 +3,7 @@ angular.module('kotei')
 
         $stateProvider
             .state('schedule', {
-                url: '/schedule',
+                url: '/schedule?categoryId',
                 views: {
                     'navbar': {
                         templateUrl: 'navbar/navbar.html',
@@ -21,8 +21,9 @@ angular.module('kotei')
                     to: ($moment) => {
                         return $moment().startOf('isoweek').add({ week: 1 })
                     },
-                    trainings: ($moment, infoService) => {
-                        return infoService.getTrainingsByDate($moment().startOf('isoweek').format('YYYY-MM-DD'), $moment().startOf('isoweek').add({ week: 1 }).format('YYYY-MM-DD'))
+                    trainings: ($stateParams, $moment, infoService) => {
+                        return infoService.getTrainingsByDate($moment().startOf('isoweek').format('YYYY-MM-DD'), 
+                            $moment().startOf('isoweek').add({ week: 1 }).format('YYYY-MM-DD'), $stateParams.categoryId)
                     }
                 },
                 roles: ['client', 'coach', 'admin']
@@ -48,7 +49,7 @@ angular.module('kotei')
                         return $moment($stateParams.to)
                     },
                     trainings: ($stateParams, infoService) => {
-                        return infoService.getTrainingsByDate($stateParams.from, $stateParams.to)
+                        return infoService.getTrainingsByDate($stateParams.from, $stateParams.to, $stateParams.categoryId)
                     }
                 },
                 roles: ['client', 'coach', 'admin']

@@ -7,7 +7,8 @@
             <ul class="list-inline pull-right">
                 <li ng-if="navbar.userInfo.isAuth && !navbar.userInfo.isClient"><a ui-sref="administration"><i class="fa fa-pencil fa-2x"></i></a></li>
                 <li ng-if="navbar.userInfo.isAuth && !navbar.userInfo.isClient"><a ui-sref="stats"><i class="fa fa-table fa-2x"></i></a></li>
-                <li ng-if="navbar.userInfo.isAuth"><a ui-sref="schedule"><i class="fa fa-calendar fa-2x"></i></a></li>
+                <li ng-if="navbar.userInfo.isAuth && navbar.trainingCategories && navbar.trainingCategories.length === 0"><a ui-sref="schedule"><i class="fa fa-calendar fa-2x"></i></a></li>
+                <li ng-if="navbar.userInfo.isAuth && navbar.trainingCategories && navbar.trainingCategories.length > 0"><a ui-sref="schedule-list"><i class="fa fa-calendar fa-2x"></i></a></li>
                 <li ng-if="navbar.userInfo.isAuth"><a ui-sref="profile"><i class="fa fa-user fa-2x"></i></a></li>
                 <li ng-if="!navbar.userInfo.isAuth"><a ui-sref="login"><i class="fa fa-sign-in fa-2x"></i></a></li>
                 <li ng-if="navbar.userInfo.isAuth"><a ng-click="navbar.logout()"><i class="fa fa-sign-out fa-2x"></i></a></li>
@@ -41,16 +42,22 @@
                         Statisztikák
                     </a>
                     <ul class="uib-dropdown-menu">
-                        <li>
-                            <a ui-sref="stats.overview">Áttekintés</a>
-                            <a ui-sref="stats.payoffs">Elszámolás</a>
-                            <a ui-sref="stats.subscriptions">Bérletek</a>
-                            <a ui-sref="stats.clients">Tanítványok</a>
-                            <a ui-sref="stats.trainings">Edzések</a>
-                        </li>
+                        <li><a ui-sref="stats.overview">Áttekintés</a></li>
+                        <li><a ui-sref="stats.payoffs">Elszámolás</a></li>
+                        <li><a ui-sref="stats.subscriptions">Bérletek</a></li>
+                        <li><a ui-sref="stats.clients">Tanítványok</a></li>
+                        <li><a ui-sref="stats.trainings">Edzések</a></li>
                     </ul>
                 </li>
-                <li ng-if="navbar.userInfo.isAuth"><a ui-sref="schedule">Órarend</a></li>
+                <li ng-if="navbar.userInfo.isAuth && navbar.trainingCategories && navbar.trainingCategories.length === 0"><a ui-sref="schedule">Órarend</a></li>
+                <li ng-if="navbar.userInfo.isAuth && navbar.trainingCategories && navbar.trainingCategories.length > 0" uib-dropdown on-toggle="toggled(open)">
+                    <a href uib-dropdown-toggle>
+                        Órarend
+                    </a>
+                    <ul class="uib-dropdown-menu">
+                        <li ng-repeat="trainingCategory in navbar.trainingCategories"><a ng-click="navbar.schedule(trainingCategory.id)">{{trainingCategory.name}}</a></li>
+                    </ul>
+                </li>
                 <li ng-if="navbar.userInfo.isAuth"><a ui-sref="profile">Profilom</a></li>
                 <li ng-if="!navbar.userInfo.isAuth"><a ui-sref="login">Belépés</a></li>
                 <li ng-if="navbar.userInfo.isAuth"><a ng-click="navbar.logout()">Kilépés</a></li>

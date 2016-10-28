@@ -1,0 +1,8 @@
+<div class="schedule-list container">
+    <ul class="list-group">
+        <li class="list-group-item active">
+            Órarend
+        </li>
+        <li class="list-group-item" ng-repeat="trainingCategory in vm.trainingCategories"><a ng-click="vm.schedule(trainingCategory.id)">{{trainingCategory.name}}</a></li>
+    </div>
+</div>

@@ -14,10 +14,17 @@ module.exports = db => {
     const TrainingType = require('./training-type')(database)
     const User = require('./user')(database)
     const Rule = require('./rule')(database)
+    const TrainingCategory = require('./training-category')(database)
 
     Training.belongsTo(Location, {
         foreignKey: {
             allowNull: false
+        }
+    })
+
+    Training.belongsTo(TrainingCategory, {
+        foreignKey: {
+            allowNull: true
         }
     })
 
@@ -176,19 +183,20 @@ module.exports = db => {
     })
 
     return {
-        database: database,
-        Attendee: Attendee,
-        Credit: Credit,
-        CreditTemplate: CreditTemplate,
-        Location: Location,
-        Password: Password,
-        Subscription: Subscription,
-        SubscriptionType: SubscriptionType,
-        SubscriptionTemplate: SubscriptionTemplate,
-        SubscriptionVariant: SubscriptionVariant,
-        Training: Training,
-        TrainingType: TrainingType,
-        User: User,
-        Rule: Rule
+        database,
+        Attendee,
+        Credit,
+        CreditTemplate,
+        Location,
+        Password,
+        Subscription,
+        SubscriptionType,
+        SubscriptionTemplate,
+        SubscriptionVariant,
+        Training,
+        TrainingCategory,
+        TrainingType,
+        User,
+        Rule
     }
 }
