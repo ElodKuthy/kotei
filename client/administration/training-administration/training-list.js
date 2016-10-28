@@ -73,7 +73,8 @@ angular.module('kotei')
                     locationId:     this.filter.location && this.filter.location.id,
                     dayOfTheWeek:   this.filter.dayOfTheWeek && this.filter.dayOfTheWeek.id,
                     fromTime:       this.filter.isFromTime ? $moment(this.filter.fromTime).format('HH:mm:00') : undefined,
-                    toTime:         this.filter.isToTime ? $moment(this.filter.toTime).format('HH:mm:00') : undefined
+                    toTime:         this.filter.isToTime ? $moment(this.filter.toTime).format('HH:mm:00') : undefined,
+                    max:            this.filter.max
                 })
                 .then(trainings => {
                     this.trainings = trainings.map(training => {
@@ -102,14 +103,18 @@ angular.module('kotei')
                     locationId:     this.filter.location && this.filter.location.id,
                     dayOfTheWeek:   this.filter.dayOfTheWeek && this.filter.dayOfTheWeek.id,
                     fromTime:       this.filter.isFromTime ? $moment(this.filter.fromTime).format('HH:mm:00') : undefined,
-                    toTime:         this.filter.isToTime ? $moment(this.filter.toTime).format('HH:mm:00') : undefined
+                    toTime:         this.filter.isToTime ? $moment(this.filter.toTime).format('HH:mm:00') : undefined,
+                    max:            this.filter.max
+
                 }, {
                     trainingTypeId: this.newValues.trainingType && this.newValues.trainingType.id,
                     coachId:        this.newValues.coach && this.newValues.coach.id,
                     locationId:     this.newValues.location && this.newValues.location.id,
                     dayOfTheWeek:   this.newValues.dayOfTheWeek && this.newValues.dayOfTheWeek.id,
                     fromTime:       this.newValues.isFromTime ? $moment(this.newValues.fromTime).format('HH:mm:00') : undefined,
-                    toTime:         this.newValues.isToTime ? $moment(this.newValues.toTime).format('HH:mm:00') : undefined
+                    toTime:         this.newValues.isToTime ? $moment(this.newValues.toTime).format('HH:mm:00') : undefined,
+                    max:            this.newValues.max
+
                 })
                 .then(() => modalService.info('Edzések módosítása', 'Sikeres módosítás'))
                 .catch(err => modalService.info('Sikertelen módosítás', err))
@@ -126,12 +131,13 @@ angular.module('kotei')
                     locationId:     this.filter.location && this.filter.location.id,
                     dayOfTheWeek:   this.filter.dayOfTheWeek && this.filter.dayOfTheWeek.id,
                     fromTime:       this.filter.isFromTime ? $moment(this.filter.fromTime).format('HH:mm:00') : undefined,
-                    toTime:         this.filter.isToTime ? $moment(this.filter.toTime).format('HH:mm:00') : undefined                    
+                    toTime:         this.filter.isToTime ? $moment(this.filter.toTime).format('HH:mm:00') : undefined,
+                    max:            this.filter.max                    
                 }))
                 .then(() => modalService.info(this.title, 'Az edzések törölve lettek'))
                 .catch(error => {
                     if (error !== 'no') {
-                        modalService.info('Sikertelen törlés', err)
+                        modalService.info('Sikertelen törlés', error)
                     }
                 })
                 .finally(() => this.filterChanged())

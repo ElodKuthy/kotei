@@ -69,6 +69,15 @@
                         ng-change="vm.filterChanged()"> 
                     </select>
                 </div>
+                <div class="filter-row-item">
+                    <label for="max">Max</label>
+                    <input id="max" name="max" 
+                        type="number"
+                        class="form-control" 
+                        ng-model="vm.filter.max"
+                        ng-change="vm.filterChanged()"> 
+                    </select>
+                </div>
             </div>
             <div class="filter-row">
                 <div class="filter-row-item">
@@ -175,6 +184,14 @@
                         class="form-control" 
                         ng-model="vm.newValues.dayOfTheWeek"
                         ng-options="type.name for type in vm.days track by type.id"> 
+                    </select>
+                </div>
+                <div class="editor-row-item">
+                    <label for="max">Max</label>
+                    <input id="edit-max" name="edit-max" 
+                        type="number"
+                        class="form-control" 
+                        ng-model="vm.newValues.max"> 
                     </select>
                 </div>
             </div>

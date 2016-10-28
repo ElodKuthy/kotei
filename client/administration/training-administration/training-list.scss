@@ -4,7 +4,8 @@
     }
 
     .ko-calendar,
-    select {
+    select,
+    input[type='number'] {
         width: 240px;
         max-width: 100%;
     }

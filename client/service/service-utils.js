@@ -36,6 +36,12 @@ angular.module('kotei')
                 })
             }
 
+            if (filter.max) {
+                query.$and.push({
+                    max: filter.max
+                })
+            }
+
             return JSON.stringify(query)
         }
 
