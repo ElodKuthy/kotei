@@ -26,7 +26,7 @@
                                             class="progress" 
                                             max="training.max || 100" 
                                             value="training.current || training.utilization">
-                                            <i ng-if="training.max">{{training.current}} / {{training.max}}</i>
+                                            <i ng-if="training.max" class="utilization">{{training.current}} / {{training.max}}</i>
                                         </uib-progressbar>
                                     </div>
                                     <div class="button-container">
