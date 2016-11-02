@@ -61,7 +61,9 @@ const findSubscriptionToAdd = (training, client) => {
                         if ((!credit.training_type_id
                             || credit.training_type_id === training.training_type_id)
                             && (!credit.coach_id
-                            || credit.coach_id === training.coach_id)) {
+                            || credit.coach_id === training.coach_id)
+                            && (!credit.training_category_id
+                            || credit.training_category_id === training.training_category_id)) {
                             acc += credit.amount
                         }
 

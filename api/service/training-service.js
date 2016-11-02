@@ -131,7 +131,7 @@ const find = (query, auth) => {
 
     return Promise.all([
         Training.findAll(parser.parseQuery({
-            attributes: ['id', 'from', 'to', 'max'],
+            attributes: ['id', 'from', 'to', 'max', 'training_category_id'],
             include: [{
                 attributes: ['id', 'name'],
                 model: TrainingType
@@ -185,7 +185,8 @@ const find = (query, auth) => {
                     moment().startOf('day').isBefore(subscription.to)
                     && subscription.Credits.reduce((acc, credit) => { 
                         if ((!credit.training_type_id || credit.training_type_id === training.TrainingType.id)
-                         && (!credit.coach_id || credit.coach_id === training.Coach.id)) {
+                         && (!credit.coach_id || credit.coach_id === training.Coach.id)
+                         && (!credit.training_category_id || credit.training_category_id === training.training_category_id)) {
                             acc += credit.amount
                         }
                         return acc

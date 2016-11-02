@@ -105,7 +105,19 @@ module.exports = db => {
         }
     })
 
+    Credit.belongsTo(TrainingCategory, {
+        foreignKey: {
+            allowNull: true
+        }
+    })
+
     CreditTemplate.belongsTo(TrainingType, {
+        foreignKey: {
+            allowNull: true
+        }
+    })
+
+    CreditTemplate.belongsTo(TrainingCategory, {
         foreignKey: {
             allowNull: true
         }

@@ -18,6 +18,7 @@ const CreditTemplate = model.CreditTemplate
 const TrainingType = model.TrainingType
 const Credit = model.Credit
 const Attendee = model.Attendee
+const TrainingCategory = model.TrainingCategory
 
 const attendeeService = require('./attendee-service')
 
@@ -53,6 +54,9 @@ const findSubscriptionTemplate = (query, auth) => {
             include: [{
                 attributes: ['id', 'name'],
                 model: TrainingType
+            }, {
+                attributes: ['id', 'name'],
+                model: TrainingCategory
             }, {
                 attributes: ['id', 'familyName', 'givenName'],
                 model: User,
@@ -129,6 +133,9 @@ const decorateNewSubcriptionData = (subscription) => {
         }
         if (credit.Coach) {
             credit.coach_id = credit.Coach.id
+        }
+        if (credit.TrainingCategory) {
+            credit.training_category_id = credit.TrainingCategory.id
         }
 
         return credit
