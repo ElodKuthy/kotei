@@ -36,7 +36,12 @@
     .table {
         margin: auto;
         width: auto;
-        max-width: auto;
+    }
+
+    @media screen and (max-width: 767px) {
+        .table {
+            width: 100%;
+        }
     }
     
     .table > thead > tr > th {
@@ -94,6 +99,11 @@
 
     .schedule-cell > div {
         padding: 10px;
+        border-bottom: solid 1px;
+    }
+
+    .schedule-cell > div:last-child {
+        border-bottom: none;
     }
 
     .button-container {
