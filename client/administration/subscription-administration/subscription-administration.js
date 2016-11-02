@@ -21,12 +21,13 @@ angular.module('kotei')
                     clients: infoService => infoService.getAllClients(),
                     coaches: infoService => infoService.getAllCoaches(),
                     subscriptionTypes: infoService => infoService.getAllSubscriptionTypes(),
-                    allTrainingTypes: infoService => infoService.getAllTrainingTypes()
+                    allTrainingTypes: infoService => infoService.getAllTrainingTypes(),
+                    allTrainingCategories: infoService => infoService.getAllTrainingCategories(),
                 },
                 roles: ['coach', 'admin']
         })
     })
-    .controller('SubscriptionAdministrationController', function (R, $scope, $stateParams, $state, $moment, userInfoService, clients, coaches, subscriptionTypes, allTrainingTypes, infoService, modalService, administrationService, nameService) {
+    .controller('SubscriptionAdministrationController', function (R, $scope, $stateParams, $state, $moment, userInfoService, clients, coaches, subscriptionTypes, allTrainingTypes, infoService, modalService, administrationService, nameService, allTrainingCategories) {
 
         this.title = 'Bérletvásárlás'
 
@@ -142,12 +143,24 @@ angular.module('kotei')
                             return acc
                         }, []).sort((a, b) => a >= b)
 
+                    const trainingCategoryIds =
+                        this.templates.some((template) => template.CreditTemplates.some((creditTemplate) => !creditTemplate.TrainingCategory))
+                        ? allTrainingCategories.map((trainingCategory) => trainingCategory.id)
+                        : this.templates.reduce((acc, template) => {
+                            template.CreditTemplates.forEach((creditTemplate) => {
+                                if (!acc.some((item) => item === creditTemplate.TrainingCategory.id)) {
+                                    acc.push(creditTemplate.TrainingCategory.id)
+                                }
+                            })
+                            return acc
+                        }, []).sort((a, b) => a >= b) 
+
                     const oneDay = !this.templates.some((template) => template.SubscriptionVariant.valid > 1)
                     const format = oneDay ? 'day' : 'isoweek'
                     const from = $moment(this.from).startOf(format).format()
                     const to = $moment(this.from).endOf(format).format()
 
-                    infoService.getTrainingsByDateAndType(from, to, trainingTypeIds)
+                    infoService.getTrainingsByDateAndType(from, to, trainingTypeIds, trainingCategoryIds)
                         .then((trainings) => {
                             this.allTrainings = decorateTrainings(trainings)
                             filterTrainings()
