@@ -296,6 +296,9 @@ const bulkEdit = (query, newValues, auth) => {
                 if (newValues.coachId) {
                     training.coach_id = newValues.coachId
                 }
+                if (newValues.max) {
+                    training.max = newValues.max
+                }
                 if (newValues.dayOfTheWeek) {
                     const from = moment(training.from)
                     const to = moment(training.to)
