@@ -24,7 +24,7 @@ angular.module('kotei')
             getSubscriptionTemplates: (id) => get(`/api/subscription/template?where={"subscription_type_id":${id}}&order=valid%20ASC`),
             getTrainingById: (id) => get(`/api/training?where={"id":${id}}`).then((results) => results[0]),
             getTrainingsByDate: (from, to, categoryId) => get(`/api/training?where={"$and":[${categoryId ? `{"training_category_id":${categoryId}},` : ''}{"from":{"$gte":"${from}"}},{"to":{"$lte":"${to}"}}]}&order=\`from\`%20ASC`),
-            getTrainingsByDateAndType: (from, to, trainingTypeIds, trainingCategoryIds) => get(`/api/training?where={"$and":[{"from":{"$gte":"${from}"}},{"to":{"$lte":"${to}"}},{"training_type_id":{"\$or":[${trainingTypeIds.length ? trainingTypeIds.join(',') : 'null'}]}},{"training_category_id":{"\$or":[${trainingCategoryIds.join('')}]}}]}&order=\`from\`%20ASC`),
+            getTrainingsByDateAndType: (from, to, trainingTypeIds, trainingCategoryIds) => get(`/api/training?where={"$and":[{"from":{"$gte":"${from}"}},{"to":{"$lte":"${to}"}},{"training_type_id":{"\$or":[${trainingTypeIds.length ? trainingTypeIds.join(',') : 'null'}]}},{"training_category_id":{"\$or":[${trainingCategoryIds.join(',')}]}}]}&order=\`from\`%20ASC`),
             getSubscriptionsByClient: (clientId) => get(`/api/subscription?where={"client_id":${clientId}}&order=\`from\`%20ASC`),
             getSubscription: (subscriptionId) => get(`/api/subscription?where={"id":${subscriptionId}}`),
             getActiveSubscriptions: () => get(`/api/stats/subscriptions/active`),

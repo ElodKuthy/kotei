@@ -16,6 +16,7 @@ angular.module('kotei')
 
         this.logout = () => {
             loginService.logout()
+            globals.trainingCategories = null
             $state.reload()
         }
     })

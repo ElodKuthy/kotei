@@ -225,7 +225,42 @@ const findTrainingType = (query, auth) => {
 
 const findTrainingCategory = (query, auth) => {
     return TrainingCategory.findAll({
-        attributes: ['id', 'name']
+        attributes: ['id', 'name', 'isPrivate']
+    }).filter(trainingCategory => {
+        if (!trainingCategory.isPrivate || auth.isAdmin) {
+            return true
+        }
+        if (!auth.isAuth) {
+            return false
+        }
+        if (auth.isCoach) {
+            return Training.findOne({
+                where: {
+                    $and: [{
+                        coach_id: auth.id
+                    }, {
+                        training_category_id: trainingCategory.id
+                    }]
+                }
+            })
+        }
+        if (auth.isClient) {
+            return Training.findAll({
+                where: {
+                    $and: [{
+                        training_category_id: trainingCategory.id
+                    }]
+                },
+                include: {
+                    model: Subscription,
+                    where: {
+                        client_id: auth.id
+                    }
+                }
+            }).then(training => training.length > 0)
+        }
+
+        return false
     }).catch((error) => {
         console.log(error)
         Promise.reject(errors.missingOrInvalidParameters())

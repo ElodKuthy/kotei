@@ -8,5 +8,10 @@ database.define('TrainingCategory', {
         validate: {
             notEmpty: true
         }
+    },
+    isPrivate: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
     }
 })

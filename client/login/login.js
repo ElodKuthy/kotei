@@ -16,11 +16,12 @@ angular.module('kotei')
                 }
         })
     })
-    .controller('LoginController', function (loginService, $state, $rootScope) {
+    .controller('LoginController', function (loginService, $state, $rootScope, globals) {
         this.submit = () => {
             delete this.error
             loginService.login(this.credential, this.password)
                 .then((result) => {
+                    globals.trainingCategories = null
                     $state.go('schedule')
                 })
                 .catch((error) => {
