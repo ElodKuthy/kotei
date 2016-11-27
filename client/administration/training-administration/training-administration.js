@@ -15,26 +15,22 @@ angular.module('kotei')
                     }
                 },
                 resolve: {
-                    coaches: (infoService) => {
-                        return infoService.getAllCoaches()
-                    },
-                    locations: (infoService) => {
-                        return infoService.getAllLocations()
-                    },
-                    trainingTypes: (infoService) => {
-                        return infoService.getAllTrainingTypes()
-                    }
+                    coaches: infoService => infoService.getAllCoaches(),
+                    locations: infoService => infoService.getAllLocations(),
+                    trainingTypes: infoService => infoService.getAllTrainingTypes(),
+                    trainingCategories: infoService => infoService.getAllTrainingCategories()
                 },
                 roles: ['admin']
         })
     })
-    .controller('TrainingAdministrationController', function ($state, $moment, coaches, locations, trainingTypes, modalService, administrationService, nameService) {
+    .controller('TrainingAdministrationController', function ($state, $moment, coaches, locations, trainingTypes, modalService, administrationService, nameService, trainingCategories) {
 
         this.title = 'Új edzésalkalom létrehozása'
 
         this.coaches = nameService.addDisplayName(coaches)
         this.locations = locations
         this.trainingTypes = trainingTypes
+        this.trainingCategories = trainingCategories
 
         this.submit = () => {
             delete this.error
@@ -47,6 +43,7 @@ angular.module('kotei')
                 coach_id: this.training.coach.id,
                 location_id: this.training.location.id,
                 training_type_id: this.training.type.id,
+                training_category_id: this.training.category && this.training.category.id,
                 interval: this.training.interval && $moment(this.training.interval).isAfter(this.training.to) ? this.training.interval : null
             }
 

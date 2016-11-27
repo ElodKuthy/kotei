@@ -18,6 +18,12 @@ angular.module('kotei')
                 })
             }
 
+            if (filter.trainingCategoryId) {
+                query.$and.push({
+                    training_category_id: filter.trainingCategoryId
+                })
+            }
+
             if (filter.trainingTypeId) {
                 query.$and.push({
                     training_type_id: filter.trainingTypeId

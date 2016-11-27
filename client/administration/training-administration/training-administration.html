@@ -4,6 +4,15 @@
         <div class="alert alert-danger" ng-if="trainingAdministration.error">
             {{trainingAdministration.error}}
         </div>
+        <div ng-if="trainingAdministration.trainingCategories.length" ng-class="{ 'has-error': (trainingForm.trainingCategory.$touched && !trainingAdministration.training.category) }">
+            <label for="trainingCategory">Kategória</label>
+            <select id="trainingCategory" name="trainingCategory" 
+                class="form-control" 
+                ng-model="trainingAdministration.training.category"
+                ng-options="type.name for type in trainingAdministration.trainingCategories track by type.id"> 
+            </select>
+            <div class="help-block" ng-show="trainingForm.trainingCategory.$touched && trainingAdministration.trainingCategories.length && !trainingAdministration.training.category">Kötelező megadni</div>
+        </div>
         <div ng-class="{ 'has-error': (trainingForm.trainingType.$touched && !trainingAdministration.training.type) }">
             <label for="trainingType">Típus</label>
             <select id="trainingType" name="trainingType" 
@@ -51,6 +60,16 @@
             <label for="intervalCalendar">Eddig ismétlődik hetente</label>
             <ko-calendar id="interval" model="trainingAdministration.training.interval" format="yyyy. MMM d." minDate="trainingAdministration.minDate" maxDate="trainingAdministration.maxDate" enable-time="false"></ko-calendar>
         </div>
-        <button type="submit" class="btn btn-primary pull-right" ng-click="trainingAdministration.submit()" ng-disabled="trainingForm.$pristine || trainingForm.$invalid || !trainingAdministration.training.coach || !trainingAdministration.training.location">Mentés</button>
+        <button 
+                type="submit" 
+                class="btn btn-primary pull-right" 
+                ng-click="trainingAdministration.submit()" 
+                ng-disabled="trainingForm.$pristine
+                    || trainingForm.$invalid
+                    || (trainingAdministration.trainingCategories.length && !trainingAdministration.training.category)
+                    || !trainingAdministration.training.type
+                    || !trainingAdministration.training.location
+                    || !trainingAdministration.training.coach
+                    || !trainingAdministration.training.location">Mentés</button>
     </form>
 </div>

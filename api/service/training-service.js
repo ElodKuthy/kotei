@@ -134,6 +134,9 @@ const find = (query, auth) => {
             attributes: ['id', 'from', 'to', 'max', 'training_category_id'],
             include: [{
                 attributes: ['id', 'name'],
+                model: TrainingCategory
+            }, {
+                attributes: ['id', 'name'],
                 model: TrainingType
             }, {
                 attributes: ['id', 'familyName', 'givenName', 'nickname'],
@@ -324,6 +327,9 @@ const bulkEdit = (query, newValues, auth) => {
     return Promise.all(Training.findAll(parser.parseQuery({}, query))
         .then(trainings => {
             return trainings.map(training => {
+                if (newValues.trainingCategoryId) {
+                    training.training_category_id = newValues.trainingCategoryId
+                }
                 if (newValues.trainingTypeId) {
                     training.training_type_id = newValues.trainingTypeId
                 }

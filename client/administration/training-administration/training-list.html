@@ -33,6 +33,15 @@
                         enable-time="false"
                         change="vm.filterChanged(id, value)"></ko-calendar>
                 </div>
+                <div ng-if="vm.trainingCategories.length > 1" class="filter-row-item">
+                    <label for="trainingCategory">Kategória</label>
+                    <select id="trainingCategory" name="trainingCategory" 
+                        class="form-control" 
+                        ng-model="vm.filter.trainingCategory"
+                        ng-options="category.name for category in vm.trainingCategories track by category.id"
+                        ng-change="vm.filterChanged()"> 
+                    </select>
+                </div>
                 <div class="filter-row-item">
                     <label for="trainingType">Típus</label>
                     <select id="trainingType" name="trainingType" 
@@ -154,6 +163,14 @@
                     ng-class="{ 'glyphicon-chevron-down': vm.modifyOpen, 'glyphicon-chevron-right': !vm.modifyOpen }"></i>
             </uib-accordion-heading>
             <div class="editor-row">
+                <div ng-if="vm.trainingCategories.length > 1" class="editor-row-item">
+                    <label for="trainingCategory">Kategória</label>
+                    <select id="trainingCategory" name="trainingCategory" 
+                        class="form-control" 
+                        ng-model="vm.newValues.trainingCategory"
+                        ng-options="category.name for category in vm.trainingCategories track by category.id">
+                    </select>
+                </div>                
                 <div class="editor-row-item">
                     <label for="trainingType">Típus</label>
                     <select id="trainingType" name="trainingType" 
@@ -273,6 +290,7 @@
                 <table class="table table-bordered table-hover">
                     <thead>
                         <tr>
+                            <th ng-if="vm.trainingCategories.length > 1">Kategória</th>
                             <th>Típus</th>
                             <th>Edző</th>                            
                             <th>Terem</th>
@@ -285,6 +303,7 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat="training in vm.trainings" ng-click="vm.trainingDetails(training)">
+                            <td ng-if="vm.trainingCategories.length > 1">{{training.TrainingCategory.name}}</td>
                             <td>{{training.TrainingType.name}}</td>
                             <td>{{training.Coach.fullName}}</td>
                             <td>{{training.Location.name}}</td>

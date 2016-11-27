@@ -17,17 +17,20 @@ angular.module('kotei')
                 resolve: {
                     trainingTypes: infoService => infoService.getAllTrainingTypes(),
                     coaches: infoService => infoService.getAllCoaches(),
-                    locations: infoService => infoService.getAllLocations()
+                    locations: infoService => infoService.getAllLocations(),
+                    trainingCategories: infoService => infoService.getAllTrainingCategories()
                 },
                 roles: ['admin']
         })
     })
     .controller('TrainingListController', function ($scope, $state, $moment, infoService, userInfoService, 
-        nameService, trainingTypes, coaches, locations, administrationService, modalService) {
+        nameService, trainingTypes, coaches, locations, administrationService, modalService, trainingCategories) {
         this.title = 'Edzések'
         this.isAdmin = userInfoService.getUserInfo().isAdmin
         this.trainingTypes = trainingTypes
         this.trainingTypes.push({ name: '-'})
+        this.trainingCategories = trainingCategories
+        this.trainingCategories.push({ name: '-'})
         this.coaches = nameService.addDisplayName(coaches)
         this.coaches.push({ displayName: '-'})
         this.locations = locations
@@ -66,15 +69,16 @@ angular.module('kotei')
         this.filterChanged = (id, value) => {
             this.isLoading = true
             infoService.getTrainingsByFilter({
-                    fromDate:       id === 'from-date' ? value : this.filter.fromDate,
-                    toDate:         id === 'to-date' ? value : this.filter.toDate,
-                    trainingTypeId: this.filter.trainingType && this.filter.trainingType.id,
-                    coachId:        this.filter.coach && this.filter.coach.id,
-                    locationId:     this.filter.location && this.filter.location.id,
-                    dayOfTheWeek:   this.filter.dayOfTheWeek && this.filter.dayOfTheWeek.id,
-                    fromTime:       this.filter.isFromTime ? $moment(this.filter.fromTime).format('HH:mm:00') : undefined,
-                    toTime:         this.filter.isToTime ? $moment(this.filter.toTime).format('HH:mm:00') : undefined,
-                    max:            this.filter.max
+                    fromDate:           id === 'from-date' ? value : this.filter.fromDate,
+                    toDate:             id === 'to-date' ? value : this.filter.toDate,
+                    trainingCategoryId: this.filter.trainingCategory && this.filter.trainingCategory.id,
+                    trainingTypeId:     this.filter.trainingType && this.filter.trainingType.id,
+                    coachId:            this.filter.coach && this.filter.coach.id,
+                    locationId:         this.filter.location && this.filter.location.id,
+                    dayOfTheWeek:       this.filter.dayOfTheWeek && this.filter.dayOfTheWeek.id,
+                    fromTime:           this.filter.isFromTime ? $moment(this.filter.fromTime).format('HH:mm:00') : undefined,
+                    toTime:             this.filter.isToTime ? $moment(this.filter.toTime).format('HH:mm:00') : undefined,
+                    max:                this.filter.max
                 })
                 .then(trainings => {
                     this.trainings = trainings.map(training => {
@@ -96,24 +100,26 @@ angular.module('kotei')
         this.saveModifications = () => {
             this.isLoading = true
             administrationService.bulkEditTrainings({
-                    fromDate:       this.filter.fromDate,
-                    toDate:         this.filter.toDate,
-                    trainingTypeId: this.filter.trainingType && this.filter.trainingType.id,
-                    coachId:        this.filter.coach && this.filter.coach.id,
-                    locationId:     this.filter.location && this.filter.location.id,
-                    dayOfTheWeek:   this.filter.dayOfTheWeek && this.filter.dayOfTheWeek.id,
-                    fromTime:       this.filter.isFromTime ? $moment(this.filter.fromTime).format('HH:mm:00') : undefined,
-                    toTime:         this.filter.isToTime ? $moment(this.filter.toTime).format('HH:mm:00') : undefined,
-                    max:            this.filter.max
+                    fromDate:           this.filter.fromDate,
+                    toDate:             this.filter.toDate,
+                    trainingTypeId:     this.filter.trainingType && this.filter.trainingType.id,
+                    trainingCategoryId: this.filter.trainingCategory && this.filter.trainingCategory.id,
+                    coachId:            this.filter.coach && this.filter.coach.id,
+                    locationId:         this.filter.location && this.filter.location.id,
+                    dayOfTheWeek:       this.filter.dayOfTheWeek && this.filter.dayOfTheWeek.id,
+                    fromTime:           this.filter.isFromTime ? $moment(this.filter.fromTime).format('HH:mm:00') : undefined,
+                    toTime:             this.filter.isToTime ? $moment(this.filter.toTime).format('HH:mm:00') : undefined,
+                    max:                this.filter.max
 
                 }, {
-                    trainingTypeId: this.newValues.trainingType && this.newValues.trainingType.id,
-                    coachId:        this.newValues.coach && this.newValues.coach.id,
-                    locationId:     this.newValues.location && this.newValues.location.id,
-                    dayOfTheWeek:   this.newValues.dayOfTheWeek && this.newValues.dayOfTheWeek.id,
-                    fromTime:       this.newValues.isFromTime ? $moment(this.newValues.fromTime).format('HH:mm:00') : undefined,
-                    toTime:         this.newValues.isToTime ? $moment(this.newValues.toTime).format('HH:mm:00') : undefined,
-                    max:            this.newValues.max
+                    trainingTypeId:     this.newValues.trainingType && this.newValues.trainingType.id,
+                    trainingCategoryId: this.newValues.trainingCategory && this.newValues.trainingCategory.id,
+                    coachId:            this.newValues.coach && this.newValues.coach.id,
+                    locationId:         this.newValues.location && this.newValues.location.id,
+                    dayOfTheWeek:       this.newValues.dayOfTheWeek && this.newValues.dayOfTheWeek.id,
+                    fromTime:           this.newValues.isFromTime ? $moment(this.newValues.fromTime).format('HH:mm:00') : undefined,
+                    toTime:             this.newValues.isToTime ? $moment(this.newValues.toTime).format('HH:mm:00') : undefined,
+                    max:                this.newValues.max
 
                 })
                 .then(() => modalService.info('Edzések módosítása', 'Sikeres módosítás'))
@@ -124,15 +130,16 @@ angular.module('kotei')
         this.deleteAll = () => {
             modalService.decision('Edzések törlése', 'Biztos, hogy törölni akarod az összes órát? A jelenlegi feliratkozók alkalma jóváírásra kerül, a bérletük érvényessége meghosszabbodik egy héttel, és email értesítést kapnak arról, hogy elmarad az óra.')
                 .then(() => administrationService.deleteAllTrainings({
-                    fromDate:       this.filter.fromDate,
-                    toDate:         this.filter.toDate,
-                    trainingTypeId: this.filter.trainingType && this.filter.trainingType.id,
-                    coachId:        this.filter.coach && this.filter.coach.id,
-                    locationId:     this.filter.location && this.filter.location.id,
-                    dayOfTheWeek:   this.filter.dayOfTheWeek && this.filter.dayOfTheWeek.id,
-                    fromTime:       this.filter.isFromTime ? $moment(this.filter.fromTime).format('HH:mm:00') : undefined,
-                    toTime:         this.filter.isToTime ? $moment(this.filter.toTime).format('HH:mm:00') : undefined,
-                    max:            this.filter.max                    
+                    fromDate:           this.filter.fromDate,
+                    toDate:             this.filter.toDate,
+                    trainingTypeId:     this.filter.trainingType && this.filter.trainingType.id,
+                    trainingCategoryId: this.filter.trainingCategory && this.filter.trainingCategory.id,
+                    coachId:            this.filter.coach && this.filter.coach.id,
+                    locationId:         this.filter.location && this.filter.location.id,
+                    dayOfTheWeek:       this.filter.dayOfTheWeek && this.filter.dayOfTheWeek.id,
+                    fromTime:           this.filter.isFromTime ? $moment(this.filter.fromTime).format('HH:mm:00') : undefined,
+                    toTime:             this.filter.isToTime ? $moment(this.filter.toTime).format('HH:mm:00') : undefined,
+                    max:                this.filter.max                    
                 }))
                 .then(() => modalService.info(this.title, 'Az edzések törölve lettek'))
                 .catch(error => {
