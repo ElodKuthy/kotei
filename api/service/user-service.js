@@ -5,6 +5,7 @@ const errors = require('../common/errors')
 const localization = require('../localization/name')
 const texts = require('../localization/texts')
 const parser = require('../common/parser')
+const rules = require('../common/rules')
 
 const model = require('../model/model')()
 const User = model.User
@@ -38,7 +39,7 @@ const find = (query, auth) => {
             as: 'Coach'
         }]
     }, query))
-    .then(users => auth.isAdmin ? users : users.filter(user => user.id === auth.id
+    .then(users => auth.isAdmin || rules.coachSeeAllClients() ? users : users.filter(user => user.id === auth.id
         || (user.role === roles.client && (!user.coach_id || user.coach_id === auth.id))))
     .catch((error) => Promise.reject(errors.missingOrInvalidParameters()))
 }

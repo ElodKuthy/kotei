@@ -37,10 +37,28 @@ getRule({
     name: 'CoachCanModifyHistory',
     validator: boolValidator,
     parser: boolParser
-}) 
+})
+
+var coachSeeAllClients = false
+getRule({
+    set: value => coachSeeAllClients = value,
+    name: 'CoachSeeAllClients',
+    validator: boolValidator,
+    parser: boolParser
+})
+ 
+var coachCanModifyOthersTrainings = false
+getRule({
+    set: value => coachCanModifyOthersTrainings = value,
+    name: 'CoachCanModifyOthersTrainings',
+    validator: boolValidator,
+    parser: boolParser    
+})
 
 module.exports = {
     allowFreeCreditsOnCreateSubcription: () => allowFreeCreditsOnCreateSubcription,
     minHoursToLeaveTraining: () => minHoursToLeaveTraining,
-    coachCanModifyHistory: () => coachCanModifyHistory
+    coachCanModifyHistory: () => coachCanModifyHistory,
+    coachSeeAllClients: () => coachSeeAllClients,
+    coachCanModifyOthersTrainings: () => coachCanModifyOthersTrainings
 }

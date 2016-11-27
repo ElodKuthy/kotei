@@ -157,7 +157,7 @@ const remove = (training_id, client_id, auth) => {
                 return Promise.reject(errors.unauthorized())
             }
 
-            if (auth.isCoach && training.coach_id !== auth.id) {
+            if (auth.isCoach && training.coach_id !== auth.id && !rules.coachCanModifyOthersTrainings()) {
                 return Promise.reject(errors.unauthorized())
             }
 
@@ -184,7 +184,7 @@ const update = (training_id, client_id, checkIn, auth) => {
     return Promise.all([findTraining(training_id), findClient(client_id)])
         .spread((training, client) => {
 
-            if (auth.isCoach && training.coach_id !== auth.id) {
+            if (auth.isCoach && training.coach_id !== auth.id && !rules.coachCanModifyOthersTrainings()) {
                 return Promise.reject(errors.unauthorized())
             }
 

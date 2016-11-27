@@ -327,7 +327,7 @@ const find = (query, auth) => {
         subscription.Trainings = subscription.Trainings.map(training => {
             training.dataValues.canModify = auth.isAdmin
                 || (auth.isCoach
-                    && training.Coach.id === auth.id
+                    && (training.Coach.id === auth.id || rules.coachCanModifyOthersTrainings())
                     && (rules.coachCanModifyHistory()
                         || moment().add({ hours: rules.minHoursToLeaveTraining() }).isBefore(training.from)))
             training.dataValues.canLeave = 

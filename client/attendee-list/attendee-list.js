@@ -29,7 +29,7 @@ angular.module('kotei')
 
         this.userInfo = userInfoService.getUserInfo()
 
-        if (!training || this.userInfo.isCoach && this.userInfo.id !== training.Coach.id) {
+        if (!training || !training.canModify) {
             return $state.go('welcome')
         }
         
