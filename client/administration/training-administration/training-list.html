@@ -211,6 +211,16 @@
                         ng-model="vm.newValues.max"> 
                     </select>
                 </div>
+                <div class="editor-row-item">
+                    <label for="tillDate">Eddig ismétlődik</label>
+                    <ko-calendar 
+                        id="tillDate" 
+                        model="vm.newValues.tillDate"
+                        format="yyyy. MMM d."
+                        minDate="vm.filter.minDate"
+                        maxDate="vm.filter.maxDate"
+                        enable-time="false"></ko-calendar>
+                </div>
             </div>
             <div class="editor-row">
                 <div class="editor-row-item">

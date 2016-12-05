@@ -119,8 +119,9 @@ angular.module('kotei')
                     dayOfTheWeek:       this.newValues.dayOfTheWeek && this.newValues.dayOfTheWeek.id,
                     fromTime:           this.newValues.isFromTime ? $moment(this.newValues.fromTime).format('HH:mm:00') : undefined,
                     toTime:             this.newValues.isToTime ? $moment(this.newValues.toTime).format('HH:mm:00') : undefined,
-                    max:                this.newValues.max
-
+                    max:                this.newValues.max,
+                    tillDate:           this.newValues.tillDate
+                    
                 })
                 .then(() => modalService.info('Edzések módosítása', 'Sikeres módosítás'))
                 .catch(err => modalService.info('Sikertelen módosítás', err))

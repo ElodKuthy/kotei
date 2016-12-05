@@ -110,7 +110,7 @@ const addTraining = (training) => {
 }
 
 const addTrainings = (training, dates) => {
-    const trainings = R.map((date) => addTraining(R.merge(training, date)), dates)
+    const trainings = R.map(date => addTraining(R.merge(training, date)), dates)
 
     return Promise.all(trainings)
 }
@@ -120,7 +120,7 @@ const add = (training, auth) => {
     return checkAdmin(training, auth)
         .then(checkCoach)
         .then(calculateDates)
-        .then((dates) => addTrainings(training, dates))
+        .then(dates => addTrainings(training, dates))
         .then(() => Promise.resolve(texts.successfulTrainingCreation))
 }
 
@@ -211,7 +211,6 @@ const find = (query, auth) => {
         return training
     }, trainings))
     .catch((error) => {
-        console.log(error)
         Promise.reject(errors.missingOrInvalidParameters())
     })
 }
@@ -265,7 +264,6 @@ const findTrainingCategory = (query, auth) => {
 
         return false
     }).catch((error) => {
-        console.log(error)
         Promise.reject(errors.missingOrInvalidParameters())
     })
 }
@@ -368,6 +366,14 @@ const bulkEdit = (query, newValues, auth) => {
                 }
 
                 return checkCollidingTraining(training).then(training => training.save())
+                    .then(result => {
+                        if (newValues.tillDate) {
+                            return add(R.merge(training.dataValues, { id: null, interval: newValues.tillDate }), auth)
+                                .then(() => result)
+                                .catch(() => result)
+                        }
+                        return result
+                    })
             })
         }))
 }
