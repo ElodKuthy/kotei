@@ -40,9 +40,9 @@ const findSubscriptionToAdd = (training, client) => {
     return Subscription.findAll({
         where: {
             $and: [{
-                from: { $lte: training.from }
+                from: { $lte: moment(training.from).format('YYYY-MM-DD') }
             }, {
-                to: { $gte: training.from }
+                to: { $gte: moment(training.from).format('YYYY-MM-DD') }
             }, {
                 client_id: client.id
             }]
@@ -53,6 +53,7 @@ const findSubscriptionToAdd = (training, client) => {
         ]
     })
     .then((subscriptions) => {
+        console.log(subscriptions)
         // TODO: Refactoring to handle correctly training restricted credits as well, this works only for not restrited credits 
         return Promise.all(R.map((subscription) => subscription.countTrainings(), subscriptions))
             .then((counts) => {
