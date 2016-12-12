@@ -70,6 +70,11 @@ module.exports = db => {
         }
     })
 
+    SubscriptionTemplate.belongsTo(SubscriptionType, {
+        foreignKey: {
+            allowNull: true
+        }
+    })
     SubscriptionType.hasMany(SubscriptionTemplate, {
         foreignKey: {
             allowNull: false

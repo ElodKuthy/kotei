@@ -1,0 +1,90 @@
+<div class="edit-subscription-template container">
+    <h3>{{vm.title}}</h3>
+    <form name="templateForm" autocomplete="off" novalidate>
+        <div class="alert alert-danger" ng-if="editSubscription.error">
+            {{vm.error}}
+        </div>
+        <div>
+            <label for="name">Név</label>
+            <select class="form-control" 
+                name="name" 
+                id="name" 
+                ng-model="vm.name" 
+                ng-options="type.name for type in vm.subscriptionTypes track by type.id">
+            </select>
+        </div>
+        <div ng-if="vm.trainingCategories.length > 1">
+            <label for="trainingCategory">Edzéskategória</label>
+            <select class="form-control" 
+                name="trainingCategory" 
+                id="trainingCategory" 
+                ng-model="vm.trainingCategory" 
+                ng-options="category.name for category in vm.trainingCategories track by category.id">
+            </select>
+        </div>
+        <div>
+            <label for="trainingType">Edzéstípus</label>
+            <select class="form-control" 
+                name="trainingType" 
+                id="trainingType" 
+                ng-model="vm.trainingType" 
+                ng-options="type.name for type in vm.trainingTypes track by type.id">
+            </select>
+        </div>
+        <div>
+            <label for="coach">Edző</label>
+            <select id="coach" 
+                name="coach" 
+                class="form-control"
+                ng-model="vm.coach"
+                ng-options="coach.displayName for coach in vm.coaches track by coach.id">
+            </select>
+        </div>
+        <div ng-class="{ 'has-error': (templateForm.price.$invalid && templateForm.price.$touched) }">
+            <label for="price">Ár</label>
+            <input id="price" 
+                name="price" 
+                type="number" 
+                class="form-control" 
+                ng-model="vm.price" 
+                required min="0">
+            <div ng-messages="templateForm.price.$error" ng-if="templateForm.price.$touched">
+                <div class="help-block" ng-message="required">Kötelező megadni</div>
+                <div class="help-block" ng-message="min">Csak nem negatív szám lehet</div>
+            </div>
+        </div>
+        <div ng-class="{ 'has-error': (templateForm.amount.$invalid && templateForm.amount.$touched) }">
+            <label for="amount">Alkalmak</label>
+            <input id="amount" 
+                name="amount" 
+                type="number" 
+                class="form-control" 
+                ng-model="vm.amount" 
+                required min="0">
+            <div ng-messages="templateForm.amount.$error" ng-if="templateForm.amount.$touched">
+                <div class="help-block" ng-message="required">Kötelező megadni</div>
+                <div class="help-block" ng-message="min">Csak nem negatív szám lehet</div>
+            </div>
+        </div>
+        <div ng-class="{ 'has-error': (templateForm.valid.$invalid && templateForm.valid.$touched) }">
+            <label for="valid">Érvényesség (nap)</label>
+            <input id="valid" 
+                name="valid" 
+                type="number" 
+                class="form-control" 
+                ng-model="vm.valid" 
+                required min="0">
+            <div ng-messages="templateForm.valid.$error" ng-if="templateForm.valid.$touched">
+                <div class="help-block" ng-message="required">Kötelező megadni</div>
+                <div class="help-block" ng-message="min">Csak nem negatív szám lehet</div>
+            </div>
+        </div>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" ng-model="vm.allowFreeCredits"> Szabad kreditek 
+            </label>
+        </div>
+        <button type="submit" class="btn btn-primary pull-left" ng-click="vm.delete()">{{vm.deleteButtonTitle}}</button>
+        <button type="submit" class="btn btn-primary pull-right" ng-click="vm.submit()" ng-disabled="templateForm.$pristine || templateForm.$invalid">Mentés</button>
+    </form>
+</div>

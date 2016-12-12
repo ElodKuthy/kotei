@@ -86,6 +86,8 @@ router.get('/subscription', handler(subscriptionService.find, { query: 'query' }
 router.post('/subscription', handler(subscriptionService.add, { body: 'newSubscription' }))
 router.put('/subscription', handler(subscriptionService.update, { body: 'subscription' }))
 router.delete('/subscription/:subscriptionId', handler(subscriptionService.remove, { url: 'subscriptionId' }))
+router.post('/subscription/template', handler(subscriptionService.addOrUpdateSubscriptionTemplate, { body: 'template' }))
+router.delete('/subscription/template/:id', handler(subscriptionService.deleteSubscriptionTemplate, { url: 'id' }))
 
 router.get('/training', handler(trainingService.find, { query: 'query' }))
 router.get('/training/type', handler(trainingService.findTrainingType, { query: 'query' }))

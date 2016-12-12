@@ -17,10 +17,5 @@ database.define('SubscriptionVariant', {
             isInt: true,
             min: 0
         }
-    },
-    allowFreeCredits: {
-        type: Sequelize.BOOLEAN,
-        allowNull: true,
-        defaultValue: null
     }
 })

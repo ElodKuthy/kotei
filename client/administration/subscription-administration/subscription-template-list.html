@@ -1,0 +1,44 @@
+<div class="subscription-template-list container-fluid">
+    <div class="row">
+        <div class="col-xs-12 form-inline">
+            <div class="form-group">
+                <label for="search">Keresés</label>
+                <input id="search" name="search" type="text" class="form-control" ng-model="vm.search"></input>
+            </div>
+            <button type="button" class="btn btn-primary" ng-click="vm.newSubscriptionTemplate()">Új bérlettípus</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <h3>Bérlettípusok</h3>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Név</th>
+                            <th ng-if="vm.showCategory">Edzés kategória</th>
+                            <th>Edzés típus</th>
+                            <th>Edző</th>
+                            <th>Ár</th>                            
+                            <th>Alkalmak</th>                            
+                            <th>Érvényesség</th>
+                            <th>Szabad kredit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="template in vm.templates | filter: vm.search" ng-click="vm.editSubscriptionTemplate(template.id)">
+                            <td>{{template.name}}</td>
+                            <td ng-if="vm.showCategory">{{template.category}}</td>
+                            <td>{{template.training}}</td>
+                            <td>{{template.coach}}</td>
+                            <td>{{template.price}}</td>
+                            <td>{{template.amount}}</td>
+                            <td>{{template.valid}}</td>
+                            <td>{{template.allowFreeCredits}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

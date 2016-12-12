@@ -46,7 +46,10 @@ const findSubscriptionTemplate = (query, auth) => {
     return SubscriptionTemplate.findAll(parser.parseQuery({
         attributes: ['id', 'subscription_type_id', 'allowFreeCredits'],
         include: [{
-            attributes: ['valid', 'price'],
+            attributes: ['id', 'name'],
+            model: SubscriptionType
+        }, {
+            attributes: ['id', 'valid', 'price'],
             model: SubscriptionVariant
         }, {
             attributes: ['id', 'amount'],
@@ -58,7 +61,7 @@ const findSubscriptionTemplate = (query, auth) => {
                 attributes: ['id', 'name'],
                 model: TrainingCategory
             }, {
-                attributes: ['id', 'familyName', 'givenName'],
+                attributes: ['id', 'familyName', 'givenName', 'nickname'],
                 model: User,
                 as: 'Coach'
             }]
@@ -371,11 +374,100 @@ const remove = (args, auth) => {
         })
 }
 
+const createNewSubscripitonTemplate = template => {
+    return SubscriptionVariant.create({
+            valid: template.valid,
+            price: template.price
+    }).then(subscriptionVariant => SubscriptionTemplate.create({
+        subscription_type_id: template.subscription_type_id,
+        allowFreeCredits: template.allowFreeCredits,
+        subscription_variant_id: subscriptionVariant.id,
+        CreditTemplates: [{
+            amount: template.amount,
+            training_type_id: template.training_type_id,
+            coach_id: template.coach_id,
+            training_category_id: template.training_category_id
+        }]
+    }, {
+        include: [CreditTemplate]
+    }))
+}
+
+const updateSubscripitonTemplate = template => {
+    return SubscriptionVariant.findById(template.subscription_variant_id)
+        .then(variant => {
+            if (!variant) {
+                return Promise.reject(errors.invalidId())
+            }
+            variant.valid = template.valid
+            variant.price = template.price
+            return variant.save()
+        })
+        .then(() => CreditTemplate.findById(template.credit_template_id))
+        .then(creditTemplate => {
+            if (!creditTemplate) {
+                return Promise.reject(errors.invalidId())
+            }
+            creditTemplate.amount = template.amount,
+            creditTemplate.training_type_id = template.training_type_id,
+            creditTemplate.coach_id = template.coach_id,
+            creditTemplate.training_category_id = template.training_category_id
+            return creditTemplate.save()            
+        })
+        .then(() => SubscriptionTemplate.findById(template.id))
+        .then(templateToUpdate => {
+            if (!templateToUpdate) {
+                return Promise.reject(errors.invalidId())
+            }
+            templateToUpdate.subscription_type_id = template.subscription_type_id
+            templateToUpdate.allowFreeCredits = template.allowFreeCredits
+            return templateToUpdate.save()
+        })
+}
+
+const addOrUpdateSubscriptionTemplate = (template, auth) => {
+    if (!auth.isAdmin) {
+        return Promise.reject(errors.unauthorized())
+    }
+
+    if (!template.id) {
+        return createNewSubscripitonTemplate(template)
+            .catch(error => {
+                console.log(error)
+                throw error
+            })
+            .then(() => 'OK')
+    } else {
+        return updateSubscripitonTemplate(template)
+            .catch(error => {
+                console.log(error)
+                throw error
+            })
+            .then(() => 'OK')
+    }
+}
+
+const deleteSubscriptionTemplate = ({id}, auth) => {
+    if (!auth.isAdmin) {
+        return Promise.reject(errors.unauthorized())
+    }
+
+    return SubscriptionTemplate.findById(id).then(template => {
+        if (!template) {
+            return Promise.reject(errors.invalidId())
+        }        
+        return template.destroy()
+    }).then(() => 'OK')
+}
+
+
 module.exports = {
     findSubscriptionType,
     findSubscriptionTemplate,
     add,
     find,
     update,
-    remove
+    remove,
+    addOrUpdateSubscriptionTemplate,
+    deleteSubscriptionTemplate
 }

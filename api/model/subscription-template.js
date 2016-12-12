@@ -2,12 +2,9 @@ const Sequelize = require('sequelize')
 
 module.exports = database =>
 database.define('SubscriptionTemplate', {
-    max: {
-        type: Sequelize.INTEGER,
+    allowFreeCredits: {
+        type: Sequelize.BOOLEAN,
         allowNull: true,
-        validate: {
-            isInt: true,
-            min: 1
-        }
+        defaultValue: null
     }
 })

@@ -21,6 +21,8 @@ angular.module('kotei')
             getAllTrainingTypes: () => get('/api/training/type?order=name%20ASC'),
             getAllTrainingCategories: () => get('/api/training/category'),
             getAllSubscriptionTypes: () => get('/api/subscription/type?order=name%20ASC'),
+            getSubscriptionTemplate: (id) => get(`/api/subscription/template?where={"id":${id}}&order=valid%20ASC`),
+            getAllSubscriptionTemplates: () => get('/api/subscription/template'),
             getSubscriptionTemplates: (id) => get(`/api/subscription/template?where={"subscription_type_id":${id}}&order=valid%20ASC`),
             getTrainingById: (id) => get(`/api/training?where={"id":${id}}`).then((results) => results[0]),
             getTrainingsByDate: (from, to, categoryId) => get(`/api/training?where={"$and":[${categoryId ? `{"training_category_id":${categoryId}},` : ''}{"from":{"$gte":"${from}"}},{"to":{"$lte":"${to}"}}]}&order=\`from\`%20ASC`),
