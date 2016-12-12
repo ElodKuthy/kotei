@@ -75,8 +75,7 @@ angular.module('kotei')
 
         this.clients = generateAddClientsList(this.attendees, clients)
 
-        this.canAdd = (this.training.count < this.training.max) && (this.userInfo.isAdmin || (this.userInfo.isCoach && this.userInfo.id === this.training.coach_id))
-
+        this.canAdd = (this.training.count < this.training.max) && training.canModify
         this.canModify = training.canModify
         
         this.toggleAttendee = (attendee) => {
