@@ -190,7 +190,8 @@ const addToDefaultTrainings = (subscription, defaultTrainings, auth) => {
     const trainings = Training.findAll({
         where: {
             $or: orDatesAndLocation(defaultTrainings)
-        }
+        },
+        paranoid: false
     })
 
     return trainings
@@ -432,17 +433,9 @@ const addOrUpdateSubscriptionTemplate = (template, auth) => {
 
     if (!template.id) {
         return createNewSubscripitonTemplate(template)
-            .catch(error => {
-                console.log(error)
-                throw error
-            })
             .then(() => 'OK')
     } else {
         return updateSubscripitonTemplate(template)
-            .catch(error => {
-                console.log(error)
-                throw error
-            })
             .then(() => 'OK')
     }
 }

@@ -53,7 +53,6 @@ const findSubscriptionToAdd = (training, client) => {
         ]
     })
     .then((subscriptions) => {
-        console.log(subscriptions)
         // TODO: Refactoring to handle correctly training restricted credits as well, this works only for not restrited credits 
         return Promise.all(R.map((subscription) => subscription.countTrainings(), subscriptions))
             .then((counts) => {
@@ -113,6 +112,10 @@ const add = (training_id, client_id, auth) => {
             }
 
             if (auth.isClient && moment().isAfter(training.to)) {
+                return Promise.reject(errors.trainingEnded())
+            }
+
+            if (training.deleted_at) {
                 return Promise.reject(errors.trainingEnded())
             }
 
