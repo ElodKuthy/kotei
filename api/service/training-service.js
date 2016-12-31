@@ -156,7 +156,7 @@ const find = (query, auth) => {
                     as: 'Client'
                 }]
             }]
-        }, query)), 
+        }, query)),
         Subscription.findAll({
             where: {
                 client_id: auth.id
@@ -172,21 +172,21 @@ const find = (query, auth) => {
 
         training.dataValues.utilization = Math.round(training.Subscriptions.length / training.max * 100)
 
-        if (auth.isClient) {                    
-            const subscription = R.find(subscription => subscription.Client.id === auth.id, training.Subscriptions)                       
+        if (auth.isClient) {
+            const subscription = R.find(subscription => subscription.Client.id === auth.id, training.Subscriptions)
             const involved = training.dataValues.involved = !!subscription
             training.dataValues.attendee = involved && moment().isBefore(training.from)
-            training.dataValues.participated = involved 
+            training.dataValues.participated = involved
                 && moment().isAfter(training.from)
                 && subscription.Attendee.checkIn
-            training.dataValues.missed = involved 
+            training.dataValues.missed = involved
                 && moment().isAfter(training.to)
                 && !subscription.Attendee.checkIn
-            training.dataValues.canJoin = !involved 
+            training.dataValues.canJoin = !involved
                 && moment().isBefore(training.from)
-                && subscriptions.filter(subscription => 
+                && subscriptions.filter(subscription =>
                     moment().startOf('day').isBefore(subscription.to)
-                    && subscription.Credits.reduce((acc, credit) => { 
+                    && subscription.Credits.reduce((acc, credit) => {
                         if ((!credit.training_type_id || credit.training_type_id === training.TrainingType.id)
                          && (!credit.coach_id || credit.coach_id === training.Coach.id)
                          && (!credit.training_category_id || credit.training_category_id === training.training_category_id)) {
@@ -199,9 +199,9 @@ const find = (query, auth) => {
         }
 
         training.dataValues.canModify = auth.isAdmin
-            || (auth.isCoach 
-                && (training.Coach.id === auth.id || rules.coachSeeAllClients()) 
-                && (rules.coachCanModifyHistory() 
+            || (auth.isCoach
+                && (training.Coach.id === auth.id || rules.coachSeeAllClients())
+                && (rules.coachCanModifyHistory()
                     || moment().add({ hours: rules.minHoursToLeaveTraining() }).isBefore(training.from)))
 
         training.dataValues.canSeeAttendees =
@@ -274,10 +274,10 @@ const findTrainingCategory = (query, auth) => {
         Promise.reject(errors.missingOrInvalidParameters())
     })
 }
-const remove = (args, auth) => {
+const remove = ({trainingId}, query, auth) => {
 
     return Promise.all([
-        Training.findById(args.trainingId, {
+        Training.findById(trainingId, {
             include: [{
                 as: 'TrainingType',
                 model: TrainingType
@@ -292,8 +292,8 @@ const remove = (args, auth) => {
                     model: User
                 }]
             }]
-        }), 
-        Attendee.findAll({ where: { training_id: args.trainingId } })
+        }),
+        Attendee.findAll({ where: { training_id: trainingId } })
     ]).spread((training, attendees) => {
 
         if (!training) {
@@ -310,14 +310,14 @@ const remove = (args, auth) => {
 
         const freeCredits = attendees.map(attendee => attendee.destroy())
 
-        const extendSubscriptions =
+        const extendSubscriptions = extend ?
                 training.Subscriptions.map(subscription => {
                     subscription.to = moment(subscription.to).add({ week: 1 }).format()
                     return subscription.save()
-                })
+                }) : Promise.resolve()
 
         const sendEmailNotifications =
-            training.Subscriptions.map(subscription => mailerService.sendCancelledTrainingNotification(training, subscription)) 
+            training.Subscriptions.map(subscription => mailerService.sendCancelledTrainingNotification(training, subscription, extend))
 
         return Promise.all(R.flatten([deleteTraining, freeCredits, extendSubscriptions, sendEmailNotifications]))
 
@@ -352,8 +352,8 @@ const bulkEdit = (query, newValues, auth) => {
                     const to = moment(training.to)
                     from.day(newValues.dayOfTheWeek === 1 ? 7 : newValues.dayOfTheWeek - 1)
                     to.day(newValues.dayOfTheWeek === 1 ? 7 : newValues.dayOfTheWeek - 1)
-                    training.from = from.format()                    
-                    training.to = to.format()                    
+                    training.from = from.format()
+                    training.to = to.format()
                 }
                 if (newValues.fromTime) {
                     const fromTime = moment(newValues.fromTime, 'hh:mm:ss')
@@ -361,7 +361,7 @@ const bulkEdit = (query, newValues, auth) => {
                     from.hour(fromTime.hour())
                     from.minute(fromTime.minute())
                     from.second(fromTime.second())
-                    training.from = from.format()                    
+                    training.from = from.format()
                 }
                 if (newValues.toTime) {
                     const toTime = moment(newValues.toTime, 'hh:mm:ss')
@@ -369,7 +369,7 @@ const bulkEdit = (query, newValues, auth) => {
                     to.hour(toTime.hour())
                     to.minute(toTime.minute())
                     to.second(toTime.second())
-                    training.to = to.format()                    
+                    training.to = to.format()
                 }
 
                 return checkCollidingTraining(training).then(training => training.save())

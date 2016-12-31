@@ -25,14 +25,14 @@ angular.module('kotei')
                 roles: ['client', 'coach', 'admin']
         })
     })
-    .controller('AttendeeController', function (R, $state, $moment, $filter, training, clients, userInfoService, administrationService, modalService) {
+    .controller('AttendeeController', function (R, $state, $moment, $filter, $uibModal, training, clients, userInfoService, administrationService, modalService) {
 
         this.userInfo = userInfoService.getUserInfo()
 
         if (!training || !training.canSeeAttendees) {
             return $state.go('welcome')
         }
-        
+
         const displayName = (client) => {
             return client.fullName == client.nickname
                 ? client.fullName
@@ -80,7 +80,7 @@ angular.module('kotei')
         this.canJoin =  training.canJoin
         this.canLeave = training.canLeave
 
-        
+
         this.toggleAttendee = (attendee) => {
 
             if (!this.userInfo.isClient) {
@@ -117,11 +117,51 @@ angular.module('kotei')
 
         this.deleteTraining = () => {
 
-            modalService.decision('Edzés törlése', 'Biztos, hogy törölni akarod ezt az órát? A jelenlegi feliratkozók alkalma jóváírásra kerül, a bérletük érvényessége meghosszabbodik egy héttel, és email értesítést kapnak arról, hogy elmarad az óra.')
-            .then(() => administrationService.deleteTraining(training.id))
+            $uibModal.open({
+                template: `
+                    <div>
+                        <div class="modal-header">
+                            <h3 class="modal-title">Edzés törlése</h3>
+                        </div>
+                        <div class="modal-body">
+                            Biztos, hogy törölni akarod ezt az órát? A jelenlegi feliratkozók alkalma jóváírásra kerül,
+                            <span ng-if="vm.extend">a bérletük érvényessége meghosszabbodik egy héttel,</span>
+                            és email értesítést kapnak arról, hogy elmarad az óra.
+                        </div>
+                        <div class="checkbox" style="margin: 10px;">
+                        <label>
+                            <input type="checkbox" ng-model="vm.extend">
+                                A bérletek érvényesség hosszabbodjon meg egy héttel
+                        </label>
+                        </div>
+                        <div class="modal-footer">
+                            <button
+                                class="btn btn-primary pull-left"
+                                type="button"
+                                ng-click="vm.cancel()">Mégsem</button>
+                            <button
+                                class="btn btn-primary"
+                                type="button"
+                                ng-click="vm.delete()">Törlés</button>
+                        </div>
+                    </div>
+                `,
+                controller: function ($uibModalInstance) {
+                    this.extend = true
+                    this.delete = () => {
+                        administrationService.deleteTraining(training.id, this.extend)
+                            .then(() => $uibModalInstance.close())
+                            .catch(error => $uibModalInstance.dismiss(error))
+                    }
+                    this.cancel = () => {
+                        $uibModalInstance.dismiss('no')
+                    }
+                },
+                controllerAs: 'vm'
+            }).result
             .then(() => modalService.info(this.title, 'Az edzés törölve lett'))
             .then(() => $state.go('schedule'))
-            .catch(error => this.error = error === 'no' ? '' : error)
+            .catch(error => this.error = ['no', 'backdrop click'].indexOf(error) > -1 ? null : error)
         }
 
         this.join = () => {

@@ -60,13 +60,13 @@ const sendNewSubscriptionNotification = (subscription) => {
     })
 }
 
-const sendCancelledTrainingNotification = (training, subscription) => {
+const sendCancelledTrainingNotification = (training, subscription, extend) => {
 
     return sendMail({
         from: from,
         to: subscription.Client.email,
         subject: mails.sendCancelledTrainingNotification.subject,
-        html: mails.sendCancelledTrainingNotification.html(training, subscription)
+        html: mails.sendCancelledTrainingNotification.html(training, subscription, extend)
     })
 }
 

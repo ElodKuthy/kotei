@@ -94,7 +94,7 @@ router.get('/training/type', handler(trainingService.findTrainingType, { query: 
 router.get('/training/category', handler(trainingService.findTrainingCategory, { query: 'query' }))
 router.post('/training', handler(trainingService.add, { body: 'newTraining' }))
 router.post('/training/bulk', handler(trainingService.bulkEdit, { query: 'query', body: 'newValues' }))
-router.delete('/training/:trainingId', handler(trainingService.remove, { url: 'trainingId' }))
+router.delete('/training/:trainingId', handler(trainingService.remove, { url: 'trainingId', query: 'query' }))
 router.delete('/training', handler(trainingService.removeAll, { query: 'query' }))
 
 router.post('/attendee', handler(attendeeService.add, { query: ['training_id', 'client_id'] }))

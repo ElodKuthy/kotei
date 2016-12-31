@@ -147,7 +147,7 @@ const sendNewSubscriptionNotification = {
 
 const sendCancelledTrainingNotification = {
     subject: 'Teszt Gym - Elmarad egy óra',
-    html: (training, subscription) =>
+    html: (training, subscription, extend) =>
         `<html>
         <head>
             <style type="text/css">
@@ -162,7 +162,7 @@ const sendCancelledTrainingNotification = {
 
         <div>Sajnos az alábbi óra elmarad: ${training.TrainingType.name} / ${moment(training.from).format('YYYY. MM. DD. HH:mm')}</div>
 
-        <div>Természetesen az elmaradó alkalom jóváírásra került a bérleteden, és a bérleted érvényességét is meghosszabítottuk egy héttel.</div>
+        <div>Természetesen az elmaradó alkalom jóváírásra került a bérleteden${extend ? ', és a bérleted érvényességét is meghosszabítottuk egy héttel' : ''}.</div>
 
         <div>
             Üdvözlettel,<br/>
