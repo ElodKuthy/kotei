@@ -181,5 +181,6 @@ module.exports = {
     sendResetPasswordToken: sendResetPasswordToken,
     sendRegistration: sendRegistration,
     sendSubscriptionAlmostDepletedNotification: sendSubscriptionAlmostDepletedNotification, 
-    sendNewSubscriptionNotification: sendNewSubscriptionNotification
+    sendNewSubscriptionNotification: sendNewSubscriptionNotification,
+    sendCancelledTrainingNotification
 }
