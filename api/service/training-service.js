@@ -198,16 +198,23 @@ const find = (query, auth) => {
                 && moment().add({ hours: rules.minHoursToLeaveTraining() }).isBefore(training.from)
         }
 
-        if (auth.isClient || (auth.isCoach && training.Coach.id !== auth.id && !rules.coachSeeAllClients())) {
-            delete training.dataValues.max
-            delete training.dataValues.Subscriptions
-        }
-
         training.dataValues.canModify = auth.isAdmin
             || (auth.isCoach 
                 && (training.Coach.id === auth.id || rules.coachSeeAllClients()) 
                 && (rules.coachCanModifyHistory() 
                     || moment().add({ hours: rules.minHoursToLeaveTraining() }).isBefore(training.from)))
+
+        training.dataValues.canSeeAttendees =
+            auth.isAdmin
+            || rules.clientCanSeeAttendees()
+            || (auth.isCoach && rules.coachSeeAllClients())
+            || (auth.isCoach && training.Coach.id === auth.id)
+
+        if (!training.dataValues.canSeeAttendees) {
+            delete training.dataValues.max
+            delete training.dataValues.Subscriptions
+        }
+
         return training
     }, trainings))
     .catch((error) => {

@@ -55,7 +55,8 @@ angular.module('kotei')
                 roles: ['client', 'coach', 'admin']
         })
     })
-    .controller('ScheduleController', function (R, $state, $moment, from, to, trainings, userInfoService, administrationService) {
+    .controller('ScheduleController', function (R, $state, $moment, from, to, trainings, userInfoService, administrationService,
+        modalService) {
 
         this.previous = {
             from: $moment(from).subtract({ week: 1 }).format('YYYY-MM-DD'),
@@ -66,6 +67,8 @@ angular.module('kotei')
             from: $moment(from).add({ week: 1 }).format('YYYY-MM-DD'),
             to: $moment(to).add({ week: 1 }).format('YYYY-MM-DD'),
         }
+
+        this.title = `Órarend ${$moment(from).format('YYYY. MM. DD.')} - ${$moment(to).format('YYYY. MM. DD.')}`
 
         this.userInfo = userInfoService.getUserInfo()
 
@@ -118,6 +121,7 @@ angular.module('kotei')
                 canJoin: training.canJoin,
                 canLeave: training.canLeave,
                 canModify: training.canModify,
+                canSeeAttendees: training.canSeeAttendees,
                 isCoach: training.Coach.id === this.userInfo.id
             })
         })
@@ -137,16 +141,16 @@ angular.module('kotei')
         })
 
         this.manipulate = (training) => {
-            if (training.canModify || training.isCoach) {
+            if (training.canSeeAttendees || training.canModify || training.isCoach) {
                 $state.go('attendee-list', { trainingId: training.id })
             } else if (training.canJoin) {
                 administrationService.addAttendee(training.id, this.userInfo.id)
                     .then(() => $state.reload())
-                    .catch((error) => this.addClientError = error)
+                    .catch(error => modalSerive.info(this.title, error))
             } else if (training.canLeave) {
                 administrationService.removeAttendee(training.id, this.userInfo.id)
                     .then(() => $state.reload())
-                    .catch((error) => this.error = error)
+                    .catch(error => modalSerive.info(this.title, error))
             }
         }
     })

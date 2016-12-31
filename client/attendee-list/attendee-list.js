@@ -22,14 +22,14 @@ angular.module('kotei')
                         return userInfoService.getUserInfo().isClient ? [] : infoService.getAllClients()
                     }
                 },
-                roles: ['coach', 'admin']
+                roles: ['client', 'coach', 'admin']
         })
     })
     .controller('AttendeeController', function (R, $state, $moment, $filter, training, clients, userInfoService, administrationService, modalService) {
 
         this.userInfo = userInfoService.getUserInfo()
 
-        if (!training) {
+        if (!training || !training.canSeeAttendees) {
             return $state.go('welcome')
         }
         
@@ -58,7 +58,7 @@ angular.module('kotei')
             coach: training.Coach.nickname,
             location: training.Location.name,
             count: training.Subscriptions.length,
-            max: training.max
+            max: training.max,
         }
 
         this.title = `${this.training.name} - ${$filter('date')(this.training.date, 'yyyy. MM. dd. HH:mm')}`
@@ -77,6 +77,9 @@ angular.module('kotei')
 
         this.canAdd = (this.training.count < this.training.max) && training.canModify
         this.canModify = training.canModify
+        this.canJoin =  training.canJoin
+        this.canLeave = training.canLeave
+
         
         this.toggleAttendee = (attendee) => {
 
@@ -120,4 +123,17 @@ angular.module('kotei')
             .then(() => $state.go('schedule'))
             .catch(error => this.error = error === 'no' ? '' : error)
         }
+
+        this.join = () => {
+            administrationService.addAttendee(training.id, this.userInfo.id)
+                .then(() => $state.reload())
+                .catch(error => modalSerive.info(this.title, error))
+        }
+
+        this.leave = () => {
+                administrationService.removeAttendee(training.id, this.userInfo.id)
+                    .then(() => $state.reload())
+                    .catch(error => modalSerive.info(this.title, error))
+        }
+
     })

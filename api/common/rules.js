@@ -55,10 +55,19 @@ getRule({
     parser: boolParser    
 })
 
+var clientCanSeeAttendees = false
+getRule({
+    set: value => clientCanSeeAttendees = value,
+    name: 'ClientCanSeeAttendees',
+    validator: boolValidator,
+    parser: boolParser
+})
+
 module.exports = {
     allowFreeCreditsOnCreateSubcription: () => allowFreeCreditsOnCreateSubcription,
     minHoursToLeaveTraining: () => minHoursToLeaveTraining,
     coachCanModifyHistory: () => coachCanModifyHistory,
     coachSeeAllClients: () => coachSeeAllClients,
-    coachCanModifyOthersTrainings: () => coachCanModifyOthersTrainings
+    coachCanModifyOthersTrainings: () => coachCanModifyOthersTrainings,
+    clientCanSeeAttendees: () => clientCanSeeAttendees
 }

@@ -30,9 +30,9 @@
                                         </uib-progressbar>
                                     </div>
                                     <div class="button-container">
-                                        <button class="btn btn-primary" ng-if="training.canJoin" ng-click="schedule.manipulate(training)">Jelentkezem</button>
-                                        <button class="btn btn-primary" ng-if="training.canLeave" ng-click="schedule.manipulate(training)">Kihagyom</button>
-                                        <button class="btn btn-primary" ng-if="training.canModify || training.isCoach" ng-click="schedule.manipulate(training)">Részletek</button>
+                                        <button class="btn btn-primary" ng-if="!training.canSeeAttendees && training.canJoin" ng-click="schedule.manipulate(training)">Jelentkezem</button>
+                                        <button class="btn btn-primary" ng-if="!training.canSeeAttendees && training.canLeave" ng-click="schedule.manipulate(training)">Kihagyom</button>
+                                        <button class="btn btn-primary" ng-if="training.canSeeAttendees" ng-click="schedule.manipulate(training)">Részletek</button>
                                     </div>
                                 </div>
                             </td>
