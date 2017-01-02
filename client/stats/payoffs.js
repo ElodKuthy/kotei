@@ -23,7 +23,8 @@ angular.module('kotei')
     .controller('PayoffsController', function ($scope, $moment, userInfo, infoService) {
         this.month = $moment().subtract({month: 1}).startOf('month').toDate()
         this.isAdmin = userInfo.isAdmin
-        
+        this.header = ['foo']
+
         this.dateChanged = () => {
             if (this.last && this.last.isSame(this.month, 'month')) {
                 return
@@ -40,8 +41,21 @@ angular.module('kotei')
                     })
                     return payoff
                 })
+                this.header = this.payoffs[0].amounts.map(amount => amount.coach.fullName)
+                if (this.isAdmin) {
+                    this.header.unshift('')
+                }
             })
         }
 
         $scope.$watch(() => this.month, this.dateChanged)
+
+        this.export = () =>
+            this.payoffs.map(payoff => {
+                let result = payoff.amounts.map(amount => isNaN(amount.amount) ? amount.amount : Math.round(amount.amount))
+                if (this.isAdmin) {
+                    result.unshift(payoff.coach.fullName)
+                }
+                return result
+            })
 })

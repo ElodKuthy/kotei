@@ -3,8 +3,8 @@
         <div class="col-xs-12">
             <div class="calendar">
                 <label for="month">Hónap</label>
-                <ko-calendar 
-                    id="month" 
+                <ko-calendar
+                    id="month"
                     model="vm.month"
                     format="yyyy. MMMM"
                     minDate="vm.minDate"
@@ -22,6 +22,16 @@
         </div>
         <div class="col-xs-12" ng-if="vm.trainings && vm.trainings.length">
             <h3>Látogatottság</h3>
+            <div class="export-button">
+                <button
+                    class="btn btn-primary"
+                    csv-header="vm.header"
+                    ng-csv="vm.export()"
+                    filename="latogatottsag.csv"
+                    charset="utf-16"
+                    add-bom="true">CSV export
+                </button>
+            </div>
             <div class="table-responsive">
                 <table class="table table-bordered">
                     <thead>

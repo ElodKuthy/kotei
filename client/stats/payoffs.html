@@ -10,6 +10,16 @@
             <h3 ng-if="!payoffs.payoffs || !payoffs.payoffs.length">
                 Adatok betöltése ...
             </h3>
+            <div ng-if="payoffs.payoffs && payoffs.payoffs.length" class="export-button">
+                <button
+                    class="btn btn-primary"
+                    csv-header="payoffs.header"
+                    ng-csv="payoffs.export()"
+                    filename="elszamolas.csv"
+                    charset="utf-16"
+                    add-bom="true">CSV export
+                </button>
+            </div>
             <div ng-if="payoffs.payoffs && payoffs.payoffs.length" class="table-responsive">
             <table class="table table-bordered">
                 <thead>

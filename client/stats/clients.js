@@ -20,7 +20,7 @@ angular.module('kotei')
                 roles: ['coach', 'admin']
         })
     })
-    .controller('ClientsController', function ($scope, $state, $moment, userInfo, infoService) {
+    .controller('ClientsController', function ($scope, $state, $moment, $filter, userInfo, infoService) {
 
         this.isAdmin = userInfo.isAdmin
         this.month = $moment().subtract({month: 1}).startOf('month').toDate()
@@ -41,4 +41,37 @@ angular.module('kotei')
         this.userProfile = userId => $state.go('administration.user-profile', { userId })
 
         this.fetchStats()
+
+        this.newClientsHeader = ['Név', 'Feliratkozás']
+        this.passiveClientsHeader = ['Név', 'Feliratkozás', 'Utolsó bérlet vásárlás', 'Utolsó bérlet lejára']
+        if (this.isAdmin) {
+            this.newClientsHeader.push('Edző')
+            this.passiveClientsHeader.push('Edző')
+        }
+
+        this.exportNewClients = () =>
+            this.clients.news.map(client => {
+                let result = {
+                    client: client.fullName + (client.fullName !== client.nickname ? '(' + client.nickname + ')' : ''),
+                    created: $filter('date')(client.created_at, 'yyyy-MM-dd')
+                }
+                if (this.isAdmin) {
+                    result.coach = client.Coach && client.Coach.fullName + (client.Coach.fullName !== client.Coach.nickname ? '(' + client.Coach.nickname + ')' : '')
+                }
+                return result
+            })
+
+        this.exportPassiveClients = () =>
+            this.clients.passives.map(client => {
+                let result = {
+                    client: client.fullName + (client.fullName !== client.nickname ? '(' + client.nickname + ')' : ''),
+                    created: $filter('date')(client.created_at, 'yyyy-MM-dd'),
+                    from: $filter('date')(client.from, 'yyyy-MM-dd'),
+                    to: $filter('date')(client.to, 'yyyy-MM-dd')
+                }
+                if (this.isAdmin) {
+                    result.coach = client.Coach && client.Coach.fullName + (client.Coach.fullName !== client.Coach.nickname ? '(' + client.Coach.nickname + ')' : '')
+                }
+                return result
+            })
 })

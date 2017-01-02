@@ -1,8 +1,18 @@
 <div class="subscriptions container">
     <div class="row">
         <div class="col-xs-12" ng-if="vm.subscriptions && vm.subscriptions.active">
+            <h3>Aktív bérletek</h3>
+            <div class="export-button">
+                <button
+                    class="btn btn-primary"
+                    csv-header="vm.activeSubscriptionsHeader"
+                    ng-csv="vm.exportActiveSubscriptions()"
+                    filename="aktiv-berletek.csv"
+                    charset="utf-16"
+                    add-bom="true">CSV export
+                </button>
+            </div>
             <div class="table-responsive">
-                <h3>Aktív bérletek</h3>
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -29,8 +39,8 @@
             <h3>Eladott bérletek</h3>
             <div class="calendar">
                 <label for="month">Hónap</label>
-                <ko-calendar 
-                    id="month" 
+                <ko-calendar
+                    id="month"
                     model="vm.month"
                     format="yyyy. MMMM"
                     minDate="vm.minDate"
@@ -47,6 +57,16 @@
             </h3>
         </div>
         <div class="col-xs-12" ng-if="vm.subscriptions && vm.subscriptions.sold">
+            <div class="export-button">
+                <button
+                    class="btn btn-primary"
+                    csv-header="vm.soldSubscriptionsHeader"
+                    ng-csv="vm.exportSoldSubscriptions()"
+                    filename="berletek.csv"
+                    charset="utf-16"
+                    add-bom="true">CSV export
+                </button>
+            </div>
             <div class="table-responsive">
                 <table class="table table-bordered">
                     <thead>

@@ -3,8 +3,8 @@
         <div class="col-xs-12 selector-row">
             <div class="calendar">
                 <label for="month">Hónap</label>
-                <ko-calendar 
-                    id="month" 
+                <ko-calendar
+                    id="month"
                     model="vm.month"
                     format="yyyy. MMMM"
                     minDate="vm.minDate"
@@ -19,6 +19,16 @@
             <h3 ng-if="!vm.overviews">
                 Adatok betöltése ...
             </h3>
+            <div ng-if="vm.overviews" class="export-button">
+                <button
+                    class="btn btn-primary"
+                    csv-header="vm.headers"
+                    ng-csv="vm.export()"
+                    filename="osszefoglalo.csv"
+                    charset="utf-16"
+                    add-bom="true">CSV export
+                </button>
+            </div>
             <div ng-if="vm.overviews" class="table-responsive">
             <table class="table table-bordered">
                 <thead>
@@ -39,12 +49,12 @@
                         <td class="number">{{overview.trainingsCount}}</td>
                         <td class="number">{{overview.max}}</td>
                         <td class="number">{{overview.subscriptions}}</td>
-                        <td class="number">{{(overview.max ? (overview.subscriptions / overview.max * 100) : 0) | number : 0}} %</td>
+                        <td class="number">{{overview.utilization * 100 | number : 2}} %</td>
                         <td class="number">{{overview.attendees}}</td>
-                        <td class="number">{{(overview.subscriptions ? (overview.attendees / overview.subscriptions * 100) : 0) | number : 0}} %</td>
-                        <td class="number">{{(overview.sold) | currency : 'Ft': 0 }}</td>
-                        <td class="number">{{(overview.spent) | currency : 'Ft': 0 }}</td>
-                        <td ng-if="vm.isAdmin">{{overview.Coach.fullName + (overview.Coach.fullName !== overview.Coach.nickname ? '(' + overview.Coach.nickname + ')' : '')}}</td>
+                        <td class="number">{{overview.foo * 100 | number : 2}} %</td>
+                        <td class="number">{{overview.sold | currency : 'Ft': 0 }}</td>
+                        <td class="number">{{overview.spent | currency : 'Ft': 0 }}</td>
+                        <td ng-if="vm.isAdmin">{{overview.coach}}</td>
                     </tr>
                 </tbody>
             </table>

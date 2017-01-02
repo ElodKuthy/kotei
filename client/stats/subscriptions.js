@@ -21,7 +21,7 @@ angular.module('kotei')
                 roles: ['coach', 'admin']
         })
     })
-    .controller('SubscriptionsController', function ($scope, $state, $moment, userInfo, active, infoService) {
+    .controller('SubscriptionsController', function ($scope, $state, $moment, $filter, userInfo, active, infoService) {
 
         this.isAdmin = userInfo.isAdmin
         this.month = $moment().subtract({month: 1}).startOf('month').toDate()
@@ -49,4 +49,39 @@ angular.module('kotei')
         this.userProfile = userId => $state.go('administration.user-profile', { userId })
 
         this.fetchStats()
+
+        this.activeSubscriptionsHeader = ['Tanítvány', 'Maradék alkalmak', 'Lejárat', 'Típus']
+        this.soldSubscriptionsHeader = ['Tanítvány', 'Alkalmak', 'Ár', 'Vásárlás', 'Lejárat', 'Típus']
+        if (this.isAdmin) {
+            this.activeSubscriptionsHeader.push('Edzők')
+            this.soldSubscriptionsHeader.push('Edzők')
+        }
+
+        this.exportActiveSubscriptions = () => this.subscriptions.active.map(({Client, remaining, to, name, Coach}) => {
+            let result = {
+                client: Client.fullName + (Client.fullName !== Client.nickname ? '(' + Client.nickname + ')' : ''),
+                remaining,
+                to: $filter('date')(to, 'yyyy-MM-dd'),
+                name
+            }
+            if (this.isAdmin) {
+                result.coach = Coach ? Coach.fullName + (Coach.fullName !== Coach.nickname ? '(' + Coach.nickname + ')' : '') : ''
+            }
+            return result
+        })
+
+        this.exportSoldSubscriptions = () => this.subscriptions.sold.map(({Client, amount, price, from, to, name, Coach}) => {
+            let result = {
+                client: Client.fullName + (Client.fullName !== Client.nickname ? '(' + Client.nickname + ')' : ''),
+                amount,
+                price,
+                from: $filter('date')(from, 'yyyy-MM-dd'),
+                to: $filter('date')(to, 'yyyy-MM-dd'),
+                name
+            }
+            if (this.isAdmin) {
+                result.coach = Coach ? Coach.fullName + (Coach.fullName !== Coach.nickname ? '(' + Coach.nickname + ')' : '') : ''
+            }
+            return result
+        })
 })

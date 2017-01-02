@@ -3,8 +3,8 @@
         <div class="col-xs-12">
             <div class="calendar">
                 <label for="month">Hónap</label>
-                <ko-calendar 
-                    id="month" 
+                <ko-calendar
+                    id="month"
                     model="vm.month"
                     format="yyyy. MMMM"
                     minDate="vm.minDate"
@@ -22,6 +22,16 @@
         </div>
         <div class="col-xs-12" ng-if="vm.clients && vm.clients.news && vm.clients.news.length">
             <h3>Új tanítványok ({{vm.clients.news.length}} fő)</h3>
+            <div class="export-button">
+                <button
+                    class="btn btn-primary"
+                    csv-header="vm.newClientsHeader"
+                    ng-csv="vm.exportNewClients()"
+                    filename="uj_belepok.csv"
+                    charset="utf-16"
+                    add-bom="true">CSV export
+                </button>
+            </div>
             <div class="table-responsive">
                 <table class="table table-bordered">
                     <thead>
@@ -43,6 +53,16 @@
         </div>
         <div class="col-xs-12" ng-if="vm.clients && vm.clients.passives && vm.clients.passives.length">
             <h3>Passzív tanítványok ({{vm.clients.passives.length}} fő)</h3>
+            <div class="export-button">
+                <button
+                    class="btn btn-primary"
+                    csv-header="vm.passiveClientsHeader"
+                    ng-csv="vm.exportPassiveClients()"
+                    filename="passzivok.csv"
+                    charset="utf-16"
+                    add-bom="true">CSV export
+                </button>
+            </div>
             <div class="table-responsive">
                 <table class="table table-bordered">
                     <thead>
