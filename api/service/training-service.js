@@ -124,14 +124,32 @@ const add = (training, auth) => {
         .then(() => Promise.resolve(texts.successfulTrainingCreation))
 }
 
-const find = (query, auth) => {
+const findHashed = (query, auth) => find(query, auth, true)
+
+const find = (query, auth, hashed) => {
+
     if (!auth.isAuth) {
         return Promise.reject(errors.unauthorized())
+    }
+    let attributes = ['id', 'from', 'to', 'max', 'training_category_id']
+    let group = null
+    let order = null
+    if (hashed) {
+        attributes.push([
+            sequelize.fn('CONCAT',
+                sequelize.fn('WEEKDAY', sequelize.col('Training.from')),
+                sequelize.fn('DATE_FORMAT', sequelize.col('Training.from'), '%H'),
+                sequelize.fn('DATE_FORMAT', sequelize.col('Training.from'), '%i'),
+                sequelize.col('Training.location_id')
+            ), 'hash'
+        ])
+        group = ['hash']
+        order = ['hash']
     }
 
     return Promise.all([
         Training.findAll(parser.parseQuery({
-            attributes: ['id', 'from', 'to', 'max', 'training_category_id'],
+            attributes,
             include: [{
                 attributes: ['id', 'name'],
                 model: TrainingCategory
@@ -155,7 +173,9 @@ const find = (query, auth) => {
                     model: User,
                     as: 'Client'
                 }]
-            }]
+            }],
+            group,
+            order
         }, query)),
         Subscription.findAll({
             where: {
@@ -401,6 +421,7 @@ const removeAll = (query, auth) => {
 module.exports = {
     add,
     find,
+    findHashed,
     findTrainingType,
     findTrainingCategory,
     remove,

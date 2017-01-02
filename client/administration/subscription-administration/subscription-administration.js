@@ -5,7 +5,7 @@ angular.module('kotei')
             .state('administration.new-subscription', {
                 url: '/new-subscription',
                 params: {
-                    clientId: null,  
+                    clientId: null,
                 },
                 views: {
                     'navbar@': {
@@ -46,7 +46,7 @@ angular.module('kotei')
         this.client = clientId ? R.find(client => client.id === clientId, this.clients) : null
 
         this.from = $moment().startOf('day').toDate()
-        
+
         this.sendEmail = false
 
         const decorateTrainings = (trainings) => {
@@ -57,13 +57,13 @@ angular.module('kotei')
             })
             return trainings
         }
-        
+
         const filterTrainings = () => {
             if (this.isAdmin || this.showAllTraining) {
                 this.trainings = this.allTrainings
             } else {
                 this.trainings = R.filter((training) => training.Coach.id === this.coach.id, this.allTrainings || [])
-            }            
+            }
         }
 
         this.typeChanged = () => {
@@ -90,7 +90,7 @@ angular.module('kotei')
                         if (template.CreditTemplates.length > 1) {
                             template.CreditTemplates = r.sort((a, b) => a.TrainingType.name >= b.TrainingType.name, template.CreditTemplates)
                             template.CreditTemplates = R.map((creditTemplate) => {
-                               creditTemplate.amountPerWeek = 
+                               creditTemplate.amountPerWeek =
                                     template.valid >= 7
                                     ? Math.ceil(creditTemplate.amount * 7 / template.valid)
                                     : creditTemplate.amount
@@ -109,7 +109,7 @@ angular.module('kotei')
                             }, '')
                         } else {
                             template.amount = template.CreditTemplates[0].amount
-                            template.CreditTemplates[0].amountPerWeek = 
+                            template.CreditTemplates[0].amountPerWeek =
                                  (template.valid >= 7
                                 ? Math.ceil(template.amount * 7 / template.valid)
                                 : template.amount)
@@ -153,12 +153,11 @@ angular.module('kotei')
                                 }
                             })
                             return acc
-                        }, []).sort((a, b) => a >= b) 
+                        }, []).sort((a, b) => a >= b)
 
-                    const oneDay = !this.templates.some((template) => template.SubscriptionVariant.valid > 1)
-                    const format = oneDay ? 'day' : 'isoweek'
-                    const from = $moment(this.from).startOf(format).format()
-                    const to = $moment(this.from).endOf(format).format()
+                    const days = this.templates.reduce((acc, curr) => Math.max(acc, curr.SubscriptionVariant.valid), 0)
+                    const from = $moment(this.from).startOf('day').format('YYYY-MM-DD')
+                    const to = $moment(this.from).startOf('day').add({ days }).format('YYYY-MM-DD')
 
                     infoService.getTrainingsByDateAndType(from, to, trainingTypeIds, trainingCategoryIds)
                         .then((trainings) => {
@@ -172,16 +171,16 @@ angular.module('kotei')
         $scope.$watch(() => this.coach, this.typeChanged)
 
         $scope.$watch(() => this.from, this.typeChanged)
-        
+
         $scope.$watch(() => this.showAllTraining, filterTrainings)
 
         this.clickTraining = (training) => {
             training.selected = !training.selected
         }
-        
+
         this.invalid = () => !this.client || !this.coach || !this.variant || !this.credits
             || (!this.variant.allowFreeCredits && (R.filter(training => training.selected, this.trainings).length < R.reduce((acc, credit) => acc + credit.amountPerWeek, 0, this.credits)))
-        
+
         this.submit = () => {
             delete this.error
 
@@ -194,8 +193,8 @@ angular.module('kotei')
             })
 
             var subscription = {
-                from: $moment(this.from).startOf('day').format(),
-                to: $moment(this.from).startOf('day').add({ days: this.variant.valid }).subtract({ seconds: 1 }).format(),
+                from: $moment(this.from).startOf('day').format('YYYY-MM-DD'),
+                to: $moment(this.from).startOf('day').add({ days: this.variant.valid }).format('YYYY-MM-DD'),
                 Credits: this.credits,
                 price: this.credits.price,
                 client_id: this.client.id,

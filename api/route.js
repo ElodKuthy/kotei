@@ -92,6 +92,7 @@ router.delete('/subscription/template/:id', handler(subscriptionService.deleteSu
 router.get('/training', handler(trainingService.find, { query: 'query' }))
 router.get('/training/type', handler(trainingService.findTrainingType, { query: 'query' }))
 router.get('/training/category', handler(trainingService.findTrainingCategory, { query: 'query' }))
+router.get('/training/hash', handler(trainingService.findHashed, { query: 'query' }))
 router.post('/training', handler(trainingService.add, { body: 'newTraining' }))
 router.post('/training/bulk', handler(trainingService.bulkEdit, { query: 'query', body: 'newValues' }))
 router.delete('/training/:trainingId', handler(trainingService.remove, { url: 'trainingId', query: 'query' }))
