@@ -181,6 +181,15 @@ angular.module('kotei')
         this.invalid = () => !this.client || !this.coach || !this.variant || !this.credits
             || (!this.variant.allowFreeCredits && (R.filter(training => training.selected, this.trainings).length < R.reduce((acc, credit) => acc + credit.amountPerWeek, 0, this.credits)))
 
+        const calculateFrom = (from) => {
+            const previousWeek = $moment(from).subtract({ week: 1})
+            if (previousWeek.isAfter(this.from)) {
+                return calculateFrom(previousWeek)
+            } else {
+                return from
+            }
+        }
+
         this.submit = () => {
             delete this.error
 
@@ -188,7 +197,10 @@ angular.module('kotei')
 
             this.trainings.forEach((training) => {
                 if (training.selected) {
-                    defaultTrainings.push(training)
+                    defaultTrainings.push({
+                        from: calculateFrom(training.from),
+                        Location: training.Location
+                    })
                 }
             })
 
