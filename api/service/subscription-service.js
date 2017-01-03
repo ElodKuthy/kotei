@@ -72,7 +72,7 @@ const findSubscriptionTemplate = (query, auth) => {
         subscriptions.map(subscription => {
             if (subscription.dataValues.allowFreeCredits === null) {
                 subscription.dataValues.allowFreeCredits = allowFreeCreditsOnCreateSubcription
-            }        
+            }
             return subscription
         })
         return subscriptions
@@ -154,13 +154,13 @@ const addSubscription = (subscription) => {
     })
 }
 
-const orDatesAndLocation = R.map((training) => { 
-    return { 
+const orDatesAndLocation = R.map((training) => {
+    return {
         $and: [
             { from: training.from },
             { location_id: training.Location.id }
-        ] 
-    } 
+        ]
+    }
 })
 
 const addOneWeek = R.map((training) => {
@@ -175,14 +175,16 @@ const addToDefaultTraining = (clientId, trainings, index, auth) => {
     if (trainings.length <= index) {
         return Promise.resolve([])
     }
-    
+
     return attendeeService.add(trainings[index].id, clientId, auth)
-        .catch(() => Promise.resolve())
+        .catch(() => {
+            return Promise.resolve()
+        })
         .then(() => addToDefaultTraining(clientId, trainings, index + 1, auth))
 }
 
 const addToDefaultTrainings = (subscription, defaultTrainings, auth) => {
-    
+
     if (!defaultTrainings || !defaultTrainings.length || moment(defaultTrainings[0].from).isAfter(subscription.to)) {
         return Promise.resolve([])
     }
@@ -216,7 +218,7 @@ const sendEmail = (newSubscription) => {
                 attributes: ['familyName', 'givenName', 'nickname', 'email'],
                 model: User,
                 as: 'Client'
-            }, {            
+            }, {
                 attributes: ['amount'],
                 model: Credit,
                 as: 'Credits'
@@ -226,7 +228,7 @@ const sendEmail = (newSubscription) => {
             mailerService.sendNewSubscriptionNotification(subscription).then(result => logger.info(result)).catch((error => logger.error(error)))
         })
     }
-    
+
     return newSubscription
 }
 
@@ -295,7 +297,7 @@ const find = (query, auth) => {
             attributes: ['id', 'familyName', 'givenName', 'nickname', 'email'],
             model: User,
             as: 'Client'
-        }, {            
+        }, {
             attributes: ['id', 'amount'],
             model: Credit,
             as: 'Credits',
@@ -334,10 +336,10 @@ const find = (query, auth) => {
                     && (training.Coach.id === auth.id || rules.coachCanModifyOthersTrainings())
                     && (rules.coachCanModifyHistory()
                         || moment().add({ hours: rules.minHoursToLeaveTraining() }).isBefore(training.from)))
-            training.dataValues.canLeave = 
+            training.dataValues.canLeave =
                 auth.isClient
                     && training.Subscriptions.find(subscription => subscription.Client.id === auth.id)
-                    && moment().add({ hours: rules.minHoursToLeaveTraining() }).isBefore(training.from)    
+                    && moment().add({ hours: rules.minHoursToLeaveTraining() }).isBefore(training.from)
             return training
         })
         return subscription
@@ -351,7 +353,7 @@ const remove = (args, auth) => {
     if (!auth.isAdmin && !auth.isCoach) {
         return Promise.reject(errors.unauthorized())
     }
-    
+
     return Subscription.findById(args.subscriptionId, {
             include: [Credit]
         })
@@ -359,11 +361,11 @@ const remove = (args, auth) => {
             if (!subscription) {
                 return Promise.reject(errors.invalidId())
             }
-            
+
             if (auth.isCoach && auth.id !== subscription.coach_id) {
                 return Promise.reject(errors.unauthorized())
             }
-            
+
             return Attendee.findAll({
                 where: {
                     subscription_id: args.subscriptionId
@@ -413,7 +415,7 @@ const updateSubscripitonTemplate = template => {
             creditTemplate.training_type_id = template.training_type_id,
             creditTemplate.coach_id = template.coach_id,
             creditTemplate.training_category_id = template.training_category_id
-            return creditTemplate.save()            
+            return creditTemplate.save()
         })
         .then(() => SubscriptionTemplate.findById(template.id))
         .then(templateToUpdate => {
@@ -448,7 +450,7 @@ const deleteSubscriptionTemplate = ({id}, auth) => {
     return SubscriptionTemplate.findById(id).then(template => {
         if (!template) {
             return Promise.reject(errors.invalidId())
-        }        
+        }
         return template.destroy()
     }).then(() => 'OK')
 }

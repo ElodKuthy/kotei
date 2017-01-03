@@ -218,6 +218,16 @@ const find = (query, auth, hashed) => {
                 && moment().add({ hours: rules.minHoursToLeaveTraining() }).isBefore(training.from)
         }
 
+        training.dataValues.canAdd = (
+            training.Subscriptions.length < training.max
+        ) && (
+            auth.isAdmin || (
+                auth.isCoach && (
+                    training.Coach.id === auth.id || rules.coachSeeAllClients()
+                )
+            )
+        )
+
         training.dataValues.canModify = auth.isAdmin
             || (auth.isCoach
                 && (training.Coach.id === auth.id || rules.coachSeeAllClients())
