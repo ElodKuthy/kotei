@@ -15,7 +15,7 @@ angular.module('kotei', [
     .constant('R', R)
     .constant('Chartist', Chartist)
     .value('globals', { trainingCategories: null })
-    .config(($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, jwtInterceptorProvider) => {
+    .config(($provide, $stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, jwtInterceptorProvider) => {
 
         $urlRouterProvider.otherwise('/')
 
@@ -36,8 +36,8 @@ angular.module('kotei', [
 
         //initialize get if not there
         if (!$httpProvider.defaults.headers.get) {
-            $httpProvider.defaults.headers.get = {}  
-        }    
+            $httpProvider.defaults.headers.get = {}
+        }
 
         // Answer edited to include suggestions from comments
         // because previous version of code introduced browser-related errors
@@ -49,6 +49,20 @@ angular.module('kotei', [
         $httpProvider.defaults.headers.get['Pragma'] = 'no-cache'
 
         $httpProvider.interceptors.push('jwtInterceptor')
+
+        $provide.factory('unathorizedInterceptor', function ($q) {
+            return {
+                'responseError': function(rejection) {
+                    if(rejection.status === 401 && localStorage.getItem('jwt')) {
+                        localStorage.removeItem('jwt')
+                        window.location.reload(true)
+                    }
+                    return $q.reject(rejection)
+                }
+            }
+        })
+
+        $httpProvider.interceptors.push('unathorizedInterceptor')
     })
     .run(($rootScope, userInfoService, $state) => {
         $rootScope.$on('$stateChangeStart', (event, toState, toParams, fromState, fromParams) => {
