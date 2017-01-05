@@ -304,7 +304,7 @@ const findTrainingCategory = (query, auth) => {
         Promise.reject(errors.missingOrInvalidParameters())
     })
 }
-const remove = ({trainingId}, query, auth) => {
+const remove = ({trainingId}, {extend}, auth) => {
 
     return Promise.all([
         Training.findById(trainingId, {
@@ -423,7 +423,7 @@ const removeAll = (query, auth) => {
     return Promise.all(Training.findAll(parser.parseQuery({}, query))
         .then(trainings => {
             return trainings.map(training => {
-                return remove({ trainingId: training.id }, auth)
+                return remove({ trainingId: training.id }, query, auth)
             })
         }))
 }

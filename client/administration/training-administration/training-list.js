@@ -23,7 +23,7 @@ angular.module('kotei')
                 roles: ['admin']
         })
     })
-    .controller('TrainingListController', function ($scope, $state, $moment, infoService, userInfoService, 
+    .controller('TrainingListController', function ($scope, $state, $moment, $uibModal, infoService, userInfoService,
         nameService, trainingTypes, coaches, locations, administrationService, modalService, trainingCategories) {
         this.title = 'Edzések'
         this.isAdmin = userInfoService.getUserInfo().isAdmin
@@ -83,7 +83,7 @@ angular.module('kotei')
                 .then(trainings => {
                     this.trainings = trainings.map(training => {
                         training.Coach.displayName = nameService.displayName(training.Coach)
-                        return training 
+                        return training
                     })
                     this.isLoading = false
                 })
@@ -121,7 +121,7 @@ angular.module('kotei')
                     toTime:             this.newValues.isToTime ? $moment(this.newValues.toTime).format('HH:mm:00') : undefined,
                     max:                this.newValues.max,
                     tillDate:           this.newValues.tillDate
-                    
+
                 })
                 .then(() => modalService.info('Edzések módosítása', 'Sikeres módosítás'))
                 .catch(err => modalService.info('Sikertelen módosítás', err))
@@ -129,22 +129,63 @@ angular.module('kotei')
         }
 
         this.deleteAll = () => {
-            modalService.decision('Edzések törlése', 'Biztos, hogy törölni akarod az összes órát? A jelenlegi feliratkozók alkalma jóváírásra kerül, a bérletük érvényessége meghosszabbodik egy héttel, és email értesítést kapnak arról, hogy elmarad az óra.')
-                .then(() => administrationService.deleteAllTrainings({
-                    fromDate:           this.filter.fromDate,
-                    toDate:             this.filter.toDate,
-                    trainingTypeId:     this.filter.trainingType && this.filter.trainingType.id,
-                    trainingCategoryId: this.filter.trainingCategory && this.filter.trainingCategory.id,
-                    coachId:            this.filter.coach && this.filter.coach.id,
-                    locationId:         this.filter.location && this.filter.location.id,
-                    dayOfTheWeek:       this.filter.dayOfTheWeek && this.filter.dayOfTheWeek.id,
-                    fromTime:           this.filter.isFromTime ? $moment(this.filter.fromTime).format('HH:mm:00') : undefined,
-                    toTime:             this.filter.isToTime ? $moment(this.filter.toTime).format('HH:mm:00') : undefined,
-                    max:                this.filter.max                    
-                }))
+            const filter = this.filter
+            $uibModal.open({
+                template: `
+                    <div>
+                        <div class="modal-header">
+                            <h3 class="modal-title">Edzések törlése</h3>
+                        </div>
+                        <div class="modal-body">
+                            Biztos, hogy törölni akarod az összes órát? A jelenlegi feliratkozók alkalma jóváírásra kerül,
+                            <span ng-if="vm.extend">a bérletük érvényessége meghosszabbodik egy héttel alkalmanként,</span>
+                            és email értesítést kapnak arról, hogy elmaradnak az órák.
+                        </div>
+                        <div class="checkbox" style="margin: 10px;">
+                        <label>
+                            <input type="checkbox" ng-model="vm.extend">
+                                A bérletek érvényesség hosszabbodjon meg egy héttel alkalmanként
+                        </label>
+                        </div>
+                        <div class="modal-footer">
+                            <button
+                                class="btn btn-primary pull-left"
+                                type="button"
+                                ng-click="vm.cancel()">Mégsem</button>
+                            <button
+                                class="btn btn-primary"
+                                type="button"
+                                ng-click="vm.delete()">Törlés</button>
+                        </div>
+                    </div>
+                `,
+                controller: function ($uibModalInstance) {
+                    this.extend = true
+                    this.delete = () => {
+                        administrationService.deleteAllTrainings({
+                            fromDate:           filter.fromDate,
+                            toDate:             filter.toDate,
+                            trainingTypeId:     filter.trainingType && filter.trainingType.id,
+                            trainingCategoryId: filter.trainingCategory && filter.trainingCategory.id,
+                            coachId:            filter.coach && filter.coach.id,
+                            locationId:         filter.location && filter.location.id,
+                            dayOfTheWeek:       filter.dayOfTheWeek && filter.dayOfTheWeek.id,
+                            fromTime:           filter.isFromTime ? $moment(filter.fromTime).format('HH:mm:00') : undefined,
+                            toTime:             filter.isToTime ? $moment(filter.toTime).format('HH:mm:00') : undefined,
+                            max:                filter.max
+                        }, this.extend)
+                        .then(() => $uibModalInstance.close())
+                        .catch(error => $uibModalInstance.dismiss(error))
+                    }
+                    this.cancel = () => {
+                        $uibModalInstance.dismiss('no')
+                    }
+                },
+                controllerAs: 'vm'
+            }).result
                 .then(() => modalService.info(this.title, 'Az edzések törölve lettek'))
                 .catch(error => {
-                    if (error !== 'no') {
+                    if (this.error = ['no', 'backdrop click'].indexOf(error) === -1) {
                         modalService.info('Sikertelen törlés', error)
                     }
                 })

@@ -48,7 +48,7 @@ angular.module('kotei')
             resendRegistration: (userId) => post('/api/user/resend', { id: userId }),
             deleteTraining: (trainingId, extend) => del(`/api/training/${trainingId}?extend=${extend}`),
             bulkEditTrainings: (filter, newValues) => post(`/api/training/bulk?where=${serviceUtils.convertTrainingsFilterToQuery(filter)}&dayOfTheWeek="${filter.dayOfTheWeek || ''}"&trainingFromTime="${filter.fromTime || ''}"&trainingToTime="${filter.toTime || ''}"`, newValues),
-            deleteAllTrainings: filter => del(`/api/training?where=${serviceUtils.convertTrainingsFilterToQuery(filter)}&dayOfTheWeek="${filter.dayOfTheWeek || ''}"&trainingFromTime="${filter.fromTime || ''}"&trainingToTime="${filter.toTime || ''}"`),
+            deleteAllTrainings: (filter, extend) => del(`/api/training?where=${serviceUtils.convertTrainingsFilterToQuery(filter)}&dayOfTheWeek="${filter.dayOfTheWeek || ''}"&trainingFromTime="${filter.fromTime || ''}"&trainingToTime="${filter.toTime || ''}"&extend=${extend}`),
             updateSubscriptionTemplate: template => post('api/subscription/template', template),
             deleteSubscriptionTemplate: id => del(`api/subscription/template/${id}`)
         }

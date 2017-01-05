@@ -59,10 +59,12 @@ const handler = R.curry((fn, props, req, res, next) => {
         const result = R.apply(fn, args)
 
         result.done((result) => res.json(result), (error) => {
+            console.log(error)
+            logger.error(error)
             if (error.isPublic) {
                 res.status(error.status).json({ Error: error.message })
             } else {
-                res.status(500).json({ Error: error })
+                res.status(500).json({ Error: 'Valami rossz dolog történt, lépj kapcsolatba a supportal' })
             }
         })
     })
