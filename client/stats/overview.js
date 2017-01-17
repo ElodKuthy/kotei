@@ -64,7 +64,7 @@ angular.module('kotei')
 
         this.fetchStats = value => {
             this.overviews = null
-            const month = $moment(value).startOf('month').format('YYYY-MM-DD')
+            const month = $moment(value || this.month).startOf('month').format('YYYY-MM-DD')
             infoService.getStatsOverview(month).then(overviews => this.overviews = overviews.map(overviewConverter))
         }
 
