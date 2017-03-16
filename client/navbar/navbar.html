@@ -7,8 +7,8 @@
             <ul class="list-inline pull-right">
                 <li ng-if="navbar.userInfo.isAuth && !navbar.userInfo.isClient"><a ui-sref="administration"><i class="fa fa-pencil fa-2x"></i></a></li>
                 <li ng-if="navbar.userInfo.isAuth && !navbar.userInfo.isClient"><a ui-sref="stats"><i class="fa fa-table fa-2x"></i></a></li>
-                <li ng-if="navbar.userInfo.isAuth && navbar.trainingCategories && navbar.trainingCategories.length <= 1"><a ui-sref="schedule"><i class="fa fa-calendar fa-2x"></i></a></li>
-                <li ng-if="navbar.userInfo.isAuth && navbar.trainingCategories && navbar.trainingCategories.length > 1"><a ui-sref="schedule-list"><i class="fa fa-calendar fa-2x"></i></a></li>
+                <li ng-if="(navbar.userInfo.isAuth || navbar.publicSchedule) && navbar.trainingCategories && navbar.trainingCategories.length <= 1"><a ui-sref="schedule"><i class="fa fa-calendar fa-2x"></i></a></li>
+                <li ng-if="(navbar.userInfo.isAuth || navbar.publicSchedule) && navbar.trainingCategories && navbar.trainingCategories.length > 1"><a ui-sref="schedule-list"><i class="fa fa-calendar fa-2x"></i></a></li>
                 <li ng-if="navbar.userInfo.isAuth"><a ui-sref="profile"><i class="fa fa-user fa-2x"></i></a></li>
                 <li ng-if="!navbar.userInfo.isAuth"><a ui-sref="login"><i class="fa fa-sign-in fa-2x"></i></a></li>
                 <li ng-if="navbar.userInfo.isAuth"><a ng-click="navbar.logout()"><i class="fa fa-sign-out fa-2x"></i></a></li>
@@ -52,8 +52,8 @@
                         <li><a ui-sref="stats.trainings">Edzések</a></li>
                     </ul>
                 </li>
-                <li ng-if="navbar.userInfo.isAuth && navbar.trainingCategories && navbar.trainingCategories.length <= 1"><a ui-sref="schedule">Órarend</a></li>
-                <li ng-if="navbar.userInfo.isAuth && navbar.trainingCategories && navbar.trainingCategories.length > 1" uib-dropdown on-toggle="toggled(open)">
+                <li ng-if="(navbar.userInfo.isAuth || navbar.publicSchedule) && navbar.trainingCategories && navbar.trainingCategories.length <= 1"><a ui-sref="schedule">Órarend</a></li>
+                <li ng-if="(navbar.userInfo.isAuth || navbar.publicSchedule) && navbar.trainingCategories && navbar.trainingCategories.length > 1" uib-dropdown on-toggle="toggled(open)">
                     <a href uib-dropdown-toggle>
                         Órarend
                     </a>

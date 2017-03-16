@@ -97,6 +97,10 @@
         padding: 0!important;
     }
 
+    .schedule-cell.compact {
+        height: 120px;
+    }
+
     .schedule-cell > div {
         padding: 10px;
         border-bottom: solid 1px;

@@ -63,11 +63,20 @@ getRule({
     parser: boolParser
 })
 
+var publicSchedule = false
+getRule({
+    set: value => publicSchedule = value,
+    name: 'PublicSchedule',
+    validator: boolValidator,
+    parser: boolParser
+})
+
 module.exports = {
     allowFreeCreditsOnCreateSubcription: () => allowFreeCreditsOnCreateSubcription,
     minHoursToLeaveTraining: () => minHoursToLeaveTraining,
     coachCanModifyHistory: () => coachCanModifyHistory,
     coachSeeAllClients: () => coachSeeAllClients,
     coachCanModifyOthersTrainings: () => coachCanModifyOthersTrainings,
-    clientCanSeeAttendees: () => clientCanSeeAttendees
+    clientCanSeeAttendees: () => clientCanSeeAttendees,
+    publicSchedule: () => publicSchedule
 }

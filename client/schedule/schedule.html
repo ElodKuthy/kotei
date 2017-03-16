@@ -14,14 +14,15 @@
                         <tr ng-repeat="row in location.trainings">
                             <td>{{row.hour}}</td>
                             <td class="schedule-cell" 
-                                ng-repeat="cell in row.cells">
+                                ng-repeat="cell in row.cells"
+                                ng-class="{ 'compact': !schedule.userInfo }">
                                 <div class="training-container" 
                                     ng-repeat="training in cell"
                                     ng-class="{ 'attended': training.involved && !training.missed && !training.participated, 'participated': training.participated, 'missed': training.missed }">
                                     <div>{{training.name}}</div>
                                     <div class="coach">{{training.coach}}</div>
                                     <div class="time">{{training.from}} - {{training.to}}</div>
-                                    <div>
+                                    <div ng-if="schedule.userInfo">
                                         <uib-progressbar 
                                             class="progress" 
                                             max="training.max || 100" 
@@ -42,7 +43,7 @@
             </div>
         </div>
     </div>
-    <nav class="navbar navbar-default navbar-fixed-bottom">
+    <nav class="navbar navbar-default navbar-fixed-bottom" ng-if="schedule.userInfo">
         <div class="container-fluid">
             <div class="visible-xs small-navbar">
                 <div class="short-dates pull-left">

@@ -114,5 +114,6 @@ router.get('/stats/clients', handler(statsService.clients, { query: 'query' }))
 router.get('/stats/trainings', handler(statsService.trainings, { query: 'query' }))
 
 router.get('/rule/allow/free/credit', handler(() => Promise.resolve(rules.allowFreeCreditsOnCreateSubcription()), {}))
+router.get('/rule/public/schedule', handler(() => Promise.resolve(rules.publicSchedule()), {}))
 
 module.exports = router

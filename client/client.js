@@ -14,7 +14,7 @@ angular.module('kotei', [
     ])
     .constant('R', R)
     .constant('Chartist', Chartist)
-    .value('globals', { trainingCategories: null })
+    .value('globals', {})
     .config(($provide, $stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, jwtInterceptorProvider) => {
 
         $urlRouterProvider.otherwise('/')

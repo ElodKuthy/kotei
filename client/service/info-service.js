@@ -36,6 +36,7 @@ angular.module('kotei')
             getTrainingsByFilter: filter => get(`/api/training?where=${serviceUtils.convertTrainingsFilterToQuery(filter)}&order=\`from\`%20ASC&dayOfTheWeek="${filter.dayOfTheWeek || ''}"&trainingFromTime="${filter.fromTime || ''}"&trainingToTime="${filter.toTime || ''}"`),
             getStatsOverview: month => get(`/api/stats/overview?month=${month}`),
             getClientsStats: month => get(`/api/stats/clients?month=${month}`),
-            getTrainingsStats: month => get(`/api/stats/trainings?month=${month}`)
+            getTrainingsStats: month => get(`/api/stats/trainings?month=${month}`),
+            getPublicSchedule: () => get('api/rule/public/schedule')
         }
     })

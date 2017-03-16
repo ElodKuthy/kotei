@@ -25,8 +25,7 @@ angular.module('kotei')
                         return infoService.getTrainingsByDate($moment().startOf('isoweek').format('YYYY-MM-DD'), 
                             $moment().startOf('isoweek').add({ week: 1 }).format('YYYY-MM-DD'), $stateParams.categoryId)
                     }
-                },
-                roles: ['client', 'coach', 'admin']
+                }
         })
 
             .state('schedule.custom', {
@@ -56,7 +55,21 @@ angular.module('kotei')
         })
     })
     .controller('ScheduleController', function (R, $state, $moment, from, to, trainings, userInfoService, administrationService,
-        modalService) {
+        modalService, infoService, globals) {
+
+        this.userInfo = userInfoService.getUserInfo()
+
+        this.publicSchedule = globals.publicSchedule
+
+        if (globals.publicSchedule == null) {
+            infoService.getPublicSchedule().then(result => {
+                this.publicSchedule = globals.publicSchedule = result
+            })
+        }
+
+        if (!this.publicSchedule && !this.userInfo) {
+            $state.go('welcome')
+        }
 
         this.previous = {
             from: $moment(from).subtract({ week: 1 }).format('YYYY-MM-DD'),
@@ -69,8 +82,6 @@ angular.module('kotei')
         }
 
         this.title = `Órarend ${$moment(from).format('YYYY. MM. DD.')} - ${$moment(to).format('YYYY. MM. DD.')}`
-
-        this.userInfo = userInfoService.getUserInfo()
 
         this.from = from
         this.to = to
@@ -122,7 +133,7 @@ angular.module('kotei')
                 canLeave: training.canLeave,
                 canModify: training.canModify,
                 canSeeAttendees: training.canSeeAttendees,
-                isCoach: training.Coach.id === this.userInfo.id
+                isCoach: this.userInfo && (training.Coach.id === this.userInfo.id)
             })
         })
 

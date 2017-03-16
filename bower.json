@@ -23,6 +23,7 @@
     "angular-ui-router": "0.2.15",
     "angular-jwt": "0.0.9",
     "angular-messages": "1.4.8",
+    "angular-sanitize": "1.5.8",
     "bootstrap-sass": "3.3.6",
     "angular-bootstrap": "0.14.3",
     "fontawesome": "4.5.0",
@@ -35,7 +36,7 @@
     "chartist": "0.9.5",
     "ngSmoothScroll": "~2.0.0",
     "jquery": "2.2.4",
-    "ng-csv": "^0.3.6"
+    "ng-csv": "0.3.6"
   },
   "resolutions": {
     "angular": "1.5.8"

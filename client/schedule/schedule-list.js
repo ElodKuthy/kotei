@@ -14,12 +14,12 @@ angular.module('kotei')
                         templateUrl: 'schedule/schedule-list.html',
                         controller: 'ScheduleListController as vm'
                     }
-                },
-                roles: ['client', 'coach', 'admin']
-        })
+                }
+            })
     })
 
-    .controller('ScheduleListController', function ($state, infoService, globals) {
+    .controller('ScheduleListController', function ($state, infoService, globals, userInfoService) {
+        
         this.trainingCategories = globals.trainingCategories
         
         if (globals.trainingCategories === null) {
@@ -28,7 +28,20 @@ angular.module('kotei')
             })
         }
 
-        this.schedule =(id) => {
+        this.publicSchedule = globals.publicSchedule
+        this.userInfo = userInfoService.getUserInfo()
+        
+        if (globals.publicSchedule == null) {
+            infoService.getPublicSchedule().then(result => {
+                this.publicSchedule = globals.publicSchedule = result
+            })
+        }
+
+        if (!this.publicSchedule && !this.userInfo) {
+            $state.go('welcome')
+        }
+
+        this.schedule = (id) => {
             $state.go('schedule', { categoryId: id })
         }
     })

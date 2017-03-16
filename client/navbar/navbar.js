@@ -4,9 +4,17 @@ angular.module('kotei')
 
         this.trainingCategories = globals.trainingCategories
         
-        if (globals.trainingCategories === null) {
+        if (globals.trainingCategories == null) {
             infoService.getAllTrainingCategories().then(result => {
                 this.trainingCategories = globals.trainingCategories = result
+            })
+        }
+
+        this.publicSchedule = globals.publicSchedule
+
+        if (globals.publicSchedule == null) {
+            infoService.getPublicSchedule().then(result => {
+                this.publicSchedule = globals.publicSchedule = result
             })
         }
 

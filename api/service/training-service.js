@@ -128,7 +128,7 @@ const findHashed = (query, auth) => find(query, auth, true)
 
 const find = (query, auth, hashed) => {
 
-    if (!auth.isAuth) {
+    if (!auth.isAuth && !rules.publicSchedule()) {
         return Promise.reject(errors.unauthorized())
     }
     let attributes = ['id', 'from', 'to', 'max', 'training_category_id']
@@ -190,7 +190,9 @@ const find = (query, auth, hashed) => {
     ])
     .spread((trainings, subscriptions) => R.map(training => {
 
-        training.dataValues.utilization = Math.round(training.Subscriptions.length / training.max * 100)
+        if (auth.isAuth) {
+            training.dataValues.utilization = Math.round(training.Subscriptions.length / training.max * 100)
+        }
 
         if (auth.isClient) {
             const subscription = R.find(subscription => subscription.Client.id === auth.id, training.Subscriptions)
@@ -236,7 +238,7 @@ const find = (query, auth, hashed) => {
 
         training.dataValues.canSeeAttendees =
             auth.isAdmin
-            || rules.clientCanSeeAttendees()
+            || auth.isAuth && rules.clientCanSeeAttendees()
             || (auth.isCoach && rules.coachSeeAllClients())
             || (auth.isCoach && training.Coach.id === auth.id)
 
