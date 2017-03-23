@@ -1,9 +1,9 @@
 const moment = require('moment')
 
-const from = '360Gym Lomb <no-reply@lomb.kotei.hu>'
+const from = 'SzinkrON Lomb <no-reply@lomb.kotei.hu>'
 
 const sendResetPasswordToken = {
-    subject: '360Gym Lomb - Elfelejtett jelszó',
+    subject: 'SzinkrON Lomb - Elfelejtett jelszó',
     html: (user, token) =>
         `<html>
         <head>
@@ -22,13 +22,13 @@ const sendResetPasswordToken = {
             A következő linken tudsz új jelszót megadni:<br/>
             <a href="https://lomb.kotei.hu/reset-password/${token}">https://lomb.kotei.hu/reset-password/${token}</a><br/>
         </div>
-        
-        <div>Amennyiben nem te kezdeményezted a jelszó változtatást, kérlek feltétlenül jelezd ezt <a href="mailto:360gymlomb@gmail.com">360gymlomb@gmail.com</a> email címen.</div>
+
+        <div>Amennyiben nem te kezdeményezted a jelszó változtatást, kérlek feltétlenül jelezd ezt <a href="mailto:SzinkrONlomb@gmail.com">SzinkrONlomb@gmail.com</a> email címen.</div>
 
 
         <div>
             Üdvözlettel,<br/>
-            A 360Gym Lomb Csapata
+            A SzinkrON Lomb Csapata
         </div>
 
         <div>
@@ -39,7 +39,7 @@ const sendResetPasswordToken = {
 }
 
 const sendRegistration = {
-    subject: '360Gym Lomb - Üdvözlünk',
+    subject: 'SzinkrON Lomb - Üdvözlünk',
     html: (user, token) =>
         `<html>
         <head>
@@ -52,24 +52,24 @@ const sendRegistration = {
         <body>
         <div>Kedves ${user.fullName}!</div>
 
-        <div>Nagyon örülünk, hogy a 360Gym Lomb Terem tagjainak körében üdvözölhetünk!</div>
+        <div>Nagyon örülünk, hogy a SzinkrON Lomb Terem tagjainak körében üdvözölhetünk!</div>
 
         <div>
-            A 360Gym Lomb Terem Kotei használatához aktiválnod kell a felhasználódat és megadnod egy jelszót, amit a következő linken tudsz megtenni:<br/>
+            A SzinkrON Lomb Terem Kotei használatához aktiválnod kell a felhasználódat és megadnod egy jelszót, amit a következő linken tudsz megtenni:<br/>
             <a href="https://lomb.kotei.hu/reset-password/${token}">https://lomb.kotei.hu/reset-password/${token}</a><br/>
         </div>
 
         <div>
-            A 360Gym Lomb Terem Koteit az alábbi webcímen tudod elérni:<br/>
+            A SzinkrON Lomb Terem Koteit az alábbi webcímen tudod elérni:<br/>
             <a href="https://lomb.kotei.hu">https://lomb.kotei.hu</a><br/>
             Itt megnézheted a terem órarendjét, illetve hogy mely órákra jelentkezél, és még sok minden mást is!
         </div>
-        
-        <div>Ha további kérdéseid lennének, fordulj bizalommal edződhöz személyesen, vagy írj nekünk a <a href="mailto:360gymlomb@gmail.com">360gymlomb@gmail.com</a> email címre.</div>
+
+        <div>Ha további kérdéseid lennének, fordulj bizalommal edződhöz személyesen, vagy írj nekünk a <a href="mailto:SzinkrONlomb@gmail.com">SzinkrONlomb@gmail.com</a> email címre.</div>
 
         <div>
             Üdvözlettel,<br/>
-            A 360Gym Lomb Csapata
+            A SzinkrON Lomb Csapata
         </div>
 
         <div>
@@ -81,7 +81,7 @@ const sendRegistration = {
 }
 
 const sendSubscriptionAlmostDepletedNotification = {
-    subject: '360Gym Lomb - Emlékeztető bérlet lejáratáról',
+    subject: 'SzinkrON Lomb - Emlékeztető bérlet lejáratáról',
     html: (subscription) =>
         `<html>
         <head>
@@ -95,10 +95,10 @@ const sendSubscriptionAlmostDepletedNotification = {
         <div>Kedves ${subscription.Client.fullName}!</div>
 
         <div>Csak szerettünk volna szólni, hogy a bérleted hamarosan le fog járni. Ezt a bérletedet ${moment(subscription.from).format('YYYY. MM. DD')}-n vásároltad, ${moment(subscription.to).format('YYYY. MM. DD')}-ig érvényes, és összesen ${subscription.all} edzésalkalomra szól. Már csak ${subscription.remaining} alkalmad van hátra.</div>
-        
+
         <div>Új bérletet akkor kell venned, ha az összes alkalmadat lejártad az aktuális bérleteden, vagy annak érvényességi ideje lejárt.</div>
-        
-        <div>Ha további kérdéseid lennének, fordulj bizalommal edződhöz személyesen, vagy írj nekünk a <a href="mailto:360gymlomb@gmail.com">360gymlomb@gmail.com</a> email címre.</div>
+
+        <div>Ha további kérdéseid lennének, fordulj bizalommal edződhöz személyesen, vagy írj nekünk a <a href="mailto:SzinkrONlomb@gmail.com">SzinkrONlomb@gmail.com</a> email címre.</div>
 
         <div>
             Üdvözlettel,<br/>
@@ -113,7 +113,7 @@ const sendSubscriptionAlmostDepletedNotification = {
 }
 
 const sendNewSubscriptionNotification = {
-    subject: '360Gym Lomb - Emlékeztető bérlet vásárlásról',
+    subject: 'SzinkrON Lomb - Emlékeztető bérlet vásárlásról',
     html: (subscription) =>
         `<html>
         <head>
@@ -126,12 +126,12 @@ const sendNewSubscriptionNotification = {
         <body>
         <div>Kedves ${subscription.Client.fullName}!</div>
 
-        <div>Ez csak egy emlékeztető, hogy új bérletet vásároltál. Ezt a bérletedet ${moment(subscription.from).format('YYYY. MM. DD')}-n vásároltad, 
+        <div>Ez csak egy emlékeztető, hogy új bérletet vásároltál. Ezt a bérletedet ${moment(subscription.from).format('YYYY. MM. DD')}-n vásároltad,
         ${moment(subscription.to).format('YYYY. MM. DD')}-ig érvényes, és összesen ${subscription.all} edzésalkalomra szól.</div>
-        
+
         <div>Új bérletet akkor kell venned, ha az összes alkalmadat lejártad az aktuális bérleteden, vagy annak érvényességi ideje lejárt.</div>
-        
-        <div>Ha további kérdéseid lennének, fordulj bizalommal edződhöz személyesen, vagy írj nekünk a <a href="mailto:360gymlomb@gmail.com">360gymlomb@gmail.com</a> email címre.</div>
+
+        <div>Ha további kérdéseid lennének, fordulj bizalommal edződhöz személyesen, vagy írj nekünk a <a href="mailto:SzinkrONlomb@gmail.com">SzinkrONlomb@gmail.com</a> email címre.</div>
 
         <div>
             Üdvözlettel,<br/>
@@ -146,7 +146,7 @@ const sendNewSubscriptionNotification = {
 }
 
 const sendCancelledTrainingNotification = {
-    subject: '360Gym Lomb - Elmarad egy óra',
+    subject: 'SzinkrON Lomb - Elmarad egy óra',
     html: (training, subscription, extend) =>
         `<html>
         <head>
@@ -180,7 +180,7 @@ module.exports = {
     from,
     sendResetPasswordToken,
     sendRegistration,
-    sendSubscriptionAlmostDepletedNotification, 
+    sendSubscriptionAlmostDepletedNotification,
     sendNewSubscriptionNotification,
     sendCancelledTrainingNotification
 }
