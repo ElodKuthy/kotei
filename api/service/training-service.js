@@ -56,8 +56,8 @@ const calculateDates = (training) => {
     }
 
     var dates = []
-    var currentFrom = moment(training.from)
-    var currentTo = moment(training.to)
+    var currentFrom = moment(training.from).seconds(0)
+    var currentTo = moment(training.to).seconds(0)
     var interval = training.interval ? moment(training.interval) : moment(currentTo)
 
     while (currentTo.isBefore(interval) || currentTo.isSame(interval, 'minute')) {
