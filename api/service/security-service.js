@@ -47,6 +47,10 @@ const login = (credential, userPassword) => {
             return Promise.reject(errors.invalidUserNameOrPassword())
         }
 
+        if (user.active != null && !user.active) {
+            return Promise.reject(errors.passiveUserLogin())
+        }
+
         return { jwt: jwt.sign(userInfo(user), cert, { algorithm: 'RS512' }) }
     })
 }

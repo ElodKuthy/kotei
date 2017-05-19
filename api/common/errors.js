@@ -6,7 +6,7 @@ const envelope = (message, status) => {
     var error = new Error(message)
     error.status = status || 500,
     error.isPublic = true
-    
+
     return error
 }
 
@@ -30,7 +30,8 @@ const errors = {
     noCredit: () => envelope(texts.noCredit, 409),
     invalidId: () => envelope(texts.invalidId, 404),
     tooEarlyToCheckIn: () => envelope(texts.tooEarlyToCheckIn, 409),
-    invalidDate: () => envelope(texts.invalidDate, 400)
+    invalidDate: () => envelope(texts.invalidDate, 400),
+    passiveUserLogin: () => envelope(texts.passiveUserLogin, 401)
 }
 
 module.exports = errors

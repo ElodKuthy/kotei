@@ -20,7 +20,8 @@ const texts = {
     noCredit: 'Client has no credit',
     invalidId: 'Invalid ID',
     tooEarlyToCheckIn: 'Too early to check in',
-    invalidDate: 'Invalid date'
+    invalidDate: 'Invalid date',
+    passiveUserLogin: 'This user is passive, please contact your coach'
 }
 
 module.exports = texts

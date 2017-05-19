@@ -20,7 +20,8 @@ const texts = {
     noCredit: 'Nincs szabad alkalma',
     invalidId: 'Érvénytelen azonosító',
     tooEarlyToCheckIn: 'Erre az órára még túl korai bejelentkezni',
-    invalidDate: 'Érvénytelen dátum'
+    invalidDate: 'Érvénytelen dátum',
+    passiveUserLogin: 'Ez a felhasználó le lett tiltva, kérlek lépj kapcsolatba az edződdel'
 }
 
 module.exports = texts
