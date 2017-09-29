@@ -23,7 +23,7 @@ const sendResetPasswordToken = {
             <a href="https://lomb.kotei.hu/reset-password/${token}">https://lomb.kotei.hu/reset-password/${token}</a><br/>
         </div>
 
-        <div>Amennyiben nem te kezdeményezted a jelszó változtatást, kérlek feltétlenül jelezd ezt <a href="mailto:SzinkrONlomb@gmail.com">SzinkrONlomb@gmail.com</a> email címen.</div>
+        <div>Amennyiben nem te kezdeményezted a jelszó változtatást, kérlek feltétlenül jelezd ezt <a href="mailto:info@szinkrongym.hu">info@szinkrongym.hu</a> email címen.</div>
 
 
         <div>
@@ -65,7 +65,7 @@ const sendRegistration = {
             Itt megnézheted a terem órarendjét, illetve hogy mely órákra jelentkezél, és még sok minden mást is!
         </div>
 
-        <div>Ha további kérdéseid lennének, fordulj bizalommal edződhöz személyesen, vagy írj nekünk a <a href="mailto:SzinkrONlomb@gmail.com">SzinkrONlomb@gmail.com</a> email címre.</div>
+        <div>Ha további kérdéseid lennének, fordulj bizalommal edződhöz személyesen, vagy írj nekünk a <a href="mailto:info@szinkrongym.hu">info@szinkrongym.hu</a> email címre.</div>
 
         <div>
             Üdvözlettel,<br/>
@@ -98,7 +98,7 @@ const sendSubscriptionAlmostDepletedNotification = {
 
         <div>Új bérletet akkor kell venned, ha az összes alkalmadat lejártad az aktuális bérleteden, vagy annak érvényességi ideje lejárt.</div>
 
-        <div>Ha további kérdéseid lennének, fordulj bizalommal edződhöz személyesen, vagy írj nekünk a <a href="mailto:SzinkrONlomb@gmail.com">SzinkrONlomb@gmail.com</a> email címre.</div>
+        <div>Ha további kérdéseid lennének, fordulj bizalommal edződhöz személyesen, vagy írj nekünk a <a href="mailto:info@szinkrongym.hu">info@szinkrongym.hu</a> email címre.</div>
 
         <div>
             Üdvözlettel,<br/>
@@ -131,7 +131,7 @@ const sendNewSubscriptionNotification = {
 
         <div>Új bérletet akkor kell venned, ha az összes alkalmadat lejártad az aktuális bérleteden, vagy annak érvényességi ideje lejárt.</div>
 
-        <div>Ha további kérdéseid lennének, fordulj bizalommal edződhöz személyesen, vagy írj nekünk a <a href="mailto:SzinkrONlomb@gmail.com">SzinkrONlomb@gmail.com</a> email címre.</div>
+        <div>Ha további kérdéseid lennének, fordulj bizalommal edződhöz személyesen, vagy írj nekünk a <a href="mailto:info@szinkrongym.hu">info@szinkrongym.hu</a> email címre.</div>
 
         <div>
             Üdvözlettel,<br/>
@@ -163,6 +163,8 @@ const sendCancelledTrainingNotification = {
         <div>Sajnos az alábbi óra elmarad: ${training.TrainingType.name} / ${moment(training.from).format('YYYY. MM. DD. HH:mm')}</div>
 
         <div>Természetesen az elmaradó alkalom jóváírásra került a bérleteden${extend ? ', és a bérleted érvényességét is meghosszabítottuk egy héttel' : ''}.</div>
+
+        <div>Ha további kérdéseid lennének, fordulj bizalommal edződhöz személyesen, vagy írj nekünk a <a href="mailto:info@szinkrongym.hu">info@szinkrongym.hu</a> email címre.</div>
 
         <div>
             Üdvözlettel,<br/>
