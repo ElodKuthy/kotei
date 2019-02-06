@@ -18,9 +18,9 @@ const Promise = require('bluebird')
 const subscriptionOverview = (from, to, coach) => {
     return Subscription.findAll({
         where: {
-            $and: [{ 
-                coach_id: coach.id 
-            }, { 
+            $and: [{
+                coach_id: coach.id
+            }, {
                 from: { $gte: from }
             }, {
                 from: { $lte: to }
@@ -45,9 +45,9 @@ const trainingOverview = (from, to, coach) => {
             }]
         }],
         where: {
-            $and: [{ 
-                coach_id: coach.id 
-            }, { 
+            $and: [{
+                coach_id: coach.id
+            }, {
                 from: { $gte: from }
             }, {
                 to: { $lte: to }
@@ -69,12 +69,12 @@ const trainingOverview = (from, to, coach) => {
             return acc
         }
 
-        const initData = { 
+        const initData = {
             max: 0,
-            subscriptions: 0, 
+            subscriptions: 0,
             attendees: 0,
             spent: 0,
-            trainingsCount: trainings.length 
+            trainingsCount: trainings.length
         }
 
         return trainings.reduce(trainingReducer, initData)
@@ -88,7 +88,7 @@ const coachOverview = (from, to) => coach => {
 
 const overview = ({ month }, auth) => {
     if (!auth.isCoach && !auth.isAdmin) {
-        return Promise.reject(errors.unauthorized())        
+        return Promise.reject(errors.unauthorized())
     }
 
     if (!moment(month, 'YYYY-MM-DD').isValid()) {
@@ -96,7 +96,7 @@ const overview = ({ month }, auth) => {
     }
 
     const from = moment(month).startOf('month').format('YYYY-MM-DD')
-    const to = moment(month).endOf('month').format('YYYY-MM-DD')
+    const to = moment(month).add({ month: 1 }).startOf('month').format('YYYY-MM-DD')
 
     return auth.isCoach
         ? (User.findById(auth.id).then(coachOverview(from, to)).then(overview => [overview]))
@@ -111,7 +111,7 @@ const overview = ({ month }, auth) => {
 
 const payoffs = (query, auth) => {
     if (!auth.isCoach && !auth.isAdmin) {
-        return Promise.reject(errors.unauthorized())        
+        return Promise.reject(errors.unauthorized())
     }
 
     const coaches = User.findAll({
@@ -119,7 +119,7 @@ const payoffs = (query, auth) => {
             role: 'coach'
         }
     }).then(coaches => coaches.sort((a, b) => a.fullName > b.fullName))
-    
+
     const matrix = Training.findAll(parser.parseQuery({
         include: [{
             model: Subscription,
@@ -138,12 +138,12 @@ const payoffs = (query, auth) => {
             as: 'Coach'
         }],
         order: [['from', 'ASC']]
-    }, query)).then(trainings => 
+    }, query)).then(trainings =>
         trainings.map(training =>
             training.Subscriptions
                 .filter(subscription => subscription.Coach.id !== training.Coach.id)
                 .map(subscription => ({
-                    demand: training.Coach.id, 
+                    demand: training.Coach.id,
                     owe: subscription.Coach.id,
                     amount: subscription.price / subscription.Credits.reduce((acc, credit) => acc + credit.amount, 0)
                 }))
@@ -180,10 +180,10 @@ const payoffs = (query, auth) => {
                 })
             }
             return payoffs
-        }) 
+        })
 }
 
-const filterByAuth = auth => entities => 
+const filterByAuth = auth => entities =>
     auth.isAdmin ? entities : entities.filter(entity => entity.Coach && entity.Coach.id === auth.id)
 
 const convert = subscriptions => subscriptions.map(subscription => {
@@ -245,7 +245,7 @@ const activeSubscriptions = auth => {
     })
     .then(filterByAuth(auth))
     .then(convert)
-    .then(sortByRemaingThenDate) 
+    .then(sortByRemaingThenDate)
 }
 
 const soldSubscriptions = ({ month }, auth) => {
@@ -258,7 +258,7 @@ const soldSubscriptions = ({ month }, auth) => {
         where: {
             $and: [{
                 from: {
-                    $lte: moment(month).endOf('month').format('YYYY-MM-DD')
+                    $lte: moment(month).add({ month: 1 }).startOf('month').format('YYYY-MM-DD')
                 }
             }, {
                 from: {
@@ -272,7 +272,7 @@ const soldSubscriptions = ({ month }, auth) => {
     .then(sortByDate)
 }
 
-const newClients = (month, auth) => 
+const newClients = (month, auth) =>
     User.findAll({
         where: {
             $and: [{
@@ -280,7 +280,7 @@ const newClients = (month, auth) =>
                     $and: [{
                         $gte: moment(month).startOf('month').format('YYYY-MM-DD')
                     }, {
-                        $lte: moment(month).endOf('month').format('YYYY-MM-DD')
+                        $lte: moment(month).add({ month: 1 }).startOf('month').format('YYYY-MM-DD')
                     }]
                 }
             }, {
@@ -293,15 +293,15 @@ const newClients = (month, auth) =>
         }]
     })
     .then(filterByAuth(auth))
-    
-const passiveClients = (month, auth) => 
+
+const passiveClients = (month, auth) =>
     Subscription.findAll({
         where: {
             to: {
                 $and: [{
                     $gte: moment(month).startOf('month').format('YYYY-MM-DD')
                 }, {
-                    $lte: moment(month).endOf('month').format('YYYY-MM-DD')
+                    $lte: moment(month).add({ month: 1 }).startOf('month').format('YYYY-MM-DD')
                 }]
             }
         },
@@ -320,7 +320,7 @@ const passiveClients = (month, auth) =>
     .then(subscriptions => subscriptions.filter(subscription =>
         !subscription.Client.Subscriptions.some(subscription => moment(month).endOf('month').isBefore(subscription.to))
     ))
-    .then(subscriptions => subscriptions.map(subscription => ({ 
+    .then(subscriptions => subscriptions.map(subscription => ({
         id: subscription.Client.id,
         fullName: subscription.Client.fullName,
         nickname: subscription.Client.nickname,
@@ -331,7 +331,7 @@ const passiveClients = (month, auth) =>
             id: subscription.Client.Coach.id,
             fullName: subscription.Client.Coach.fullName,
             nickname: subscription.Client.Coach.nickname,
-        } 
+        }
     })))
     .then(filterByAuth(auth))
     .then(clients => clients.reduce((acc, client) => {
@@ -348,7 +348,7 @@ const clients = ({ month }, auth) => {
     }
 
     return Promise.all([newClients(month, auth), passiveClients(month, auth)])
-        .spread((news, passives) => ({ news, passives })) 
+        .spread((news, passives) => ({ news, passives }))
 }
 
 const trainings = ({ month }, auth) => {
@@ -364,7 +364,7 @@ const trainings = ({ month }, auth) => {
                 }
             }, {
                 to: {
-                    $lte: moment(month).endOf('month').format('YYYY-MM-DD')
+                    $lte: moment(month).add({ month: 1 }).startOf('month').format('YYYY-MM-DD')
                 }
             }]
         },
@@ -436,11 +436,11 @@ const trainings = ({ month }, auth) => {
     .then(trainings => trainings.sort((a, b) => {
         if (a.Coach.fullName === b.Coach.fullName) {
             if (a.locationName === b.locationName) {
-                return (a.dayOfWeek - b.dayOfWeek) || (a.hour - b.hour) || (a.minute - b.minute) 
+                return (a.dayOfWeek - b.dayOfWeek) || (a.hour - b.hour) || (a.minute - b.minute)
             }
             return a.locationName > b.locationName ? 1 : -1
         }
-        return a.Coach.fullName > b.Coach.fullName ? 1 : -1 
+        return a.Coach.fullName > b.Coach.fullName ? 1 : -1
     }))
 }
 
