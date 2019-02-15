@@ -340,6 +340,7 @@ const find = (query, auth) => {
                 auth.isClient
                     && training.Subscriptions.find(subscription => subscription.Client.id === auth.id)
                     && moment().add({ hours: rules.minHoursToLeaveTraining() }).isBefore(training.from)
+                    && (moment(training.from).hours() >= 12 || moment().isBefore(moment(training.from).startOf('day').subtract({ hours: 3 })))
             return training
         })
         return subscription

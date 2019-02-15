@@ -169,6 +169,10 @@ const remove = (training_id, client_id, auth) => {
                 return Promise.reject(errors.tooLateToLeave())
             }
 
+            if (auth.isClient && moment(training.from).hours() < 12 && moment().isAfter(moment(training.from).startOf('day').subtract({ hours: 3 })) ) {
+                return Promise.reject(errors.tooLateToLeave())
+            }
+
             return findSubscription(training, client.id)
                 .then((subscription) => {
                     if (!subscription) {
