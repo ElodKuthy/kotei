@@ -333,7 +333,7 @@ const find = (query, auth) => {
         subscription.Trainings = subscription.Trainings.map(training => {
             training.dataValues.canModify = auth.isAdmin
                 || (auth.isCoach
-                    && (training.Coach.id === auth.id || rules.coachCanModifyOthersTrainings())
+                    && ((training.Coach && training.Coach.id === auth.id) || rules.coachCanModifyOthersTrainings())
                     && (rules.coachCanModifyHistory()
                         || moment().add({ hours: rules.minHoursToLeaveTraining() }).isBefore(training.from)))
             training.dataValues.canLeave =
@@ -343,6 +343,17 @@ const find = (query, auth) => {
                     && (moment(training.from).hours() >= 9 || moment().isBefore(moment(training.from).startOf('day').subtract({ hours: 3 })))
             return training
         })
+
+        if (!subscription.dataValues.Coach) {
+            subscription.dataValues.Coach = {
+                familyName: "Törölt",
+                fullName: "Törölt Edző",
+                givenName: "Edző",
+                id: -1,
+                nickname: "Törölt Edző",
+            }
+        }
+
         return subscription
     }))
     .catch((error) => {

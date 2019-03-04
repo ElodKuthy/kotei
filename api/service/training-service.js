@@ -210,7 +210,7 @@ const find = (query, auth, hashed) => {
                     moment().startOf('day').isBefore(subscription.to)
                     && subscription.Credits.reduce((acc, credit) => {
                         if ((!credit.training_type_id || credit.training_type_id === training.TrainingType.id)
-                         && (!credit.coach_id || credit.coach_id === training.Coach.id)
+                         && (!credit.coach_id || (training.Coach && credit.coach_id === training.Coach.id))
                          && (!credit.training_category_id || credit.training_category_id === training.training_category_id)) {
                             acc += credit.amount
                         }
@@ -226,14 +226,14 @@ const find = (query, auth, hashed) => {
         ) && (
             auth.isAdmin || (
                 auth.isCoach && (
-                    training.Coach.id === auth.id || rules.coachSeeAllClients()
+                    (training.Coach && training.Coach.id === auth.id) || rules.coachSeeAllClients()
                 )
             )
         )
 
         training.dataValues.canModify = auth.isAdmin
             || (auth.isCoach
-                && (training.Coach.id === auth.id || rules.coachSeeAllClients())
+                && ((training.Coach && training.Coach.id === auth.id) || rules.coachSeeAllClients())
                 && (rules.coachCanModifyHistory()
                     || moment().add({ hours: rules.minHoursToLeaveTraining() }).isBefore(training.from)))
 
@@ -241,11 +241,21 @@ const find = (query, auth, hashed) => {
             auth.isAdmin
             || auth.isAuth && rules.clientCanSeeAttendees()
             || (auth.isCoach && rules.coachSeeAllClients())
-            || (auth.isCoach && training.Coach.id === auth.id)
+            || (auth.isCoach && training.Coach && training.Coach.id === auth.id)
 
         if (!training.dataValues.canSeeAttendees) {
             delete training.dataValues.max
             delete training.dataValues.Subscriptions
+        }
+
+        if (!training.dataValues.Coach) {
+            training.dataValues.Coach = {
+                familyName: "Törölt",
+                fullName: "Törölt Edző",
+                givenName: "Edző",
+                id: -1,
+                nickname: "Törölt Edző",
+            }
         }
 
         return training
