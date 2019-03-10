@@ -1,9 +1,9 @@
 const moment = require('moment')
 
-const from = 'Sankalpa <no-reply@kotei.hu>'
+const from = 'Sankalpa Jógastúdió <no-reply@kotei.hu>'
 
 const sendResetPasswordToken = {
-    subject: 'Sankalpa - Elfelejtett jelszó',
+    subject: 'Sankalpa Jógastúdió - Elfelejtett jelszó',
     html: (user, token) =>
         `<html>
         <head>
@@ -28,7 +28,7 @@ const sendResetPasswordToken = {
 
         <div>
             Üdvözlettel,<br/>
-            A Sankalpa Csapata
+            A Sankalpa Jógastúdió Csapata
         </div>
 
         <div>
@@ -39,7 +39,7 @@ const sendResetPasswordToken = {
 }
 
 const sendRegistration = {
-    subject: 'Sankalpa - Üdvözlünk',
+    subject: 'Sankalpa Jógastúdió - Üdvözlünk',
     html: (user, token) =>
         `<html>
         <head>
@@ -52,7 +52,7 @@ const sendRegistration = {
         <body>
         <div>Kedves ${user.fullName}!</div>
 
-        <div>Nagyon örülünk, hogy a Sankalpa Jógastúdió tagjainak körében üdvözölhetünk!</div>
+        <div>Nagyon örülünk, hogy a Sankalpa Jógastúdió Jógastúdió tagjainak körében üdvözölhetünk!</div>
 
         <div>
             A Sankalpa Jógastúdió Kotei használatához aktiválnod kell a felhasználódat és megadnod egy jelszót, amit a következő linken tudsz megtenni:<br/>
@@ -69,7 +69,7 @@ const sendRegistration = {
 
         <div>
             Üdvözlettel,<br/>
-            A Sankalpa Csapata
+            A Sankalpa Jógastúdió Csapata
         </div>
 
         <div>
@@ -81,7 +81,7 @@ const sendRegistration = {
 }
 
 const sendSubscriptionAlmostDepletedNotification = {
-    subject: 'Sankalpa - Emlékeztető bérlet lejáratáról',
+    subject: 'Sankalpa Jógastúdió - Emlékeztető bérlet lejáratáról',
     html: (subscription) =>
         `<html>
         <head>
@@ -113,7 +113,7 @@ const sendSubscriptionAlmostDepletedNotification = {
 }
 
 const sendNewSubscriptionNotification = {
-    subject: 'Sankalpa - Emlékeztető bérlet vásárlásról',
+    subject: 'Sankalpa Jógastúdió - Emlékeztető bérlet vásárlásról',
     html: (subscription) =>
         `<html>
         <head>
@@ -146,7 +146,7 @@ const sendNewSubscriptionNotification = {
 }
 
 const sendCancelledTrainingNotification = {
-    subject: 'Sankalpa - Elmarad egy óra',
+    subject: 'Sankalpa Jógastúdió - Elmarad egy óra',
     html: (training, subscription, extend) =>
         `<html>
         <head>

@@ -1,15 +1,15 @@
-import gulp from 'gulp'
-import sass from 'gulp-sass'
-import nodemon from 'gulp-nodemon'
-import concat from 'gulp-concat'
-import babel from 'gulp-babel'
-import templateCache from 'gulp-angular-templatecache'
-import uglify from 'gulp-uglify'
-import cssnano from 'gulp-cssnano'
-import git from 'gulp-git'
-import bump from 'gulp-bump'
-import filter from 'gulp-filter'
-import tag_version from 'gulp-tag-version'
+var gulp = require('gulp')
+var sass = require('gulp-sass')
+var nodemon = require('gulp-nodemon')
+var concat = require('gulp-concat')
+var babel = require('gulp-babel')
+var templateCache = require('gulp-angular-templatecache')
+var uglify = require('gulp-uglify')
+var cssnano = require('gulp-cssnano')
+var git = require('gulp-git')
+var bump = require('gulp-bump')
+var filter = require('gulp-filter')
+var tag_version = require('gulp-tag-version')
 
 const incrementVersion = (importance) => {
     return gulp.src(['./package.json', './bower.json'])
