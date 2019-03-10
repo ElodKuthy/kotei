@@ -34,11 +34,11 @@ angular.module('kotei')
             coach: template.CreditTemplates[0].Coach ? nameService.displayName(template.CreditTemplates[0].Coach) : 'Összes',
             price: $filter('currency')(template.SubscriptionVariant.price, 'Ft', 0),
             amount: template.CreditTemplates[0].amount,
-            valid: template.SubscriptionVariant.valid > 7 ? template.SubscriptionVariant.valid / 7 + ' hét' : template.SubscriptionVariant.valid + ' nap',
+            valid: template.SubscriptionVariant.valid > 7 && template.SubscriptionVariant.valid % 7 === 0 ? template.SubscriptionVariant.valid / 7 + ' hét' : template.SubscriptionVariant.valid + ' nap',
             allowFreeCredits: template.allowFreeCredits ? 'Igen' : 'Nem'
         }))
         this.showCategory = templates.some(template => template.CreditTemplates[0].TrainingCategory)
-        
+
         this.newSubscriptionTemplate = id => $state.go('administration.edit-subscription-template')
         this.editSubscriptionTemplate = id => $state.go('administration.edit-subscription-template', { id })
     })

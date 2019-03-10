@@ -83,7 +83,7 @@ angular.module('kotei')
                     this.templates = R.map((template) => {
                         template.valid = template.SubscriptionVariant.valid
                         template.validText =
-                            template.valid >= 7
+                            template.valid >= 7 && template.valid % 7 === 0
                             ? `${template.valid / 7} hét`
                             : `${template.valid} nap`
 
