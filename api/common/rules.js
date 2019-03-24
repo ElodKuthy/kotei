@@ -6,7 +6,7 @@ const getRule = args => {
         if (rule && rule.value && args.validator(rule.value)) {
             args.set(args.parser(rule.value))
         }
-    })    
+    })
 }
 
 const boolValidator = value => value && (value.toLowerCase() === 'true' || value.toLowerCase() === 'false')
@@ -46,13 +46,13 @@ getRule({
     validator: boolValidator,
     parser: boolParser
 })
- 
+
 var coachCanModifyOthersTrainings = false
 getRule({
     set: value => coachCanModifyOthersTrainings = value,
     name: 'CoachCanModifyOthersTrainings',
     validator: boolValidator,
-    parser: boolParser    
+    parser: boolParser
 })
 
 var clientCanSeeAttendees = false
@@ -71,6 +71,14 @@ getRule({
     parser: boolParser
 })
 
+var gremlinAttendees = false
+getRule({
+    set: value => gremlinAttendees = value,
+    name: 'GremlinAttendees',
+    validator: boolValidator,
+    parser: boolParser
+})
+
 module.exports = {
     allowFreeCreditsOnCreateSubcription: () => allowFreeCreditsOnCreateSubcription,
     minHoursToLeaveTraining: () => minHoursToLeaveTraining,
@@ -78,5 +86,6 @@ module.exports = {
     coachSeeAllClients: () => coachSeeAllClients,
     coachCanModifyOthersTrainings: () => coachCanModifyOthersTrainings,
     clientCanSeeAttendees: () => clientCanSeeAttendees,
-    publicSchedule: () => publicSchedule
+    publicSchedule: () => publicSchedule,
+    gremlinAttendees: () => gremlinAttendees
 }

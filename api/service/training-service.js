@@ -218,7 +218,7 @@ const find = (query, auth, hashed) => {
                     }, 0) - subscription.Trainings.length > 0).length > 0
             training.dataValues.canLeave = training.Subscriptions.find(subscription => subscription.Client.id === auth.id)
                 && moment().add({ hours: rules.minHoursToLeaveTraining() }).isBefore(training.from)
-                && (moment(training.from).hours() >= 9 || moment().isBefore(moment(training.from).startOf('day').subtract({ hours: 3 })))
+                && (!rules.gremlinAttendees || moment(training.from).hours() >= 9 || moment().isBefore(moment(training.from).startOf('day').subtract({ hours: 3 })))
         }
 
         training.dataValues.canAdd = (
