@@ -50,10 +50,10 @@ angular.module('kotei')
                     } else {
                         training.cssClass = 'text-danger'
                         subscription.missed++
-                    }                    
+                    }
                 } else {
-                    subscription.assigned++                    
-                }                                
+                    subscription.assigned++
+                }
                 return training
             }, subscription.Trainings))
             var diff = subscription.amount - subscription.assigned - subscription.attendeed - subscription.missed
@@ -65,7 +65,7 @@ angular.module('kotei')
             subscription.canBeDeleted = this.isAdmin || (this.isCoach && subscription.Coach.id === this.id)
             return subscription
         }, subscriptions))
-        
+
 
         this.states = [
             { name: 'aktív', value: true },
@@ -86,7 +86,7 @@ angular.module('kotei')
             delete this.error
             this.user.coach_id = this.coach ? this.coach.id : null
             return administrationService.updateUser(this.user)
-                .then(() => modalService.info('Felhasználó adatainakmódosítása', 'A felhasználó adatait sikeresen módosítottad'),
+                .then(() => modalService.info('Felhasználó adatainak módosítása', 'A felhasználó adatait sikeresen módosítottad'),
                     (error) => this.userError = error)
         }
 
@@ -96,7 +96,7 @@ angular.module('kotei')
                 .then(() => $state.reload())
                 .catch((error) => modalService.info(this.title, error))
         }
-        
+
         this.removeAttendee = (training) => {
             administrationService.removeAttendee(training.id, this.user.id)
                 .then(() => $state.reload())

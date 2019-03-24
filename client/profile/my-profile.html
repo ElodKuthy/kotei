@@ -22,7 +22,7 @@
                             <div>Típus: {{subscription.SubscriptionType.name}}</div>
                             <div>Érvényesség kezdete: {{subscription.from | date : 'yyyy. MMMM d.'}}</div>
                             <div>Érvényesség vége: {{subscription.to | date : 'yyyy. MMMM d.'}}</div>
-                            <div>Edző: {{subscription.Coach.fullName}}</div>
+                            <div>Oktató: {{subscription.Coach.fullName}}</div>
                             <div>Ára: {{subscription.price | currency}}</div>
                             <div>Összes alkalom: {{subscription.amount}}</div>
                             <div ng-if="subscription.free">Szabad alkalmak: {{subscription.free}}</div>

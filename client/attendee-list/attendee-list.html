@@ -3,7 +3,7 @@
     <ul class="list">
         <li class="list-header">
             <div>{{attendeeList.training.name}} - {{attendeeList.training.date | date: 'yyyy. MMM dd. HH:mm (EEEE)'}} - {{attendeeList.training.location}}</div>
-            <div>Edző: {{attendeeList.training.coach}}</div>
+            <div>Oktató: {{attendeeList.training.coach}}</div>
          </li>
         <li class="list-item" ng-repeat="attendee in attendeeList.attendees" ng-click="attendeeList.toggleAttendee(attendee)">
             <i class="fa fa-circle" ng-class="attendee.cssClass"></i>
@@ -22,7 +22,7 @@
             <div class="add-client-error text-danger" ng-show="attendeeList.addClientError">{{attendeeList.addClientError}}</div>
         </li>
     </ul>
-    <div ng-if="attendeeList.canModify" class="btn-container"><button type="button" class="btn btn-primary" ng-click="attendeeList.deleteTraining()">Edzés törlése</button></div>
+    <div ng-if="attendeeList.canModify" class="btn-container"><button type="button" class="btn btn-primary" ng-click="attendeeList.deleteTraining()">Órák törlése</button></div>
     <div ng-if="attendeeList.canJoin" class="btn-container"><button type="button" class="btn btn-primary" ng-click="attendeeList.join()">Jelentkezem</button></div>
     <div ng-if="attendeeList.canLeave" class="btn-container"><button type="button" class="btn btn-primary" ng-click="attendeeList.leave()">Kihagyom</button></div>
 </div>

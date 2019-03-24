@@ -4,15 +4,15 @@
             <label>
                 <input type="checkbox" ng-model="vm.onlyCore" ng-change="vm.changeFilter()"> Csak Lakatos Péter termei
             </label>
-        </div> 
-        <button 
-            class="btn btn-primary" 
-            csv-header="['Edző neve', 'Edzőterem', 'Heti óraszám', 'Órák']"
+        </div>
+        <button
+            class="btn btn-primary"
+            csv-header="['Oktató neve', 'Terem', 'Heti óraszám', 'Órák']"
             ng-csv="vm.exportCoaches()"
-            filename="edzok.csv"
+            filename="oktatok.csv"
             charset="utf-16"
             add-bom="true">CSV export</button>
-    </div>   
+    </div>
     <div class="row" ng-repeat="gymStat in vm.coachesStats">
         <div class="col-xs-12">
             <h3>{{gymStat.gym.charAt(0).toUpperCase() + gymStat.gym.slice(1)}}</h3>
@@ -20,7 +20,7 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th>Edző</th>
+                            <th>Oktató</th>
                             <th>Heti óraszám</th>
                             <th>Órák</th>
                         </tr>

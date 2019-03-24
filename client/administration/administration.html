@@ -4,7 +4,7 @@
             Adminisztárció
         </li>
         <a class="list-group-item" ui-sref="administration.user-list">{{ administration.isAdmin ? 'Felhasználók' : 'Tanítványok' }}</a>
-        <a class="list-group-item" ng-if="administration.isAdmin" ui-sref="administration.training-list">Edzések</a>
+        <a class="list-group-item" ng-if="administration.isAdmin" ui-sref="administration.training-list">Órák</a>
         <a class="list-group-item" ng-if="administration.isAdmin" ui-sref="administration.subscription-administration-list">Bérlettípusok</a>
         <a class="list-group-item" a ui-sref="administration.new-subscription">Bérletvásárlás</a>
     </div>

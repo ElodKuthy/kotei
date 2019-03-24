@@ -32,7 +32,7 @@ angular.module('kotei')
 
         this.roles = [
             { name: "Tanítvány", value: "client" },
-            { name: "Edző", value: "coach" },
+            { name: "Oktató", value: "coach" },
             { name: "Admin", value: "admin" }
         ]
 

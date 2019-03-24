@@ -25,7 +25,7 @@ angular.module('kotei')
     })
     .controller('TrainingListController', function ($scope, $state, $moment, $uibModal, infoService, userInfoService,
         nameService, trainingTypes, coaches, locations, administrationService, modalService, trainingCategories) {
-        this.title = 'Edzések'
+        this.title = 'Órák'
         this.isAdmin = userInfoService.getUserInfo().isAdmin
         this.trainingTypes = trainingTypes
         this.trainingTypes.push({ name: '-'})
@@ -123,7 +123,7 @@ angular.module('kotei')
                     tillDate:           this.newValues.tillDate
 
                 })
-                .then(() => modalService.info('Edzések módosítása', 'Sikeres módosítás'))
+                .then(() => modalService.info('Órák módosítása', 'Sikeres módosítás'))
                 .catch(err => modalService.info('Sikertelen módosítás', err))
                 .finally(() => this.filterChanged())
         }
@@ -134,7 +134,7 @@ angular.module('kotei')
                 template: `
                     <div>
                         <div class="modal-header">
-                            <h3 class="modal-title">Edzések törlése</h3>
+                            <h3 class="modal-title">Órák törlése</h3>
                         </div>
                         <div class="modal-body">
                             Biztos, hogy törölni akarod az összes órát? A jelenlegi feliratkozók alkalma jóváírásra kerül,
@@ -183,7 +183,7 @@ angular.module('kotei')
                 },
                 controllerAs: 'vm'
             }).result
-                .then(() => modalService.info(this.title, 'Az edzések törölve lettek'))
+                .then(() => modalService.info(this.title, 'Az órák törölve lettek'))
                 .catch(error => {
                     if (this.error = ['no', 'backdrop click'].indexOf(error) === -1) {
                         modalService.info('Sikertelen törlés', error)

@@ -45,8 +45,8 @@ angular.module('kotei')
         this.newClientsHeader = ['Név', 'Feliratkozás']
         this.passiveClientsHeader = ['Név', 'Feliratkozás', 'Utolsó bérlet vásárlás', 'Utolsó bérlet lejára']
         if (this.isAdmin) {
-            this.newClientsHeader.push('Edző')
-            this.passiveClientsHeader.push('Edző')
+            this.newClientsHeader.push('Oktató')
+            this.passiveClientsHeader.push('Oktató')
         }
 
         this.exportNewClients = () =>

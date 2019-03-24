@@ -1,20 +1,20 @@
 <div class="training-list container">
     <div class="row">
         <div class="col-xs-12">
-            <button class="btn btn-primary new-training" ui-sref="administration.new-training">Új edzés létrehozása</button>
+            <button class="btn btn-primary new-training" ui-sref="administration.new-training">Új óra létrehozása</button>
         </div>
     </div>
-    <uib-accordion>    
+    <uib-accordion>
         <div uib-accordion-group class="panel-primary" is-open="vm.filtersOpen">
             <uib-accordion-heading>
-                Szűrők<i class="pull-right glyphicon" 
+                Szűrők<i class="pull-right glyphicon"
                     ng-class="{ 'glyphicon-chevron-down': vm.filtersOpen, 'glyphicon-chevron-right': !vm.filtersOpen }"></i>
             </uib-accordion-heading>
             <div class="filter-row">
                 <div class="filter-row-item">
                     <label for="from-date">Ettől a naptól</label>
-                    <ko-calendar 
-                        id="from-date" 
+                    <ko-calendar
+                        id="from-date"
                         model="vm.filter.fromDate"
                         format="yyyy. MMM d."
                         minDate="vm.filter.minDate"
@@ -24,8 +24,8 @@
                 </div>
                 <div class="filter-row-item">
                     <label for="search">Eddig a napig</label>
-                    <ko-calendar 
-                        id="to-date" 
+                    <ko-calendar
+                        id="to-date"
                         model="vm.filter.toDate"
                         format="yyyy. MMM d."
                         minDate="vm.filter.minDate"
@@ -35,56 +35,56 @@
                 </div>
                 <div ng-if="vm.trainingCategories.length > 1" class="filter-row-item">
                     <label for="trainingCategory">Kategória</label>
-                    <select id="trainingCategory" name="trainingCategory" 
-                        class="form-control" 
+                    <select id="trainingCategory" name="trainingCategory"
+                        class="form-control"
                         ng-model="vm.filter.trainingCategory"
                         ng-options="category.name for category in vm.trainingCategories track by category.id"
-                        ng-change="vm.filterChanged()"> 
+                        ng-change="vm.filterChanged()">
                     </select>
                 </div>
                 <div class="filter-row-item">
                     <label for="trainingType">Típus</label>
-                    <select id="trainingType" name="trainingType" 
-                        class="form-control" 
+                    <select id="trainingType" name="trainingType"
+                        class="form-control"
                         ng-model="vm.filter.trainingType"
                         ng-options="type.name for type in vm.trainingTypes track by type.id"
-                        ng-change="vm.filterChanged()"> 
+                        ng-change="vm.filterChanged()">
                     </select>
                 </div>
                 <div class="filter-row-item">
-                    <label for="coach">Edző</label>
+                    <label for="coach">Oktató</label>
                     <select id="coach" name="coach"
                         class="form-control"
                         ng-model="vm.filter.coach"
-                        ng-options="type.displayName for type in vm.coaches track by type.id" 
-                        ng-change="vm.filterChanged()"> 
+                        ng-options="type.displayName for type in vm.coaches track by type.id"
+                        ng-change="vm.filterChanged()">
                     </select>
                 </div>
                 <div class="filter-row-item">
                     <label for="location">Terem</label>
-                    <select id="location" name="location" 
-                        class="form-control" 
+                    <select id="location" name="location"
+                        class="form-control"
                         ng-model="vm.filter.location"
-                        ng-options="type.name for type in vm.locations track by type.id" 
-                        ng-change="vm.filterChanged()"> 
+                        ng-options="type.name for type in vm.locations track by type.id"
+                        ng-change="vm.filterChanged()">
                     </select>
                 </div>
                 <div class="filter-row-item">
                     <label for="day-of-week">Nap</label>
-                    <select id="day-of-week" name="day-of-week" 
-                        class="form-control" 
+                    <select id="day-of-week" name="day-of-week"
+                        class="form-control"
                         ng-model="vm.filter.dayOfTheWeek"
-                        ng-options="type.name for type in vm.days track by type.id" 
-                        ng-change="vm.filterChanged()"> 
+                        ng-options="type.name for type in vm.days track by type.id"
+                        ng-change="vm.filterChanged()">
                     </select>
                 </div>
                 <div class="filter-row-item">
                     <label for="max">Max</label>
-                    <input id="max" name="max" 
+                    <input id="max" name="max"
                         type="number"
-                        class="form-control" 
+                        class="form-control"
                         ng-model="vm.filter.max"
-                        ng-change="vm.filterChanged()"> 
+                        ng-change="vm.filterChanged()">
                     </select>
                 </div>
             </div>
@@ -93,9 +93,9 @@
                     <label for="from-time">Kezdési időpont</label>
                     <div class="filter-radio">
                         <label>
-                            <input 
-                                type="radio" 
-                                ng-model="vm.filter.isFromTime" 
+                            <input
+                                type="radio"
+                                ng-model="vm.filter.isFromTime"
                                 ng-value="false"
                                 ng-change="vm.filterChanged()">
                             Összes
@@ -105,7 +105,7 @@
                         <label>
                             <input
                                 type="radio"
-                                ng-model="vm.filter.isFromTime" 
+                                ng-model="vm.filter.isFromTime"
                                 ng-value="true"
                                 ng-change="vm.filterChanged()">
                             Csak az alábbi
@@ -113,10 +113,10 @@
                     </div>
                     <div uib-timepicker
                         id="from-time"
-                        ng-model="vm.filter.fromTime" 
-                        ng-change="vm.filterChanged()" 
-                        hour-step="1" 
-                        minute-step="1" 
+                        ng-model="vm.filter.fromTime"
+                        ng-change="vm.filterChanged()"
+                        hour-step="1"
+                        minute-step="1"
                         show-meridian="false"
                         ng-if="vm.filter.isFromTime">
                     </div>
@@ -125,9 +125,9 @@
                     <label for="to-time">Végső időpont</label>
                     <div class="filter-radio">
                         <label>
-                            <input 
-                                type="radio" 
-                                ng-model="vm.filter.isToTime" 
+                            <input
+                                type="radio"
+                                ng-model="vm.filter.isToTime"
                                 ng-value="false"
                                 ng-change="vm.filterChanged()">
                             Összes
@@ -137,7 +137,7 @@
                         <label>
                             <input
                                 type="radio"
-                                ng-model="vm.filter.isToTime" 
+                                ng-model="vm.filter.isToTime"
                                 ng-value="true"
                                 ng-change="vm.filterChanged()">
                             Csak az alábbi
@@ -145,10 +145,10 @@
                     </div>
                     <div uib-timepicker
                         id="to-time"
-                        ng-model="vm.filter.toTime" 
-                        ng-change="vm.filterChanged()" 
-                        hour-step="1" 
-                        minute-step="1" 
+                        ng-model="vm.filter.toTime"
+                        ng-change="vm.filterChanged()"
+                        hour-step="1"
+                        minute-step="1"
                         show-meridian="false"
                         ng-if="vm.filter.isToTime">
                     </div>
@@ -159,62 +159,62 @@
     <uib-accordion>
         <div uib-accordion-group class="panel-primary" is-open="vm.modifyOpen">
             <uib-accordion-heading>
-                Összes elem módosítása<i class="pull-right glyphicon" 
+                Összes elem módosítása<i class="pull-right glyphicon"
                     ng-class="{ 'glyphicon-chevron-down': vm.modifyOpen, 'glyphicon-chevron-right': !vm.modifyOpen }"></i>
             </uib-accordion-heading>
             <div class="editor-row">
                 <div ng-if="vm.trainingCategories.length > 1" class="editor-row-item">
                     <label for="trainingCategory">Kategória</label>
-                    <select id="trainingCategory" name="trainingCategory" 
-                        class="form-control" 
+                    <select id="trainingCategory" name="trainingCategory"
+                        class="form-control"
                         ng-model="vm.newValues.trainingCategory"
                         ng-options="category.name for category in vm.trainingCategories track by category.id">
                     </select>
-                </div>                
+                </div>
                 <div class="editor-row-item">
                     <label for="trainingType">Típus</label>
-                    <select id="trainingType" name="trainingType" 
-                        class="form-control" 
+                    <select id="trainingType" name="trainingType"
+                        class="form-control"
                         ng-model="vm.newValues.trainingType"
                         ng-options="type.name for type in vm.trainingTypes track by type.id">
                     </select>
                 </div>
                 <div class="editor-row-item">
-                    <label for="coach">Edző</label>
+                    <label for="coach">Oktató</label>
                     <select id="coach" name="coach"
                         class="form-control"
                         ng-model="vm.newValues.coach"
-                        ng-options="type.displayName for type in vm.coaches track by type.id"> 
+                        ng-options="type.displayName for type in vm.coaches track by type.id">
                     </select>
                 </div>
                 <div class="editor-row-item">
                     <label for="location">Terem</label>
-                    <select id="location" name="location" 
-                        class="form-control" 
+                    <select id="location" name="location"
+                        class="form-control"
                         ng-model="vm.newValues.location"
-                        ng-options="type.name for type in vm.locations track by type.id"> 
+                        ng-options="type.name for type in vm.locations track by type.id">
                     </select>
                 </div>
                 <div class="editor-row-item">
                     <label for="edit-day-of-week">Nap</label>
-                    <select id="edit-day-of-week" name="edit-day-of-week" 
-                        class="form-control" 
+                    <select id="edit-day-of-week" name="edit-day-of-week"
+                        class="form-control"
                         ng-model="vm.newValues.dayOfTheWeek"
-                        ng-options="type.name for type in vm.days track by type.id"> 
+                        ng-options="type.name for type in vm.days track by type.id">
                     </select>
                 </div>
                 <div class="editor-row-item">
                     <label for="max">Max</label>
-                    <input id="edit-max" name="edit-max" 
+                    <input id="edit-max" name="edit-max"
                         type="number"
-                        class="form-control" 
-                        ng-model="vm.newValues.max"> 
+                        class="form-control"
+                        ng-model="vm.newValues.max">
                     </select>
                 </div>
                 <div class="editor-row-item">
                     <label for="tillDate">Eddig ismétlődik</label>
-                    <ko-calendar 
-                        id="tillDate" 
+                    <ko-calendar
+                        id="tillDate"
                         model="vm.newValues.tillDate"
                         format="yyyy. MMM d."
                         minDate="vm.filter.minDate"
@@ -227,9 +227,9 @@
                     <label for="edit-from-time">Kezdési időpont</label>
                     <div class="editor-radio">
                         <label>
-                            <input 
-                                type="radio" 
-                                ng-model="vm.newValues.isFromTime" 
+                            <input
+                                type="radio"
+                                ng-model="vm.newValues.isFromTime"
                                 ng-value="false">
                             Nem módosul
                         </label>
@@ -238,16 +238,16 @@
                         <label>
                             <input
                                 type="radio"
-                                ng-model="vm.newValues.isFromTime" 
+                                ng-model="vm.newValues.isFromTime"
                                 ng-value="true">
                             Módosít az alábbira
                         </label>
                     </div>
                     <div uib-timepicker
                         id="editor-from-time"
-                        ng-model="vm.newValues.fromTime" 
-                        hour-step="1" 
-                        minute-step="1" 
+                        ng-model="vm.newValues.fromTime"
+                        hour-step="1"
+                        minute-step="1"
                         show-meridian="false"
                         ng-if="vm.newValues.isFromTime">
                     </div>
@@ -256,9 +256,9 @@
                     <label for="wditor-to-time">Végső időpont</label>
                     <div class="editor-radio">
                         <label>
-                            <input 
-                                type="radio" 
-                                ng-model="vm.newValues.isToTime" 
+                            <input
+                                type="radio"
+                                ng-model="vm.newValues.isToTime"
                                 ng-value="false">
                             Nem módosul
                         </label>
@@ -267,21 +267,21 @@
                         <label>
                             <input
                                 type="radio"
-                                ng-model="vm.newValues.isToTime" 
+                                ng-model="vm.newValues.isToTime"
                                 ng-value="true">
                             Módosít az alábbira
                         </label>
                     </div>
                     <div uib-timepicker
                         id="editor-to-time"
-                        ng-model="vm.newValues.toTime" 
-                        hour-step="1" 
-                        minute-step="1" 
+                        ng-model="vm.newValues.toTime"
+                        hour-step="1"
+                        minute-step="1"
                         show-meridian="false"
                         ng-if="vm.newValues.isToTime">
                     </div>
                 </div>
-            </div>            
+            </div>
             <div class="editor-button-row">
                 <button class="btn btn-primary pull-left" ng-click="vm.deleteAll()">Törlés</button>
                 <button class="btn btn-primary pull-right" ng-click="vm.saveModifications()">Módosítás</button>
@@ -295,14 +295,14 @@
     </div>
     <div class="row trainings-table" ng-if="!vm.isLoading">
         <div class="col-xs-12">
-            <h3>Edzések</h3>
+            <h3>Órák</h3>
             <div class="table-responsive">
                 <table class="table table-bordered table-hover">
                     <thead>
                         <tr>
                             <th ng-if="vm.trainingCategories.length > 1">Kategória</th>
                             <th>Típus</th>
-                            <th>Edző</th>                            
+                            <th>Oktató</th>
                             <th>Terem</th>
                             <th>Nap</th>
                             <th>Kezdete</th>

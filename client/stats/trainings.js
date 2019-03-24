@@ -54,7 +54,7 @@ angular.module('kotei')
             'Maximum megjelent'
         ]
         if (this.isAdmin) {
-            this.header.push('Edző')
+            this.header.push('Oktató')
         }
 
         this.export = () => this.trainings.map(({

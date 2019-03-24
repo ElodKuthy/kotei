@@ -121,7 +121,7 @@ angular.module('kotei')
                 template: `
                     <div>
                         <div class="modal-header">
-                            <h3 class="modal-title">Edzés törlése</h3>
+                            <h3 class="modal-title">Órák törlése</h3>
                         </div>
                         <div class="modal-body">
                             Biztos, hogy törölni akarod ezt az órát? A jelenlegi feliratkozók alkalma jóváírásra kerül,
@@ -159,7 +159,7 @@ angular.module('kotei')
                 },
                 controllerAs: 'vm'
             }).result
-            .then(() => modalService.info(this.title, 'Az edzés törölve lett'))
+            .then(() => modalService.info(this.title, 'Az óra törölve lett'))
             .then(() => $state.go('schedule'))
             .catch(error => this.error = ['no', 'backdrop click'].indexOf(error) > -1 ? null : error)
         }

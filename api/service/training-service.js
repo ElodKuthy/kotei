@@ -251,10 +251,10 @@ const find = (query, auth, hashed) => {
         if (!training.dataValues.Coach) {
             training.dataValues.Coach = {
                 familyName: "Törölt",
-                fullName: "Törölt Edző",
-                givenName: "Edző",
+                fullName: "Törölt Oktató",
+                givenName: "Oktató",
                 id: -1,
-                nickname: "Törölt Edző",
+                nickname: "Törölt Oktató",
             }
         }
 

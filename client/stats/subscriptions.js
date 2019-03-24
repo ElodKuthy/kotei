@@ -53,8 +53,8 @@ angular.module('kotei')
         this.activeSubscriptionsHeader = ['Tanítvány', 'Maradék alkalmak', 'Lejárat', 'Típus']
         this.soldSubscriptionsHeader = ['Tanítvány', 'Alkalmak', 'Ár', 'Vásárlás', 'Lejárat', 'Típus']
         if (this.isAdmin) {
-            this.activeSubscriptionsHeader.push('Edzők')
-            this.soldSubscriptionsHeader.push('Edzők')
+            this.activeSubscriptionsHeader.push('Oktatók')
+            this.soldSubscriptionsHeader.push('Oktatók')
         }
 
         this.exportActiveSubscriptions = () => this.subscriptions.active.map(({Client, remaining, to, name, Coach}) => {

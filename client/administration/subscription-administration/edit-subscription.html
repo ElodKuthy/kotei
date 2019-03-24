@@ -18,7 +18,7 @@
             <ko-calendar id="to" model="editSubscription.subscription.to" format="yyyy. MMM dd." minDate="editSubscription.minDate" maxDate="editSubscription.maxDate" enable-time="false"></ko-calendar>
         </div>
         <div ng-class="{ 'has-error': (!editSubscription.subscription.Coach && subscriptionForm.coach.$touched) }">
-            <label for="coach">Edző</label>
+            <label for="coach">Oktató</label>
             <select id="coach" name="coach" 
                 class="form-control"
                 ng-model="editSubscription.subscription.Coach"

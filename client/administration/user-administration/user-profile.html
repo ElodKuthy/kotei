@@ -57,7 +57,7 @@
                             </select>
                         </div>
                         <div>
-                            <label for="coach">Edző</label>
+                            <label for="coach">Oktató</label>
                             <select id="coach" name="coach" 
                                 class="form-control"
                                 ng-model="userProfile.coach"
@@ -80,7 +80,7 @@
                             <div>Típus: {{subscription.SubscriptionType.name}}</div>
                             <div>Érvényesség kezdete: {{subscription.from | date : 'yyyy. MMMM d.'}}</div>
                             <div>Érvényesség vége: {{subscription.to | date : 'yyyy. MMMM d.'}}</div>
-                            <div>Edző: {{subscription.Coach.fullName}}</div>
+                            <div>Oktató: {{subscription.Coach.fullName}}</div>
                             <div>Ára: {{subscription.price | currency : 'Ft': 0 }}</div>
                             <div>Összes alkalom: {{subscription.amount}}</div>
                             <div ng-if="subscription.free">Szabad alkalmak: {{subscription.free}}</div>

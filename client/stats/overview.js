@@ -24,7 +24,7 @@ angular.module('kotei')
         this.isAdmin = userInfo.isAdmin
 
         this.headers = [
-            'Megtartott edzések',
+            'Megtartott órák',
             'Összes hely',
             'Feliratkozások',
             'Kihasználtság',
@@ -35,7 +35,7 @@ angular.module('kotei')
         ]
 
         if (this.isAdmin) {
-            this.headers.push('Edző')
+            this.headers.push('Oktató')
         }
 
         this.dateChanged = (id, value) => {

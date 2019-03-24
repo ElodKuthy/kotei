@@ -25,7 +25,7 @@ angular.module('kotei')
     })
     .controller('TrainingAdministrationController', function ($state, $moment, coaches, locations, trainingTypes, modalService, administrationService, nameService, trainingCategories) {
 
-        this.title = 'Új edzésalkalom létrehozása'
+        this.title = 'Új óra létrehozása'
 
         this.coaches = nameService.addDisplayName(coaches)
         this.locations = locations
@@ -49,7 +49,7 @@ angular.module('kotei')
 
             administrationService.addNewTraining(newTraining)
                     .then((result) => {
-                        modalService.info(this.title, 'Sikeresen léterejöttek az új edzés(ek)').then($state.reload())
+                        modalService.info(this.title, 'Sikeresen léterejöttek az új órák').then($state.reload())
                     })
                     .catch((error) => {
                         this.error = error

@@ -347,10 +347,10 @@ const find = (query, auth) => {
         if (!subscription.dataValues.Coach) {
             subscription.dataValues.Coach = {
                 familyName: "Törölt",
-                fullName: "Törölt Edző",
-                givenName: "Edző",
+                fullName: "Törölt Oktató",
+                givenName: "Oktató",
                 id: -1,
-                nickname: "Törölt Edző",
+                nickname: "Törölt Oktató",
             }
         }
 

@@ -30,7 +30,7 @@
                             <a ui-sref="administration.user-list">{{ navbar.userInfo.isAdmin ? 'Felhasználók' : 'Tanítványok' }}</a>
                         </li>
                         <li ng-if="navbar.userInfo.isAdmin">
-                            <a ui-sref="administration.training-list">Edzések</a>
+                            <a ui-sref="administration.training-list">Órák</a>
                         </li>
                         <li ng-if="navbar.userInfo.isAdmin">
                             <a ui-sref="administration.subscription-template-list">Bérlettípusok</a>
@@ -49,7 +49,7 @@
                         <li><a ui-sref="stats.payoffs">Elszámolás</a></li>
                         <li><a ui-sref="stats.subscriptions">Bérletek</a></li>
                         <li><a ui-sref="stats.clients">Tanítványok</a></li>
-                        <li><a ui-sref="stats.trainings">Edzések</a></li>
+                        <li><a ui-sref="stats.trainings">Órák</a></li>
                     </ul>
                 </li>
                 <li ng-if="(navbar.userInfo.isAuth || navbar.publicSchedule) && navbar.trainingCategories && navbar.trainingCategories.length <= 1"><a ui-sref="schedule">Órarend</a></li>

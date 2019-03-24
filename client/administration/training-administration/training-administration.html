@@ -23,7 +23,7 @@
             <div class="help-block" ng-show="trainingForm.trainingType.$touched && !trainingAdministration.training.type">Kötelező megadni</div>
         </div>
         <div ng-class="{ 'has-error': (!trainingAdministration.training.coach && trainingForm.coach.$touched) }">
-            <label for="coach">Edző</label>
+            <label for="coach">Oktató</label>
             <select id="coach" name="coach" 
                 class="form-control"
                 ng-model="trainingAdministration.training.coach"

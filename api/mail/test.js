@@ -22,7 +22,7 @@ const sendResetPasswordToken = {
             A következő linken tudsz új jelszót megadni:<br/>
             <a href="https://test.kotei.hu/reset-password/${token}">https://test.kotei.hu/reset-password/${token}</a><br/>
         </div>
-        
+
         <div>Amennyiben nem te kezdeményezted a jelszó változtatást, kérlek feltétlenül jelezd ezt <a href="mailto:support.kotei.hu">support.kotei.hu</a> email címen.</div>
 
 
@@ -64,8 +64,8 @@ const sendRegistration = {
             <a href="https://test.kotei.hu">https://test.kotei.hu</a><br/>
             Itt megnézheted a terem órarendjét, illetve hogy mely órákra jelentkezél, és még sok minden mást is!
         </div>
-        
-        <div>Ha további kérdéseid lennének, fordulj bizalommal edződhöz személyesen, vagy írj nekünk a <a href="mailto:support.kotei.hu">support.kotei.hu</a> email címre.</div>
+
+        <div>Ha további kérdéseid lennének, fordulj bizalommal oktatódhoz személyesen, vagy írj nekünk a <a href="mailto:support.kotei.hu">support.kotei.hu</a> email címre.</div>
 
         <div>
             Üdvözlettel,<br/>
@@ -94,11 +94,11 @@ const sendSubscriptionAlmostDepletedNotification = {
         <body>
         <div>Kedves ${subscription.Client.fullName}!</div>
 
-        <div>Csak szerettünk volna szólni, hogy a bérleted hamarosan le fog járni. Ezt a bérletedet ${moment(subscription.from).format('YYYY. MM. DD')}-n vásároltad, ${moment(subscription.to).format('YYYY. MM. DD')}-ig érvényes, és összesen ${subscription.all} edzésalkalomra szól. Már csak ${subscription.remaining} alkalmad van hátra.</div>
-        
+        <div>Csak szerettünk volna szólni, hogy a bérleted hamarosan le fog járni. Ezt a bérletedet ${moment(subscription.from).format('YYYY. MM. DD')}-n vásároltad, ${moment(subscription.to).format('YYYY. MM. DD')}-ig érvényes, és összesen ${subscription.all} alkalomra szól. Már csak ${subscription.remaining} alkalmad van hátra.</div>
+
         <div>Új bérletet akkor kell venned, ha az összes alkalmadat lejártad az aktuális bérleteden, vagy annak érvényességi ideje lejárt.</div>
-        
-        <div>Ha további kérdéseid lennének, fordulj bizalommal edződhöz személyesen, vagy írj nekünk a <a href="mailto:support.kotei.hu">support.kotei.hu</a> email címre.</div>
+
+        <div>Ha további kérdéseid lennének, fordulj bizalommal oktatódhoz személyesen, vagy írj nekünk a <a href="mailto:support.kotei.hu">support.kotei.hu</a> email címre.</div>
 
         <div>
             Üdvözlettel,<br/>
@@ -126,12 +126,12 @@ const sendNewSubscriptionNotification = {
         <body>
         <div>Kedves ${subscription.Client.fullName}!</div>
 
-        <div>Ez csak egy emlékeztető, hogy új bérletet vásároltál. Ezt a bérletedet ${moment(subscription.from).format('YYYY. MM. DD')}-n vásároltad, 
-        ${moment(subscription.to).format('YYYY. MM. DD')}-ig érvényes, és összesen ${subscription.all} edzésalkalomra szól.</div>
-        
+        <div>Ez csak egy emlékeztető, hogy új bérletet vásároltál. Ezt a bérletedet ${moment(subscription.from).format('YYYY. MM. DD')}-n vásároltad,
+        ${moment(subscription.to).format('YYYY. MM. DD')}-ig érvényes, és összesen ${subscription.all} alkalomra szól.</div>
+
         <div>Új bérletet akkor kell venned, ha az összes alkalmadat lejártad az aktuális bérleteden, vagy annak érvényességi ideje lejárt.</div>
-        
-        <div>Ha további kérdéseid lennének, fordulj bizalommal edződhöz személyesen, vagy írj nekünk a <a href="mailto:support.kotei.hu">support.kotei.hu</a> email címre.</div>
+
+        <div>Ha további kérdéseid lennének, fordulj bizalommal oktatódhoz személyesen, vagy írj nekünk a <a href="mailto:support.kotei.hu">support.kotei.hu</a> email címre.</div>
 
         <div>
             Üdvözlettel,<br/>
@@ -180,7 +180,7 @@ module.exports = {
     from: from,
     sendResetPasswordToken: sendResetPasswordToken,
     sendRegistration: sendRegistration,
-    sendSubscriptionAlmostDepletedNotification: sendSubscriptionAlmostDepletedNotification, 
+    sendSubscriptionAlmostDepletedNotification: sendSubscriptionAlmostDepletedNotification,
     sendNewSubscriptionNotification: sendNewSubscriptionNotification,
     sendCancelledTrainingNotification
 }

@@ -7,10 +7,10 @@ const texts = {
     nameAlreadyUsed: 'Ilyen névvel és becenévvel már van regisztrált felhasználónk',
     emailAlreadyUsed: 'Ezzel az email címmel már regisztrált valaki',
     successfulRegistration: 'Sikeres regisztráció',
-    trainingTimeCollide: 'A megadott időpont ütközik egy másik edzéssel',
-    invalidCoach: 'Érvénytelen edző',
-    trainingTooShort: 'Az edzésnek legalább öt perc hosszúnak kell lennie',
-    trainingTooLong: 'Az edzésnek ugyanaznap kell befejeződnie, mint amikor kezdődik',
+    trainingTimeCollide: 'A megadott időpont ütközik egy másik órával',
+    invalidCoach: 'Érvénytelen oktató',
+    trainingTooShort: 'Az órának legalább öt perc hosszúnak kell lennie',
+    trainingTooLong: 'Az órának ugyanaznap kell befejeződnie, mint amikor kezdődik',
     successfulTrainingCreation: 'Az edéseket sikeresen létrehoztuk',
     trainingEnded: 'Ez az óra már véget ért',
     trainingFull: 'Ez az óra már megtelt',
@@ -21,7 +21,7 @@ const texts = {
     invalidId: 'Érvénytelen azonosító',
     tooEarlyToCheckIn: 'Erre az órára még túl korai bejelentkezni',
     invalidDate: 'Érvénytelen dátum',
-    passiveUserLogin: 'Ez a felhasználó le lett tiltva, kérlek lépj kapcsolatba az edződdel'
+    passiveUserLogin: 'Ez a felhasználó le lett tiltva, kérlek lépj kapcsolatba az oktatóddal'
 }
 
 module.exports = texts

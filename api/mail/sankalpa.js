@@ -1,9 +1,9 @@
 const moment = require('moment')
 
-const from = 'Sankalpa Jógastúdió <no-reply@kotei.hu>'
+const from = 'Sankalpa Jóga és Mozgás Műhely  <no-reply@kotei.hu>'
 
 const sendResetPasswordToken = {
-    subject: 'Sankalpa Jógastúdió - Elfelejtett jelszó',
+    subject: 'Sankalpa Jóga és Mozgás Műhely - Elfelejtett jelszó',
     html: (user, token) =>
         `<html>
         <head>
@@ -28,7 +28,7 @@ const sendResetPasswordToken = {
 
         <div>
             Üdvözlettel,<br/>
-            A Sankalpa Jógastúdió Csapata
+            A Sankalpa Jóga és Mozgás Műhely  Csapata
         </div>
 
         <div>
@@ -39,7 +39,7 @@ const sendResetPasswordToken = {
 }
 
 const sendRegistration = {
-    subject: 'Sankalpa Jógastúdió - Üdvözlünk',
+    subject: 'Sankalpa Jóga és Mozgás Műhely - Üdvözlünk',
     html: (user, token) =>
         `<html>
         <head>
@@ -52,15 +52,15 @@ const sendRegistration = {
         <body>
         <div>Kedves ${user.fullName}!</div>
 
-        <div>Nagyon örülünk, hogy a Sankalpa Jógastúdió Jógastúdió tagjainak körében üdvözölhetünk!</div>
+        <div>Nagyon örülünk, hogy a Sankalpa Jóga és Mozgás Műhely  tagjainak körében üdvözölhetünk!</div>
 
         <div>
-            A Sankalpa Jógastúdió Kotei használatához aktiválnod kell a felhasználódat és megadnod egy jelszót, amit a következő linken tudsz megtenni:<br/>
+            A Sankalpa Jóga és Mozgás Műhely  Kotei használatához aktiválnod kell a felhasználódat és megadnod egy jelszót, amit a következő linken tudsz megtenni:<br/>
             <a href="https://sankalpa.kotei.hu/reset-password/${token}">https://sankalpa.kotei.hu/reset-password/${token}</a><br/>
         </div>
 
         <div>
-            A Sankalpa Jógastúdió Koteit az alábbi webcímen tudod elérni:<br/>
+            A Sankalpa Jóga és Mozgás Műhely  Koteit az alábbi webcímen tudod elérni:<br/>
             <a href="https://sankalpa.kotei.hu">https://sankalpa.kotei.hu</a><br/>
             Itt megnézheted a terem órarendjét, illetve hogy mely órákra jelentkezél, és még sok minden mást is!
         </div>
@@ -69,7 +69,7 @@ const sendRegistration = {
 
         <div>
             Üdvözlettel,<br/>
-            A Sankalpa Jógastúdió Csapata
+            A Sankalpa Jóga és Mozgás Műhely  Csapata
         </div>
 
         <div>
@@ -81,7 +81,7 @@ const sendRegistration = {
 }
 
 const sendSubscriptionAlmostDepletedNotification = {
-    subject: 'Sankalpa Jógastúdió - Emlékeztető bérlet lejáratáról',
+    subject: 'Sankalpa Jóga és Mozgás Műhely - Emlékeztető bérlet lejáratáról',
     html: (subscription) =>
         `<html>
         <head>
@@ -94,7 +94,7 @@ const sendSubscriptionAlmostDepletedNotification = {
         <body>
         <div>Kedves ${subscription.Client.fullName}!</div>
 
-        <div>Csak szerettünk volna szólni, hogy a bérleted hamarosan le fog járni. Ezt a bérletedet ${moment(subscription.from).format('YYYY. MM. DD')}-n vásároltad, ${moment(subscription.to).format('YYYY. MM. DD')}-ig érvényes, és összesen ${subscription.all} edzésalkalomra szól. Már csak ${subscription.remaining} alkalmad van hátra.</div>
+        <div>Csak szerettünk volna szólni, hogy a bérleted hamarosan le fog járni. Ezt a bérletedet ${moment(subscription.from).format('YYYY. MM. DD')}-n vásároltad, ${moment(subscription.to).format('YYYY. MM. DD')}-ig érvényes, és összesen ${subscription.all} alkalomra szól. Már csak ${subscription.remaining} alkalmad van hátra.</div>
 
         <div>Új bérletet akkor kell venned, ha az összes alkalmadat lejártad az aktuális bérleteden, vagy annak érvényességi ideje lejárt.</div>
 
@@ -113,7 +113,7 @@ const sendSubscriptionAlmostDepletedNotification = {
 }
 
 const sendNewSubscriptionNotification = {
-    subject: 'Sankalpa Jógastúdió - Emlékeztető bérlet vásárlásról',
+    subject: 'Sankalpa Jóga és Mozgás Műhely - Emlékeztető bérlet vásárlásról',
     html: (subscription) =>
         `<html>
         <head>
@@ -127,7 +127,7 @@ const sendNewSubscriptionNotification = {
         <div>Kedves ${subscription.Client.fullName}!</div>
 
         <div>Ez csak egy emlékeztető, hogy új bérletet vásároltál. Ezt a bérletedet ${moment(subscription.from).format('YYYY. MM. DD')}-n vásároltad,
-        ${moment(subscription.to).format('YYYY. MM. DD')}-ig érvényes, és összesen ${subscription.all} edzésalkalomra szól.</div>
+        ${moment(subscription.to).format('YYYY. MM. DD')}-ig érvényes, és összesen ${subscription.all} alkalomra szól.</div>
 
         <div>Új bérletet akkor kell venned, ha az összes alkalmadat lejártad az aktuális bérleteden, vagy annak érvényességi ideje lejárt.</div>
 
@@ -146,7 +146,7 @@ const sendNewSubscriptionNotification = {
 }
 
 const sendCancelledTrainingNotification = {
-    subject: 'Sankalpa Jógastúdió - Elmarad egy óra',
+    subject: 'Sankalpa Jóga és Mozgás Műhely - Elmarad egy óra',
     html: (training, subscription, extend) =>
         `<html>
         <head>

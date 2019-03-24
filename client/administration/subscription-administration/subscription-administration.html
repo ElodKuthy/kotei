@@ -10,8 +10,8 @@
             <div class="help-block" ng-show="subscriptionForm.client.$touched && !subscriptionAdministration.client">Nincs ilyen nevű tanítvány</div>
         </div>
         <div ng-if="subscriptionAdministration.isAdmin" ng-class="{ 'has-error': (!subscriptionAdministration.coach && subscriptionForm.coach.$touched) }">
-            <label for="coach">Edző</label>
-            <select id="coach" name="coach" 
+            <label for="coach">Oktató</label>
+            <select id="coach" name="coach"
                 class="form-control"
                 ng-model="subscriptionAdministration.coach"
                 ng-options="coach.displayName for coach in subscriptionAdministration.coaches track by coach.id">
@@ -55,13 +55,13 @@
             <label>Alapértelmezett órák</label>
             <div class="checkbox" ng-if="!subscriptionAdministration.isAdmin">
                 <label>
-                    <input type="checkbox" ng-model="subscriptionAdministration.showAllTraining"> Mutasd más edzők óráit is
+                    <input type="checkbox" ng-model="subscriptionAdministration.showAllTraining"> Mutasd más oktatók óráit is
                 </label>
             </div>
             <table class="table table-bordered table-responsive">
                 <thead>
                     <th>Óra</th>
-                    <th>Edző</th>
+                    <th>Oktató</th>
                     <th>Időpont</th>
                 </thead>
                 <tbody>
@@ -75,7 +75,7 @@
         </div>
         <div class="checkbox">
             <label>
-                <input type="checkbox" ng-model="subscriptionAdministration.sendEmail"> Email küldése a vásárlásról 
+                <input type="checkbox" ng-model="subscriptionAdministration.sendEmail"> Email küldése a vásárlásról
             </label>
         </div>
         <button type="submit" class="btn btn-primary pull-right" ng-click="subscriptionAdministration.submit()" ng-disabled="subscriptionForm.$pristine || subscriptionForm.$invalid || subscriptionAdministration.invalid()">Mentés</button>
