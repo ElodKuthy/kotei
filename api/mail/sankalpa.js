@@ -1,6 +1,6 @@
 const moment = require('moment')
 
-const from = 'Sankalpa Jóga és Mozgás Műhely  <no-reply@kotei.hu>'
+const from = 'Sankalpa Jóga és Mozgás Műhely <no-reply@kotei.hu>'
 
 const sendResetPasswordToken = {
     subject: 'Sankalpa Jóga és Mozgás Műhely - Elfelejtett jelszó',
@@ -28,7 +28,7 @@ const sendResetPasswordToken = {
 
         <div>
             Üdvözlettel,<br/>
-            A Sankalpa Jóga és Mozgás Műhely  Csapata
+            A Sankalpa Jóga és Mozgás Műhely Csapata
         </div>
 
         <div>
@@ -52,15 +52,15 @@ const sendRegistration = {
         <body>
         <div>Kedves ${user.fullName}!</div>
 
-        <div>Nagyon örülünk, hogy a Sankalpa Jóga és Mozgás Műhely  tagjainak körében üdvözölhetünk!</div>
+        <div>Nagyon örülünk, hogy a Sankalpa Jóga és Mozgás Műhely tagjainak körében üdvözölhetünk!</div>
 
         <div>
-            A Sankalpa Jóga és Mozgás Műhely  Kotei használatához aktiválnod kell a felhasználódat és megadnod egy jelszót, amit a következő linken tudsz megtenni:<br/>
+            A Sankalpa Jóga és Mozgás Műhely Kotei használatához aktiválnod kell a felhasználódat és megadnod egy jelszót, amit a következő linken tudsz megtenni:<br/>
             <a href="https://sankalpa.kotei.hu/reset-password/${token}">https://sankalpa.kotei.hu/reset-password/${token}</a><br/>
         </div>
 
         <div>
-            A Sankalpa Jóga és Mozgás Műhely  Koteit az alábbi webcímen tudod elérni:<br/>
+            A Sankalpa Jóga és Mozgás Műhely Koteit az alábbi webcímen tudod elérni:<br/>
             <a href="https://sankalpa.kotei.hu">https://sankalpa.kotei.hu</a><br/>
             Itt megnézheted a terem órarendjét, illetve hogy mely órákra jelentkezél, és még sok minden mást is!
         </div>
@@ -69,7 +69,7 @@ const sendRegistration = {
 
         <div>
             Üdvözlettel,<br/>
-            A Sankalpa Jóga és Mozgás Műhely  Csapata
+            A Sankalpa Jóga és Mozgás Műhely Csapata
         </div>
 
         <div>
