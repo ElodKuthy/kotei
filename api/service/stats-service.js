@@ -117,7 +117,8 @@ const payoffs = (query, auth) => {
     const coaches = User.findAll({
         where: {
             role: 'coach'
-        }
+        },
+        paranoid: false
     }).then(coaches => coaches.sort((a, b) => a.fullName > b.fullName))
 
     const matrix = Training.findAll(parser.parseQuery({
@@ -125,7 +126,8 @@ const payoffs = (query, auth) => {
             model: Subscription,
             include: [{
                 model: User,
-                as: 'Coach'
+                as: 'Coach',
+                paranoid: false
             }, {
                 model: Credit,
                 as: 'Credits',
@@ -135,7 +137,8 @@ const payoffs = (query, auth) => {
             }]
         }, {
             model: User,
-            as: 'Coach'
+            as: 'Coach',
+            paranoid: false
         }],
         order: [['from', 'ASC']]
     }, query)).then(trainings =>
