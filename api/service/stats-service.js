@@ -155,10 +155,11 @@ const payoffs = (query, auth) => {
 
     return Promise.all([coaches, matrix])
         .spread((coaches, matrix) => {
-            return coaches.map(coach => {
+            const activeCoaches = coaches.filter(coach => coach.deleted_at == null)
+            return activeCoaches.map(coach => {
                 return {
-                    coach: { id: coach.id, fullName: coach.fullName },
-                    amounts: coaches.map(other => {
+                    coach: { id: coach.id, fullName: coach.fullName, notDeleted: coach.deleted_at == null },
+                    amounts: activeCoaches.map(other => {
                         return {
                             coach: { id: other.id, fullName: other.fullName },
                             amount: coach.id === other.id ? `-` : matrix.reduce((prev, curr) => {
