@@ -338,7 +338,7 @@ const find = (query, auth) => {
                         || moment().add({ hours: rules.minHoursToLeaveTraining() }).isBefore(training.from)))
             training.dataValues.canLeave =
                 auth.isClient
-                    && training.Subscriptions.find(subscription => subscription.Client.id === auth.id)
+                    && training.Subscriptions.find(subscription => subscription.Client && subscription.Client.id === auth.id)
                     && moment().add({ hours: rules.minHoursToLeaveTraining() }).isBefore(training.from)
                     && (!rules.gremlinAttendees() || moment(training.from).hours() >= 9 || moment().isBefore(moment(training.from).startOf('day').subtract({ hours: 3 })))
             return training
@@ -357,7 +357,7 @@ const find = (query, auth) => {
         return subscription
     }))
     .catch((error) => {
-        Promise.reject(errors.missingOrInvalidParameters())
+         Promise.reject(errors.missingOrInvalidParameters())
     })
 }
 
