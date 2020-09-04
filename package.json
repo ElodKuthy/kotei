@@ -37,7 +37,7 @@
     "nodemailer-mailgun-transport": "^1.0.1",
     "nodemailer-stub-transport": "^1.0.0",
     "ramda": "^0.21.0",
-    "sequelize": "^3.24.6",
+    "sequelize": "^6.3.5",
     "serve-favicon": "^2.3.0",
     "source-map": "^0.5.3",
     "validator": "^4.4.0",
